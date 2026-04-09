@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lona Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <main class="main-container">
+        <header class="header">
+            <div class="logo-wrapper">
+                <h1 class="logo-text">Lona</h1>
+                <img src="LONA.png" alt="icon" class="logo-icon">
+            </div>
+        </header>
+
+       <form class="form-card" onsubmit="return checkPasswords()" action="home.html">
+            <div class="field">
+                <label for="name">NAME:</label>
+                <input type="text" id="name" name="name" placeholder="Enter Name" autocomplete="off" required>
+            </div>
+            
+            <div class="field">
+                <label for="email">EMAIL:</label>
+                <input type="email" id="email" name="email" placeholder="example@lona.com" autocomplete="off" required>
+            </div>
+            
+            <div class="field">
+                <label for="password">PASSWORD:</label>
+                <input type="password" id="password" name="password" placeholder="password" required>
+            </div>
+            
+            <div class="field">
+                <label for="confirmation">PASSWORD CONFIRMATION:</label>
+                <input type="password" id="confirmation" name="confirmation" placeholder="confirm password" required>
+            </div>
+
+            <button type="submit" class="submit-btn">CONFIRM</button>
+        </form>
+    </main>
+    <script>
+    function checkPasswords() {
+        const password = document.getElementById('password').value;
+        const confirmation = document.getElementById('confirmation').value;
+        const confirmInput = document.getElementById('confirmation');
+
+        if (password !== confirmation) {
+            confirmInput.style.borderColor = '#ff0000';
+            confirmInput.style.boxShadow = '0 4px 15px rgba(255, 0, 0, 0.2)';
+            confirmInput.value = '';
+            confirmInput.placeholder = 'Passwords do not match!';
+            confirmInput.focus();
+            return false; // blocks form submission
+        }
+
+        return true; // allows form to proceed to home.html
+    }
+</script>
+</body>
+</html>
