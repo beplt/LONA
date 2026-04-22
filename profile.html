@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lona – Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="LONA full sign.PNG">
+    <img
+      src="LONA full sign.PNG"
+      alt="LONA"
+      title="LONA"
+    >
+  </a>
+
+  <div class="nav-links">
+    <a href="Stream.html">STREAM</a>
+    <a href="Gallery.html">GALLERY</a>
+    <a href="About.html">ABOUT</a>
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-search">
+      <input type="text" placeholder="Search...">
+      <button>
+        <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+          <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+          <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+        </svg>
+      </button>
+    </div>
+    <a class="nav-msg" href="message.html">✉</a>
+    <div class="nav-avatar" id="navAvatar">•ﻌ•</div>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<div class="banner" id="banner">
+  <img class="banner-img" id="bannerImg" alt="banner">
+  <div class="banner-add-overlay" id="bannerOverlay" onclick="document.getElementById('bannerInput').click()">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="white" opacity="0.9">
+      <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+    </svg>
+  </div>
+    <input type="file" id="bannerInput" accept="image/*" onchange="loadBanner(event)">
+</div>
+
+<!-- PAGE WRAP -->
+<div class="page-wrap">
+
+  <!-- AVATAR ROW -->
+  <div class="avatar-row">
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatar">
+        <span id="avatarDefault">•ﻌ•</span>
+        <img id="avatarImg" alt="profile">
+      </div>
+      <div class="avatar-add-overlay" id="avatarOverlay" onclick="document.getElementById('avatarInput').click()">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="white">
+          <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+        </svg>
+      </div>
+      <input type="file" id="avatarInput" accept="image/*" onchange="loadAvatar(event)">
+    </div>
+    <button class="edit-btn" id="editBtn" onclick="toggleEdit()">EDIT</button>
+  </div>
+
+  <!-- PROFILE TOP -->
+  <div class="profile-top">
+
+    <!-- BIO CARD -->
+    <div class="bio-card">
+      <div class="card-section-label">
+        BIO
+        <span class="pencil-icon" id="pencilBio" onclick="makeEditable('bioContent')" title="Edit bio">✏️</span>
+      </div>
+      <div class="bio-content" id="bioContent">Write something about yourself...</div>
+
+      <hr class="divider">
+      <div class="card-section-label">
+        AGE
+        <span class="pencil-icon" id="pencilAge" onclick="makeEditable('ageVal')" title="Edit age">✏️</span>
+      </div>
+      <span class="meta-val" id="ageVal">00</span>
+
+      <hr class="divider">
+      <div class="card-section-label">
+        FROM
+        <span class="pencil-icon" id="pencilDate" onclick="makeEditable('dateVal')" title="Edit date">✏️</span>
+      </div>
+      <span class="meta-val" id="dateVal"> - </span>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="profile-right">
+      <div class="artist-name" id="artistName" spellcheck="false">ARTIST NAME</div>
+      <div class="stars-row">
+        <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"
+          viewBox="-0.7 -0.4 388.2 66.9" width="168" height="31">
+          <path d="M36.6,1.3l8.8,17.9c0.3,0.7,1,1.2,1.8,1.3L67,23.4c1.9,0.3,2.7,2.7,1.3,4L54,41.3
+            c-0.6,0.5-0.8,1.3-0.7,2.1l3.4,19.7c0.3,1.9-1.7,3.4-3.4,2.5l-17.7-9.3c-0.7-0.4-1.5-0.4-2.2,0
+            l-17.7,9.3C14,66.5,12,65,12.3,63.1l3.4-19.7c0.1-0.8-0.1-1.5-0.7-2.1L0.7,27.4
+            c-1.4-1.4-0.6-3.7,1.3-4l19.8-2.9c0.8-0.1,1.4-0.6,1.8-1.3l8.8-17.9C33.3-0.4,35.8-0.4,36.6,1.3z
+            M111.8,1.3L103,19.2c-0.3,0.7-1,1.2-1.8,1.3l-19.8,2.9c-1.9,0.3-2.7,2.7-1.3,4l14.3,13.9
+            c0.6,0.5,0.8,1.3,0.7,2.1l-3.4,19.7c-0.3,1.9,1.7,3.4,3.4,2.5l17.7-9.3c0.7-0.4,1.5-0.4,2.2,0
+            l17.7,9.3c1.7,0.9,3.8-0.6,3.4-2.5l-3.4-19.7c-0.1-0.8,0.1-1.5,0.7-2.1l14.3-13.9
+            c1.4-1.4,0.6-3.7-1.3-4l-19.8-2.9c-0.8-0.1-1.4-0.6-1.8-1.3l-8.8-17.9
+            C115.2-0.4,112.7-0.4,111.8,1.3z M191.3,1.3l-8.8,17.9c-0.3,0.7-1,1.2-1.8,1.3l-19.8,2.9
+            c-1.9,0.3-2.7,2.7-1.3,4l14.3,13.9c0.6,0.5,0.8,1.3,0.7,2.1l-3.4,19.7c-0.3,1.9,1.7,3.4,3.4,2.5
+            l17.7-9.3c0.7-0.4,1.5-0.4,2.2,0l17.7,9.3c1.7,0.9,3.8-0.6,3.4-2.5l-3.4-19.7
+            c-0.1-0.8,0.1-1.5,0.7-2.1l14.3-13.9c1.4-1.4,0.6-3.7-1.3-4l-19.8-2.9c-0.8-0.1-1.4-0.6-1.8-1.3
+            l-8.8-17.9C194.6-0.4,192.1-0.4,191.3,1.3z M270.7,1.3l-8.8,17.9c-0.3,0.7-1,1.2-1.8,1.3
+            l-19.8,2.9c-1.9,0.3-2.7,2.7-1.3,4l14.3,13.9c0.6,0.5,0.8,1.3,0.7,2.1l-3.4,19.7
+            c-0.3,1.9,1.7,3.4,3.4,2.5l17.7-9.3c0.7-0.4,1.5-0.4,2.2,0l17.7,9.3c1.7,0.9,3.8-0.6,3.4-2.5
+            l-3.4-19.7c-0.1-0.8,0.1-1.5,0.7-2.1l14.3-13.9c1.4-1.4,0.6-3.7-1.3-4l-19.8-2.9
+            c-0.8-0.1-1.4-0.6-1.8-1.3l-8.8-17.9C274.1-0.4,271.6-0.4,270.7,1.3z M350.2,1.3l-8.8,17.9
+            c-0.3,0.7-1,1.2-1.8,1.3l-19.8,2.9c-1.9,0.3-2.7,2.7-1.3,4l14.3,13.9c0.6,0.5,0.8,1.3,0.7,2.1
+            l-3.4,19.7c-0.3,1.9,1.7,3.4,3.4,2.5l17.7-9.3c0.7-0.4,1.5-0.4,2.2,0l17.7,9.3
+            c1.7,0.9,3.8-0.6,3.4-2.5l-3.4-19.7c-0.1-0.8,0.1-1.5,0.7-2.1l14.3-13.9c1.4-1.4,0.6-3.7-1.3-4
+            L365,20.5c-0.8-0.1-1.4-0.6-1.8-1.3l-8.8-17.9C353.5-0.4,351-0.4,350.2,1.3z"/>
+        </svg>
+      </div>
+
+      <div class="links-services">
+        <div>
+          <div class="ls-header">LINKS <span class="pencil-icon" id="pencilLinks" title="Edit links">✏️</span></div>
+          <div class="ls-row"><span class="link-val" contenteditable="false">-</span></div>
+          <div class="ls-row"><span class="link-val" contenteditable="false">-</span></div>
+          <div class="ls-row"><span class="link-val" contenteditable="false">-</span></div>
+        </div>
+        <div>
+          <div class="ls-header">SERVICES <span class="pencil-icon" id="pencilServices" title="Edit services">✏️</span></div>
+          <div class="ls-row"><span class="service-val" contenteditable="false">-</span></div>
+          <div class="ls-row"><span class="service-val" contenteditable="false">-</span></div>
+          <div class="ls-row"><span class="service-val" contenteditable="false">-</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="section-header">
+    <div class="section-title">YOUR GALLERY</div>
+    <button class="add-gallery-btn" onclick="document.getElementById('galleryInput').click()">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+        <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+      </svg>
+    </button>
+    <input type="file" id="galleryInput" accept="image/*" onchange="addGalleryImage(event)">
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="gallery-item" onclick="galleryItemClick(this, 0)">
+      <img class="gal-img" alt="">
+      <svg class="plus-icon" viewBox="0 0 24 24">
+        <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+      </svg>
+    </div>
+    <div class="gallery-item" onclick="galleryItemClick(this, 1)">
+      <img class="gal-img" alt="">
+      <svg class="plus-icon" viewBox="0 0 24 24">
+        <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+      </svg>
+    </div>
+    <div class="gallery-item tall" onclick="galleryItemClick(this, 2)">
+      <img class="gal-img" alt="">
+      <svg class="plus-icon" viewBox="0 0 24 24">
+        <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+      </svg>
+    </div>
+    <div class="gallery-item tall" onclick="galleryItemClick(this, 3)">
+      <img class="gal-img" alt="">
+      <svg class="plus-icon" viewBox="0 0 24 24">
+        <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+      </svg>
+    </div>
+    <div class="gallery-item" onclick="galleryItemClick(this, 4)">
+      <img class="gal-img" alt="">
+      <svg class="plus-icon" viewBox="0 0 24 24">
+        <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- POSTS -->
+  <div class="posts-section">
+    <div class="section-title" style="margin-bottom:1.2rem">YOUR POSTS</div>
+    <div class="post-label">
+      ANYTHING ON YOUR MIND?
+      <span class="post-wordcount" id="wordCount">100 words</span>
+    </div>
+    <textarea class="post-textarea" id="postInput" placeholder=""
+      oninput="updateWordCount(this)" maxlength="700"></textarea>
+    <br>
+    <button class="post-btn" onclick="submitPost()">POST</button>
+    <div id="postsEmpty" class="posts-empty">
+      You don't have any posts yet,<br>
+      would you like to share a thought to the world?
+    </div>
+    <div class="posts-list" id="postsList"></div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div style="margin-top:3rem">
+    <div class="section-title" style="margin-bottom:1.2rem">REVIEWS</div>
+    <div class="reviews-empty">
+      There are no reviews yet, check your <a href= "message.html">messages</a> for commissions.
+    </div>
+  </div>
+
+</div><!-- end .page-wrap -->
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="full view">
+</div>
+
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get('name');
+  if (name && name.trim()) {
+    document.getElementById('artistName').textContent = name.trim().toUpperCase();
+  }
+})();
+
+let editMode = false;
+
+function toggleEdit() {
+  editMode = !editMode;
+  const btn = document.getElementById('editBtn');
+  btn.textContent = editMode ? 'DONE' : 'EDIT';
+  btn.classList.toggle('active', editMode);
+  document.body.classList.toggle('edit-mode', editMode);
+
+  document.querySelectorAll('.pencil-icon').forEach(el => {
+    el.style.display = editMode ? 'inline' : 'none';
+  });
+
+  const bannerOverlay = document.getElementById('bannerOverlay');
+  const avatarOverlay = document.getElementById('avatarOverlay');
+  bannerOverlay.style.display = editMode ? 'flex' : 'none';
+  avatarOverlay.style.display = editMode ? 'flex' : 'none';
+
+  const artistName = document.getElementById('artistName');
+  artistName.contentEditable = editMode ? 'true' : 'false';
+
+  if (!editMode) {
+    document.querySelectorAll('[contenteditable=true]').forEach(el => {
+      el.contentEditable = 'false';
+    });
+  }
+}
+
+function makeEditable(id) {
+  if (!editMode) return;
+  const el = document.getElementById(id);
+  el.contentEditable = 'true';
+  el.focus();
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  range.collapse(false);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+document.getElementById('pencilLinks').addEventListener('click', () => {
+  if (!editMode) return;
+  document.querySelectorAll('.link-val').forEach(el => {
+    el.contentEditable = 'true';
+    if (el.textContent.trim() === '-') el.textContent = '';
+  });
+  document.querySelector('.link-val').focus();
+});
+
+document.getElementById('pencilServices').addEventListener('click', () => {
+  if (!editMode) return;
+  document.querySelectorAll('.service-val').forEach(el => {
+    el.contentEditable = 'true';
+    if (el.textContent.trim() === '-') el.textContent = '';
+  });
+  document.querySelector('.service-val').focus();
+});
+
+function loadBanner(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = document.getElementById('bannerImg');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function loadAvatar(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = document.getElementById('avatarImg');
+    const def = document.getElementById('avatarDefault');
+    const navAvatar = document.getElementById('navAvatar');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    def.style.display = 'none';
+    navAvatar.innerHTML = '<img src="' + ev.target.result
+      + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+  };
+  reader.readAsDataURL(file);
+}
+
+let galleryNextIdx = 0;
+function addGalleryImage(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const items = document.querySelectorAll('.gallery-item');
+    if (galleryNextIdx < items.length) {
+      const item = items[galleryNextIdx];
+      const img = item.querySelector('.gal-img');
+      const plus = item.querySelector('.plus-icon');
+      img.src = ev.target.result;
+      img.style.display = 'block';
+      plus.style.display = 'none';
+      galleryNextIdx++;
+    }
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function galleryItemClick(item, idx) {
+  const img = item.querySelector('.gal-img');
+  if (img && img.style.display !== 'none' && img.src) {
+    openLightbox(img.src);
+  } else {
+    document.getElementById('galleryInput').click();
+  }
+}
+
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  lbImg.src = src;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+function updateWordCount(el) {
+  const words = el.value.trim() === '' ? 0 : el.value.trim().split(/\s+/).length;
+  const remaining = 100 - words;
+  document.getElementById('wordCount').textContent =
+    remaining >= 0 ? remaining + ' words' : '0 words';
+  if (words > 100) {
+    el.value = el.value.trim().split(/\s+/).slice(0, 100).join(' ');
+    document.getElementById('wordCount').textContent = '0 words';
+  }
+}
+
+function submitPost() {
+  const input = document.getElementById('postInput');
+  const text = input.value.trim();
+  if (!text) return;
+  document.getElementById('postsEmpty').style.display = 'none';
+  const list = document.getElementById('postsList');
+  const card = document.createElement('div');
+  card.className = 'post-card';
+  card.textContent = text;
+  list.prepend(card);
+  input.value = '';
+  document.getElementById('wordCount').textContent = '100 words';
+}
+</script>
+</body>
+</html>

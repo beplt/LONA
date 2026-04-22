@@ -28,6 +28,7 @@ body {
 }
 
 .logo {
+    font-family: 'Cy Grotesk Key', sans-serif;
     font-size: 2.6rem;
     font-weight: 900;
     color: #ff6a00;

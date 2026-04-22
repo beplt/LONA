@@ -19,7 +19,7 @@
             </div>
         </header>
 
-       <form class="form-card" onsubmit="return checkPasswords()" action="home.html">
+        <form class="form-card" id="regForm">
             <div class="field">
                 <label for="name">NAME:</label>
                 <input type="text" id="name" name="name" placeholder="Enter Name" autocomplete="off" required>
@@ -43,23 +43,23 @@
             <button type="submit" class="submit-btn">CONFIRM</button>
         </form>
     </main>
+
     <script>
-    function checkPasswords() {
-        const password = document.getElementById('password').value;
-        const confirmation = document.getElementById('confirmation').value;
-        const confirmInput = document.getElementById('confirmation');
+        const form = document.getElementById('regForm');
+        const password = document.getElementById('password');
+        const confirmation = document.getElementById('confirmation');
 
-        if (password !== confirmation) {
-            confirmInput.style.borderColor = '#ff0000';
-            confirmInput.style.boxShadow = '0 4px 15px rgba(255, 0, 0, 0.2)';
-            confirmInput.value = '';
-            confirmInput.placeholder = 'Passwords do not match!';
-            confirmInput.focus();
-            return false; // blocks form submission
-        }
-
-        return true; // allows form to proceed to home.html
-    }
-</script>
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (password.value !== confirmation.value) {
+                alert('Passwords do not match. Please try again.');
+                confirmation.focus();
+                return;
+            }
+            // Pass the name to the profile page via URL param
+            const name = document.getElementById('name').value.trim();
+            window.location.href = 'profile.html?name=' + encodeURIComponent(name);
+        });
+    </script>
 </body>
 </html>

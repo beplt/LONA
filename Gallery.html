@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lona – Artist Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Gallery.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <img src="LONA full sign.PNG" alt="LONA" title="LONA">
+  </a>
+  <div class="nav-links">
+    <a href="Stream.html">STREAM</a>
+    <a href="Gallery.html" class="active">GALLERY</a>
+    <a href="About.html">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-search">
+      <input type="text" placeholder="Search...">
+      <button>
+        <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+          <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+          <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+        </svg>
+      </button>
+    </div>
+    <a class="nav-msg" href="message.html">✉</a>
+    <a class="nav-avatar" id="navAvatar" href="profile.html">•ﻌ•</a>
+  </div>
+</nav>
+
+<!-- PAGE WRAP -->
+<div class="page-wrap">
+  <div class="gallery-header-row">
+    <h1 class="gallery-title">ARTIST GALLERY</h1>
+    <button class="add-btn" id="addBtn" onclick="openAddModal()" title="Add your display">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+        <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="empty-state" id="emptyState">
+    There's no artists' display right now, you may come back later or<br>
+    you can <a href="#" onclick="openAddModal();return false;">add</a> yours!
+  </div>
+
+  <div class="artist-grid" id="artistGrid"></div>
+</div>
+
+<!-- ADD DISPLAY MODAL -->
+<div class="modal-overlay" id="addModalOverlay" onclick="handleAddOverlayClick(event)">
+  <div class="modal-container">
+    <button class="modal-close-btn" onclick="requestCloseAddModal()" title="Close">✕</button>
+    <div class="add-form-card">
+      <div class="add-form-images">
+        <div class="add-slot">
+          <div class="slot-name-wrap">
+            <input class="slot-name" type="text" placeholder="EDIT NAME" maxlength="40" id="slotName0">
+          </div>
+          <div class="slot-img-box" onclick="triggerSlot(0)">
+            <img class="slot-preview" id="slotPreview0" alt="">
+            <div class="slot-plus" id="slotPlus0">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="white">
+                <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+              </svg>
+            </div>
+          </div>
+          <input type="file" id="slotFile0" accept="image/*" onchange="loadSlot(event,0)" style="display:none">
+        </div>
+        <div class="add-slot">
+          <div class="slot-name-wrap">
+            <input class="slot-name" type="text" placeholder="EDIT NAME" maxlength="40" id="slotName1">
+          </div>
+          <div class="slot-img-box" onclick="triggerSlot(1)">
+            <img class="slot-preview" id="slotPreview1" alt="">
+            <div class="slot-plus" id="slotPlus1">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="white">
+                <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+              </svg>
+            </div>
+          </div>
+          <input type="file" id="slotFile1" accept="image/*" onchange="loadSlot(event,1)" style="display:none">
+        </div>
+        <div class="add-slot">
+          <div class="slot-name-wrap">
+            <input class="slot-name" type="text" placeholder="EDIT NAME" maxlength="40" id="slotName2">
+          </div>
+          <div class="slot-img-box" onclick="triggerSlot(2)">
+            <img class="slot-preview" id="slotPreview2" alt="">
+            <div class="slot-plus" id="slotPlus2">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="white">
+                <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+              </svg>
+            </div>
+          </div>
+          <input type="file" id="slotFile2" accept="image/*" onchange="loadSlot(event,2)" style="display:none">
+        </div>
+      </div>
+      <div class="add-form-bottom">
+        <textarea class="add-desc" id="addDesc"
+          placeholder="100 word introduction description here, whatever you want to say to the people, yourself, and your art."
+          maxlength="700" oninput="limitWords(this)"></textarea>
+        <button class="form-post-btn" onclick="submitDisplay()">POST</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXIT WARNING MODAL -->
+<div class="warn-overlay" id="warnOverlay">
+  <div class="warn-box">
+    <div class="warn-title">Would you like to exit?</div>
+    <p class="warn-body">Your changes won't be saved.</p>
+    <div class="warn-actions">
+      <button class="warn-cancel" onclick="dismissWarn()">KEEP EDITING</button>
+      <button class="warn-confirm" onclick="confirmClose()">EXIT</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW (LIGHTBOX) MODAL -->
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
+  <div class="lightbox-container">
+    <button class="lightbox-close-btn" onclick="closeLightboxDirect()">✕</button>
+    <div class="lightbox-card" id="lightboxCard">
+      <div class="lightbox-images" id="lightboxImages"></div>
+      <div class="lightbox-footer">
+        <div class="lightbox-name" id="lightboxName"></div>
+        <div class="lightbox-desc-box">
+          <p class="lightbox-desc" id="lightboxDesc"></p>
+        </div>
+        <a class="lightbox-arrow" href="profile.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+            <path d="M9.29 6.71a1 1 0 0 0 0 1.41L13.17 12l-3.88 3.88a1 1 0 1 0 1.41 1.41l4.59-4.59a1 1 0 0 0 0-1.41L10.7 6.71a1 1 0 0 0-1.41 0z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const slotData = [null, null, null];
+
+function triggerSlot(i) { document.getElementById(`slotFile${i}`).click(); }
+
+function loadSlot(e, i) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    slotData[i] = ev.target.result;
+    const preview = document.getElementById(`slotPreview${i}`);
+    const plus    = document.getElementById(`slotPlus${i}`);
+    preview.src = ev.target.result;
+    preview.style.display = 'block';
+    plus.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function openAddModal() {
+  document.getElementById('addModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function requestCloseAddModal() {
+  document.getElementById('warnOverlay').classList.add('open');
+}
+
+function handleAddOverlayClick(e) {
+  if (e.target === document.getElementById('addModalOverlay')) requestCloseAddModal();
+}
+
+function dismissWarn() {
+  document.getElementById('warnOverlay').classList.remove('open');
+}
+
+function confirmClose() {
+  document.getElementById('warnOverlay').classList.remove('open');
+  document.getElementById('addModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  resetAddForm();
+}
+
+function resetAddForm() {
+  document.getElementById('addDesc').value = '';
+  [0,1,2].forEach(i => {
+    document.getElementById(`slotName${i}`).value = '';
+    document.getElementById(`slotPreview${i}`).style.display = 'none';
+    document.getElementById(`slotPlus${i}`).style.display = 'flex';
+    slotData[i] = null;
+  });
+}
+
+function limitWords(el) {
+  const words = el.value.trim() === '' ? [] : el.value.trim().split(/\s+/);
+  if (words.length > 100) el.value = words.slice(0, 100).join(' ');
+}
+
+let cardIdCounter = 0;
+const cardStore = {};
+
+function getProfileData() {
+  try {
+    const saved = localStorage.getItem('lonaProfile');
+    if (saved) return JSON.parse(saved);
+  } catch(e){}
+  return { name: 'Your Name', avatar: null };
+}
+
+function submitDisplay() {
+  const desc    = document.getElementById('addDesc').value.trim();
+  const names   = [0,1,2].map(i => document.getElementById(`slotName${i}`).value.trim() || 'Art piece name');
+  const images  = [...slotData];
+  const profile = getProfileData();
+  const id      = ++cardIdCounter;
+  cardStore[id] = { id, names, images, desc, profile };
+  document.getElementById('emptyState').style.display = 'none';
+  renderCard(cardStore[id]);
+  document.getElementById('addModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  resetAddForm();
+}
+
+function renderCard(data) {
+  const grid = document.getElementById('artistGrid');
+  const { id, names, images, desc, profile } = data;
+  const bannerSrc  = images.find(Boolean) || null;
+  const avatarHTML = profile.avatar
+    ? `<img src="${profile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">`
+    : `<span style="font-size:.9rem;font-weight:900;color:var(--blue)">•ﻌ•</span>`;
+
+  const card = document.createElement('div');
+  card.className = 'artist-card';
+  card.dataset.id = id;
+  card.innerHTML = `
+    <div class="card-banner" style="${bannerSrc ? `background-image:url(${bannerSrc});background-size:cover;background-position:center` : ''}">
+      <button class="card-menu-btn" onclick="toggleCardMenu(event,${id})">• • •</button>
+      <div class="card-dropdown" id="cardDrop-${id}">
+        <button onclick="deleteCard(${id})">🗑️ Delete</button>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="card-avatar">${avatarHTML}</div>
+      <div class="card-info">
+        <div class="card-name">${escapeHTML(profile.name || 'Your Name')}</div>
+        <div class="card-stars">
+          <svg viewBox="-0.7 -0.4 78 66.9" width="90" height="22">
+            <path fill="var(--blue)" d="M36.6,1.3l8.8,17.9c0.3,0.7,1,1.2,1.8,1.3L67,23.4c1.9,0.3,2.7,2.7,1.3,4L54,41.3c-0.6,0.5-0.8,1.3-0.7,2.1l3.4,19.7c0.3,1.9-1.7,3.4-3.4,2.5l-17.7-9.3c-0.7-0.4-1.5-0.4-2.2,0l-17.7,9.3C14,66.5,12,65,12.3,63.1l3.4-19.7c0.1-0.8-0.1-1.5-0.7-2.1L0.7,27.4c-1.4-1.4-0.6-3.7,1.3-4l19.8-2.9c0.8-0.1,1.4-0.6,1.8-1.3l8.8-17.9C33.3-0.4,35.8-0.4,36.6,1.3z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <button class="card-expand-btn" onclick="openLightbox(${id})">VIEW</button>
+  `;
+  grid.prepend(card);
+}
+
+function toggleCardMenu(e, id) {
+  e.stopPropagation();
+  document.querySelectorAll('.card-dropdown').forEach(d => {
+    if (d.id !== `cardDrop-${id}`) d.classList.remove('open');
+  });
+  document.getElementById(`cardDrop-${id}`).classList.toggle('open');
+}
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.card-dropdown').forEach(d => d.classList.remove('open'));
+});
+
+function deleteCard(id) {
+  const card = document.querySelector(`.artist-card[data-id="${id}"]`);
+  if (card) card.remove();
+  delete cardStore[id];
+  if (Object.keys(cardStore).length === 0) document.getElementById('emptyState').style.display = 'block';
+}
+
+function openLightbox(id) {
+  const data = cardStore[id];
+  if (!data) return;
+  const imagesEl = document.getElementById('lightboxImages');
+  imagesEl.innerHTML = '';
+  data.names.forEach((name, i) => {
+    const col = document.createElement('div');
+    col.className = 'lb-slot';
+    col.innerHTML = `
+      <div class="lb-img-box" style="${data.images[i] ? `background-image:url(${data.images[i]});background-size:cover;background-position:center` : ''}"></div>
+      <div class="lb-piece-name">${escapeHTML(name)}</div>
+    `;
+    imagesEl.appendChild(col);
+  });
+  document.getElementById('lightboxName').textContent = data.profile.name || 'Your Name';
+  document.getElementById('lightboxDesc').textContent = data.desc || 'No description provided.';
+  document.getElementById('lightboxOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightboxDirect() {
+  document.getElementById('lightboxOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeLightbox(e) {
+  if (e.target === document.getElementById('lightboxOverlay')) closeLightboxDirect();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('warnOverlay').classList.contains('open')) { dismissWarn(); return; }
+    if (document.getElementById('addModalOverlay').classList.contains('open')) { requestCloseAddModal(); return; }
+    closeLightboxDirect();
+  }
+});
+
+function escapeHTML(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

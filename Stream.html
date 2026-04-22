@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lona – Stream</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Stream.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <img src="LONA full sign.PNG" alt="LONA" title="LONA">
+  </a>
+  <div class="nav-links">
+    <a href="Stream.html" class="active">STREAM</a>
+    <a href="Gallery.html">GALLERY</a>
+    <a href="About.html">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-search">
+      <input type="text" placeholder="Search...">
+      <button>
+        <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+          <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+          <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+        </svg>
+      </button>
+    </div>
+    <a class="nav-msg" href="message.html">✉</a>
+    <a class="nav-avatar" id="navAvatar" href="profile.html">•ﻌ•</a>
+  </div>
+</nav>
+
+<!-- PAGE WRAP -->
+<div class="page-wrap">
+
+  <h1 class="stream-title">STREAM</h1>
+
+  <!-- COMPOSE BOX -->
+  <div class="compose-row">
+    <div class="compose-box" id="composeBox">
+      <div class="compose-label">ANYTHING ON YOUR MIND?</div>
+      <textarea
+        class="compose-textarea"
+        id="postInput"
+        placeholder=""
+        oninput="updateWordCount(this)"
+        maxlength="700"
+      ></textarea>
+      <div class="compose-footer">
+        <span class="word-count" id="wordCount">100 words</span>
+      </div>
+    </div>
+    <button class="post-btn" onclick="submitPost()">POST</button>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- WORLD'S THOUGHTS -->
+  <div class="world-label">THE WORLD'S THOUGHTS</div>
+
+  <div id="postsEmpty" class="posts-empty">
+    No thoughts from the world, want<br>to share a thought?
+  </div>
+
+  <div class="posts-list" id="postsList"></div>
+
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="editModal">
+    <div class="modal-title">EDIT POST</div>
+    <textarea class="modal-textarea" id="modalTextarea" maxlength="700" oninput="updateModalCount(this)"></textarea>
+    <div class="modal-footer">
+      <span class="modal-wordcount" id="modalWordCount">100 words</span>
+      <div class="modal-actions">
+        <button class="modal-cancel-btn" onclick="closeEditModal()">CANCEL</button>
+        <button class="modal-save-btn" onclick="saveEdit()">SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Default avatar (shared with profile page via localStorage if available) ──
+let userAvatarSrc = null;
+let userName = 'You';
+let editingPostId = null;
+
+try {
+  const saved = localStorage.getItem('lonaProfile');
+  if (saved) {
+    const p = JSON.parse(saved);
+    if (p.avatar) userAvatarSrc = p.avatar;
+    if (p.name)   userName = p.name;
+  }
+} catch(e){}
+
+function getAvatarHTML(size) {
+  if (userAvatarSrc) {
+    return `<img src="${userAvatarSrc}" style="width:${size}px;height:${size}px;object-fit:cover;border-radius:50%;display:block;" alt="avatar">`;
+  }
+  return `<span style="font-size:${size > 40 ? 1.1 : 0.85}rem;line-height:1">•ﻌ•</span>`;
+}
+
+// ── Word count ──
+function updateWordCount(el) {
+  const words = el.value.trim() === '' ? 0 : el.value.trim().split(/\s+/).length;
+  const remaining = Math.max(0, 100 - words);
+  document.getElementById('wordCount').textContent = remaining + ' words';
+  if (words > 100) {
+    el.value = el.value.trim().split(/\s+/).slice(0, 100).join(' ');
+    document.getElementById('wordCount').textContent = '0 words';
+  }
+}
+
+function updateModalCount(el) {
+  const words = el.value.trim() === '' ? 0 : el.value.trim().split(/\s+/).length;
+  const remaining = Math.max(0, 100 - words);
+  document.getElementById('modalWordCount').textContent = remaining + ' words';
+}
+
+// ── Post ID counter ──
+let postIdCounter = 0;
+
+// ── Submit post ──
+function submitPost() {
+  const input = document.getElementById('postInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  document.getElementById('postsEmpty').style.display = 'none';
+
+  const id = ++postIdCounter;
+  const list = document.getElementById('postsList');
+
+  const card = document.createElement('div');
+  card.className = 'post-card';
+  card.dataset.id = id;
+  card.dataset.text = text;
+  card.dataset.likes = '0';
+
+  card.innerHTML = buildCardHTML(id, text, 0);
+  list.prepend(card);
+
+  input.value = '';
+  document.getElementById('wordCount').textContent = '100 words';
+}
+
+function buildCardHTML(id, text, likes) {
+  return `
+    <div class="post-header">
+      <div class="post-avatar">${getAvatarHTML(44)}</div>
+      <div class="post-username">${escapeHTML(userName)}</div>
+      <div class="post-menu-wrap">
+        <button class="post-menu-btn" onclick="toggleMenu(${id})" title="Options">⋮</button>
+        <div class="post-dropdown" id="dropdown-${id}">
+          <button onclick="openEditModal(${id})">✏️ Edit</button>
+          <button onclick="deletePost(${id})">🗑️ Delete</button>
+        </div>
+      </div>
+    </div>
+    <div class="post-body" id="body-${id}">${escapeHTML(text)}</div>
+    <div class="post-footer">
+      <button class="like-btn" id="like-btn-${id}" onclick="toggleLike(${id})">
+        <span class="like-count" id="like-count-${id}">${likes}</span>
+        <svg class="heart-icon" id="heart-${id}" viewBox="0 0 24 24" width="22" height="22">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                   2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                   C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+                   c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </button>
+    </div>
+  `;
+}
+
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Like toggle ──
+function toggleLike(id) {
+  const card = document.querySelector(`.post-card[data-id="${id}"]`);
+  const btn = document.getElementById(`like-btn-${id}`);
+  const heart = document.getElementById(`heart-${id}`);
+  const countEl = document.getElementById(`like-count-${id}`);
+
+  let likes = parseInt(card.dataset.likes);
+  const liked = btn.classList.contains('liked');
+
+  if (liked) {
+    likes--;
+    btn.classList.remove('liked');
+    heart.classList.remove('filled');
+  } else {
+    likes++;
+    btn.classList.add('liked');
+    heart.classList.add('filled');
+  }
+
+  card.dataset.likes = likes;
+  countEl.textContent = likes;
+}
+
+// ── Dropdown menu ──
+function toggleMenu(id) {
+  document.querySelectorAll('.post-dropdown').forEach(d => {
+    if (d.id !== `dropdown-${id}`) d.classList.remove('open');
+  });
+  document.getElementById(`dropdown-${id}`).classList.toggle('open');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.post-menu-wrap')) {
+    document.querySelectorAll('.post-dropdown').forEach(d => d.classList.remove('open'));
+  }
+});
+
+// ── Delete post ──
+function deletePost(id) {
+  const card = document.querySelector(`.post-card[data-id="${id}"]`);
+  if (card) card.remove();
+  if (document.getElementById('postsList').children.length === 0) {
+    document.getElementById('postsEmpty').style.display = 'block';
+  }
+}
+
+// ── Edit modal ──
+function openEditModal(id) {
+  editingPostId = id;
+  const card = document.querySelector(`.post-card[data-id="${id}"]`);
+  const text = card.dataset.text;
+  document.getElementById('modalTextarea').value = text;
+  updateModalCount(document.getElementById('modalTextarea'));
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById(`dropdown-${id}`).classList.remove('open');
+}
+
+function closeEditModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  editingPostId = null;
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeEditModal();
+}
+
+function saveEdit() {
+  const text = document.getElementById('modalTextarea').value.trim();
+  if (!text || editingPostId === null) return;
+
+  const id = editingPostId;
+  const card = document.querySelector(`.post-card[data-id="${id}"]`);
+  const likes = parseInt(card.dataset.likes);
+
+  card.dataset.text = text;
+  card.dataset.likes = likes;
+  card.innerHTML = buildCardHTML(id, text, likes);
+
+  closeEditModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeEditModal();
+});
+</script>
+</body>
+</html>

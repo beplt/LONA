@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lona – Messages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Message.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <img src="LONA full sign.PNG" alt="LONA" title="LONA">
+  </a>
+  <div class="nav-links">
+    <a href="Stream.html">STREAM</a>
+    <a href="Gallery.html">GALLERY</a>
+    <a href="About.html">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-search">
+      <input type="text" placeholder="Search...">
+      <button>
+        <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+          <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+          <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+        </svg>
+      </button>
+    </div>
+    <!-- Switch between artist / customer view -->
+    <button class="nav-switch" id="switchBtn" onclick="switchRole()" title="Switch role">
+      <svg width="26" height="20" viewBox="0 0 26 20" fill="none">
+        <path d="M2 5h18M2 5l4-4M2 5l4 4"   stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M24 15H6M24 15l-4-4M24 15l-4 4" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <a class="nav-avatar" id="navAvatar" href="profile.html">•ﻌ•</a>
+  </div>
+</nav>
+
+<!-- MAIN LAYOUT -->
+<div class="msg-page">
+
+  <!-- ══ LEFT PANEL ══ -->
+  <aside class="left-panel">
+
+    <!-- ARTIST SIDE -->
+    <div id="artistPanel" class="role-panel active">
+      <div class="panel-title" onclick="onTitleClick()">COMMISSION</div>
+      <div class="convo-list" id="artistList">
+        <div class="list-empty" id="artistListEmpty">No commissions pending right now!</div>
+      </div>
+    </div>
+
+    <!-- CUSTOMER SIDE -->
+    <div id="customerPanel" class="role-panel">
+      <div class="panel-title" onclick="onTitleClick()">COMMISSION SLOTS</div>
+      <div class="convo-list" id="customerList">
+        <div class="list-empty" id="customerListEmpty" style="display:none"></div>
+        <!-- Demo accepted slot -->
+        <div class="convo-item" id="cSlot1" onclick="openThread('customerThread1','cSlot1')">
+          <div class="convo-avatar">•ﻌ•</div>
+          <div class="convo-name">artist name</div>
+          <div class="convo-icon check-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- VERTICAL DIVIDER -->
+  <div class="v-divider"></div>
+
+  <!-- ══ RIGHT PANEL ══ -->
+  <section class="right-panel">
+
+    <!-- Artist: no selection -->
+    <div class="thread-view active" id="artistEmpty-right">
+      <p class="thread-empty-msg">No commissions pending right now!</p>
+    </div>
+
+    <!-- Artist: incoming request -->
+    <div class="thread-view" id="artistThread1">
+      <div class="thread-card">
+        <div class="thread-header">
+          <div class="thread-avatar">•ﻌ•</div>
+          <div class="thread-name">LONA Sample Customer</div>
+        </div>
+        <div class="thread-meta"><span class="meta-label">service selected</span><br><span class="meta-val">portrait</span></div>
+        <div class="thread-body">
+          HELLO, I would like to commission you because your art is exactly what I want my portrait to look like! Please confirm Commission if you'd like to work with me.
+        </div>
+        <div class="thread-footer right-align">
+          <button class="action-btn orange-btn" onclick="artistAccept()">ACCEPT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artist: accepted → pending + reply area -->
+    <div class="thread-view" id="artistAccepted">
+      <div class="thread-card">
+        <div class="thread-header">
+          <div class="thread-avatar">•ﻌ•</div>
+        </div>
+        <div class="thread-meta"><span class="meta-label">service selected</span><br><span class="meta-val">portrait</span></div>
+        <div class="thread-body">
+          HELLO, I would like to commission you because your art is exactly what I want my portrait to look like! Please confirm Commission if you'd like to work with me.
+        </div>
+        <div class="reply-wrap">
+          <textarea class="reply-textarea" placeholder="Write your reply here..."></textarea>
+        </div>
+        <div class="thread-footer space-between">
+          <button class="back-btn" onclick="openThread('artistThread1')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div class="right-cluster">
+            <div class="clock-wrap">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.3">
+                <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
+              </svg>
+            </div>
+            <span class="pending-pill">PENDING</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer: no selection -->
+    <div class="thread-view" id="customerEmpty-right">
+      <p class="thread-empty-msg">
+        Would you like to commission somebody again?
+        Go to <a href="Gallery.html">Gallery</a> and meet more artists there!
+      </p>
+    </div>
+
+    <!-- Customer: commission slot (accepted, artist replied) -->
+    <div class="thread-view" id="customerThread1">
+      <div class="thread-card">
+        <div class="thread-header">
+          <div class="thread-avatar">•ﻌ•</div>
+          <div class="thread-name">artist name</div>
+          <div class="thread-stars">★★★★★</div>
+        </div>
+        <div class="thread-meta"><span class="meta-label">service selected</span><br><span class="meta-val">portrait</span></div>
+        <div class="thread-body">
+          Yes, I would like to work for you! what would you like?
+          <div class="body-lines">
+            <div class="body-line"></div>
+            <div class="body-line"></div>
+          </div>
+        </div>
+        <div class="thread-footer space-between">
+          <button class="back-btn" onclick="openThread('customerEmpty-right')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <button class="action-btn orange-btn">SEND</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div><!-- end msg-page -->
+
+
+<!-- SYSTEM ONBOARDING CARD -->
+<div class="overlay-backdrop" id="systemOverlay">
+  <div class="system-card">
+    <div class="sys-logo-row">
+      <img src="LONA full sign.PNG" alt="Lona" class="sys-logo">
+      <span class="sys-tag">System</span>
+    </div>
+    <div class="sys-greeting" id="sysGreeting">Hi there!</div>
+    <p class="sys-body" id="sysBody"></p>
+    <button class="sys-btn" onclick="dismissOnboarding()">I UNDERSTAND</button>
+  </div>
+</div>
+
+<!-- INFO POP-UP -->
+<div class="overlay-backdrop" id="infoOverlay" onclick="closeInfoOverlay(event)">
+  <div class="system-card">
+    <div class="sys-logo-row">
+      <img src="LONA full sign.PNG" alt="Lona" class="sys-logo">
+      <span class="sys-tag">System</span>
+    </div>
+    <div class="sys-greeting" id="infoGreeting"></div>
+    <p class="sys-body" id="infoBody"></p>
+    <button class="sys-btn" onclick="closeInfoOverlay()">GOT IT</button>
+  </div>
+</div>
+
+
+<script>
+let currentRole    = 'artist';
+let onboardingDone = false;
+
+const MSGS = {
+  artist: {
+    greeting : 'Hi there, Artist!',
+    body     : 'This is the messaging platform for artists. You may receive commissions here and accept them if you would like. Accepted commissions will appear in your commission list on the left.'
+  },
+  customer: {
+    greeting : 'Hi there, Customer!',
+    body     : 'This is the messaging platform for customers. You may inquire here and send a commission request. Requests may be pending until artist approval. Check your commission slots to track your request status.'
+  }
+};
+
+function getProfileName() {
+  try {
+    const saved = localStorage.getItem('lonaProfile');
+    if (saved) { const p = JSON.parse(saved); if (p.name) return p.name; }
+  } catch(e){}
+  return null;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  populateSystemCard('sysGreeting', 'sysBody', currentRole);
+  document.getElementById('systemOverlay').classList.add('open');
+  updatePanels();
+});
+
+function populateSystemCard(gId, bId, role) {
+  const name = getProfileName();
+  const m    = MSGS[role];
+  document.getElementById(gId).textContent = name ? `Hi ${name}!` : m.greeting;
+  document.getElementById(bId).textContent = m.body;
+}
+
+function dismissOnboarding() {
+  document.getElementById('systemOverlay').classList.remove('open');
+  onboardingDone = true;
+}
+
+function showInfoPopup() {
+  populateSystemCard('infoGreeting', 'infoBody', currentRole);
+  document.getElementById('infoOverlay').classList.add('open');
+}
+
+function closeInfoOverlay(e) {
+  if (!e || e.target === document.getElementById('infoOverlay') || !e.target) {
+    document.getElementById('infoOverlay').classList.remove('open');
+  }
+}
+
+function onTitleClick() {
+  if (onboardingDone) showInfoPopup();
+}
+
+function switchRole() {
+  currentRole = currentRole === 'artist' ? 'customer' : 'artist';
+  updatePanels();
+  if (onboardingDone) showInfoPopup();
+}
+
+function updatePanels() {
+  const isArtist = currentRole === 'artist';
+  document.getElementById('artistPanel').classList.toggle('active', isArtist);
+  document.getElementById('customerPanel').classList.toggle('active', !isArtist);
+
+  if (isArtist) {
+    const item = document.getElementById('artistIncoming');
+    if (item) item.style.display = 'flex';
+    openThread('artistEmpty-right');
+    document.getElementById('artistListEmpty').style.display = 'none';
+  } else {
+    openThread('customerEmpty-right');
+  }
+}
+
+(function() {
+  const list  = document.getElementById('artistList');
+  const empty = document.getElementById('artistListEmpty');
+
+  const item = document.createElement('div');
+  item.className = 'convo-item';
+  item.id = 'artistIncoming';
+  item.innerHTML = `
+    <div class="convo-avatar">•ﻌ•</div>
+    <div class="convo-name">customer name</div>
+    <div class="convo-icon clock-icon">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3">
+        <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
+      </svg>
+    </div>
+  `;
+  item.onclick = () => openThread('artistThread1', 'artistIncoming');
+  list.prepend(item);
+  empty.style.display = 'none';
+})();
+
+function openThread(threadId, itemId) {
+  document.querySelectorAll('.thread-view').forEach(v => v.classList.remove('active'));
+  const t = document.getElementById(threadId);
+  if (t) t.classList.add('active');
+
+  if (itemId) {
+    document.querySelectorAll('.convo-item').forEach(i => i.classList.remove('active'));
+    const it = document.getElementById(itemId);
+    if (it) it.classList.add('active');
+  }
+}
+
+function artistAccept() {
+  openThread('artistAccepted', 'artistIncoming');
+  const badge = document.querySelector('#artistIncoming .convo-icon');
+  if (badge) {
+    badge.className = 'convo-icon clock-icon';
+    badge.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`;
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('infoOverlay').classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
