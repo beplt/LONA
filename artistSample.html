@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lona – CloudMan2000</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" href="artistSample.css">
+  <script src="lona-storage.js"></script>
+  <script src="lona-footer.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="About.html">
+    <img src="LONA full sign.PNG" alt="LONA" title="LONA">
+  </a>
+  <div class="nav-links">
+    <a href="Stream.html">STREAM</a>
+    <a href="Gallery.html">GALLERY</a>
+    <a href="About.html">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <div class="search-wrap" id="searchWrap">
+      <div class="nav-search">
+        <button class="search-category-btn" id="catBtn" onclick="toggleCatDropdown(event)" type="button">
+          <span id="catLabel">ALL</span> &#9660;
+        </button>
+        <input type="text" id="searchInput" placeholder="Search..." oninput="handleSearch()" onkeydown="if(event.key==='Enter')handleSearch()">
+        <button onclick="handleSearch()">
+          <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+            <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+            <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="search-cat-dropdown" id="catDropdown">
+        <div class="scat-item" onclick="selectCat('ARTIST NAME',event)">ARTIST NAME</div>
+        <div class="scat-item" onclick="selectCat('ART NAME',event)">ART NAME</div>
+        <div class="scat-item">SERVICES &#9658;
+          <div class="scat-sub">
+            <div class="scat-sub-item" onclick="selectCat('Illustration',event)">Illustration</div>
+            <div class="scat-sub-item" onclick="selectCat('Portrait',event)">Portrait</div>
+            <div class="scat-sub-item" onclick="selectCat('Photography',event)">Photography</div>
+            <div class="scat-sub-item" onclick="selectCat('Music',event)">Music</div>
+            <div class="scat-sub-item" onclick="selectCat('Writing',event)">Writing</div>
+            <div class="scat-sub-item" onclick="selectCat('Design',event)">Design</div>
+            <div class="scat-sub-item" onclick="selectCat('Crafts',event)">Crafts</div>
+          </div>
+        </div>
+      </div>
+      <div class="search-results-bar" id="searchResults"></div>
+    </div>
+    <a class="nav-msg" href="message.html">&#x2709;</a>
+    <div class="nav-avatar-wrap" id="navAvatarWrap">
+      <div class="nav-avatar" id="navAvatar" onclick="toggleAvatarDrop(event)" style="cursor:pointer">CM</div>
+      <div class="nav-avatar-dropdown" id="avatarDrop">
+        <a href="profile.html">&#x1F464; Profile</a>
+        <button onclick="logOut()">&#x1F6AA; Log Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<div class="banner" style="background:linear-gradient(135deg,#1a2744 0%,#3d5a80 60%,#e8621a 100%)">
+  <div style="position:absolute;inset:0;opacity:.13;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Cpolygon points=%2230,3 39,22 60,22 44,36 50,57 30,44 10,57 16,36 0,22 21,22%22 fill=%22none%22 stroke=%22%23f4a535%22 stroke-width=%221%22/%3E%3C/svg%3E');background-size:60px 60px;"></div>
+</div>
+
+<!-- PAGE WRAP -->
+<div class="page-wrap">
+
+  <!-- AVATAR ROW -->
+  <div class="avatar-row">
+    <div class="avatar-wrap">
+      <div class="avatar" style="background:var(--orange);font-size:2.2rem;color:var(--blue)">☁</div>
+    </div>
+    <!-- Commission button -->
+    <button class="commission-btn" onclick="openCommission()">COMMISSION</button>
+  </div>
+
+  <!-- PROFILE TOP -->
+  <div class="profile-top">
+    <!-- BIO CARD -->
+    <div class="bio-card">
+      <div class="card-section-label">BIO</div>
+      <div class="bio-content">Digital illustrator & concept artist based in Baguio City. Specializing in cloud-themed surreal landscapes and character design. Available for commissions!</div>
+      <hr class="divider">
+      <div class="card-section-label">LOCATION</div>
+      <div class="meta-val" style="text-align:left;font-size:.93rem">📍 Baguio City, Philippines</div>
+      <hr class="divider">
+      <div class="card-section-label">MEMBER SINCE</div>
+      <div class="meta-val" style="text-align:left;font-size:.93rem">January 2024</div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="profile-right">
+      <div class="artist-name">CloudMan2000</div>
+      <!-- Stars (display-only average) -->
+      <div class="stars-row" id="avgStarsRow">
+        <!-- rendered by JS -->
+      </div>
+      <div style="text-align:right;margin-bottom:1rem;font-size:.82rem;font-weight:700;color:var(--blue)" id="avgLabel">4.0 / 5 · 1 review</div>
+
+      <!-- LINKS & SERVICES -->
+      <div class="links-services">
+        <div>
+          <div class="ls-header">LINKS</div>
+          <div class="ls-row"><span>🌐</span><span>cloudman2000.art</span></div>
+          <div class="ls-row"><span>📸</span><span>@cloudman2000</span></div>
+          <div class="ls-row"><span>🐦</span><span>@cldmn2k</span></div>
+        </div>
+        <div>
+          <div class="ls-header">SERVICES</div>
+          <div class="ls-row"><span>✦</span><span>Illustration — ₱500+</span></div>
+          <div class="ls-row"><span>✦</span><span>Character Design — ₱800+</span></div>
+          <div class="ls-row"><span>✦</span><span>Concept Art — ₱1,200+</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY SECTION -->
+  <div class="section-header" style="margin-top:2.4rem">
+    <span class="section-title">Gallery</span>
+  </div>
+  <div class="gallery-grid" style="margin-bottom:.6rem">
+    <div class="gallery-item tall" onclick="openLightbox('https://picsum.photos/seed/cm1/600/900')" style="cursor:pointer">
+      <img class="gal-img" src="https://picsum.photos/seed/cm1/600/900" style="display:block;width:100%;height:100%;object-fit:cover;border-radius:12px">
+      <div class="gal-label">Cloud Drift <span class="repost-tag">FEATURED</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox('https://picsum.photos/seed/cm2/500/500')" style="cursor:pointer">
+      <img class="gal-img" src="https://picsum.photos/seed/cm2/500/500" style="display:block;width:100%;height:100%;object-fit:cover;border-radius:12px">
+      <div class="gal-label">Sky Persona</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox('https://picsum.photos/seed/cm3/500/500')" style="cursor:pointer">
+      <img class="gal-img" src="https://picsum.photos/seed/cm3/500/500" style="display:block;width:100%;height:100%;object-fit:cover;border-radius:12px">
+      <div class="gal-label">Nimbus OC</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox('https://picsum.photos/seed/cm4/500/500')" style="cursor:pointer">
+      <img class="gal-img" src="https://picsum.photos/seed/cm4/500/500" style="display:block;width:100%;height:100%;object-fit:cover;border-radius:12px">
+      <div class="gal-label">Cumulus Study</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox('https://picsum.photos/seed/cm5/500/500')" style="cursor:pointer">
+      <img class="gal-img" src="https://picsum.photos/seed/cm5/500/500" style="display:block;width:100%;height:100%;object-fit:cover;border-radius:12px">
+      <div class="gal-label">Baguio Skies</div>
+    </div>
+  </div>
+
+  <!-- IMAGE LIGHTBOX -->
+  <div class="lightbox" id="imgLightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
+  <!-- POSTS / STREAM SECTION -->
+  <div class="section-header" style="margin-top:2.4rem">
+    <span class="section-title">Posts</span>
+  </div>
+  <div class="sample-posts-grid" id="postsGrid">
+    <!-- rendered by JS -->
+  </div>
+
+  <!-- REVIEWS SECTION -->
+  <div class="section-header" style="margin-top:2.6rem">
+    <span class="section-title">Reviews</span>
+  </div>
+
+  <!-- Review compose -->
+  <div class="review-compose-box">
+    <div class="review-compose-label">
+      LEAVE A REVIEW
+      <span class="review-valid-note">(Customers who commissioned only)</span>
+      <span class="review-wordcount" id="reviewWordCount">0 / 150</span>
+    </div>
+    <div class="review-stars-pick" id="starPicker">
+      <span class="star-pick" data-v="1">★</span>
+      <span class="star-pick" data-v="2">★</span>
+      <span class="star-pick" data-v="3">★</span>
+      <span class="star-pick" data-v="4">★</span>
+      <span class="star-pick" data-v="5">★</span>
+    </div>
+    <textarea class="review-textarea" id="reviewText" placeholder="Share your experience with this artist..." maxlength="900" oninput="updateReviewCount()"></textarea>
+    <div class="review-compose-footer">
+      <button class="post-btn" onclick="submitReview()">POST REVIEW</button>
+    </div>
+  </div>
+
+  <!-- Reviews list -->
+  <div class="reviews-list" id="reviewsList">
+    <!-- rendered by JS -->
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- COMMISSION MODAL -->
+<div class="sys-overlay" id="commissionOverlay">
+  <div class="sys-card">
+    <div class="sys-logo-row">
+      <img src="LONA full sign.PNG" class="sys-logo" alt="Lona">
+      <span class="sys-tag">SYSTEM</span>
+    </div>
+    <div class="sys-greeting">Commission CloudMan2000</div>
+    <div class="sys-body">
+      To commission this artist, send them a message with your project details — style, size, deadline, and budget. The artist will respond within 1–3 business days.
+      <br><br>
+      Starting rates: Illustration ₱500+ · Character Design ₱800+ · Concept Art ₱1,200+
+    </div>
+    <div style="display:flex;gap:.8rem">
+      <button class="sys-btn" onclick="window.location.href='message.html'">SEND MESSAGE</button>
+      <button class="sys-btn" style="background:var(--cream);color:var(--orange);border:2px solid var(--orange)" onclick="closeCommission()">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── NAV ─────────────────────────────────────── */
+(function(){
+  try{var s=localStorage.getItem('lonaProfile');if(s){var p=JSON.parse(s);var el=document.getElementById('navAvatar');if(p.avatar)el.innerHTML='<img src="'+p.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';else if(p.name)el.textContent=p.name.charAt(0).toUpperCase();}}catch(e){}
+  var _cat='ALL';
+  window.toggleCatDropdown=function(e){e.stopPropagation();document.getElementById('catDropdown').classList.toggle('open');document.getElementById('searchResults').classList.remove('open');};
+  window.selectCat=function(cat,e){if(e)e.stopPropagation();_cat=cat;document.getElementById('catLabel').textContent=cat.length>9?cat.slice(0,8)+'…':cat;document.getElementById('catDropdown').classList.remove('open');window.handleSearch();};
+  window.handleSearch=function(){var q=document.getElementById('searchInput').value.trim(),res=document.getElementById('searchResults');if(!q){res.classList.remove('open');return;}res.innerHTML='<div class="search-result-msg">No results found for "'+q+'".</div>';res.classList.add('open');};
+  window.toggleAvatarDrop=function(e){e.stopPropagation();document.getElementById('avatarDrop').classList.toggle('open');};
+  window.logOut=function(){localStorage.removeItem('lonaProfile');window.location.href='index.html';};
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('#navAvatarWrap')){var d=document.getElementById('avatarDrop');if(d)d.classList.remove('open');}
+    if(!e.target.closest('#searchWrap')){var cd=document.getElementById('catDropdown'),sr=document.getElementById('searchResults');if(cd)cd.classList.remove('open');if(sr)sr.classList.remove('open');}
+  });
+})();
+
+/* ─── DATA ─────────────────────────────────────── */
+var STORAGE_KEY = 'lonaSample_cloudman2000';
+
+function loadData(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || getDefaultData(); }
+  catch(e){ return getDefaultData(); }
+}
+function saveData(d){ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+
+function getDefaultData(){
+  return {
+    posts:[
+      {id:'p1', text:'New piece finished! "Cloud Drift" took me 3 weeks but it was worth it. ☁️✨', likes:14, liked:false},
+      {id:'p2', text:'Commission slots OPEN for July! Drop a message if interested. Prices in bio!', likes:8, liked:false},
+      {id:'p3', text:'Inspired by the fog rolling in over Baguio this morning. This city never stops giving 🌫️', likes:22, liked:false}
+    ],
+    reviews:[
+      {id:'r1', author:'LONA', initials:'L', isLona:true, stars:4, text:'CloudMan2000 is a verified artist on Lona. Commissioned work delivered on time with excellent communication. Highly recommended for digital illustration!'}
+    ]
+  };
+}
+
+var DATA = loadData();
+
+/* ─── AVERAGE STARS ─────────────────────────────── */
+function renderAvgStars(){
+  var reviews = DATA.reviews;
+  if(!reviews.length){ document.getElementById('avgLabel').textContent='No reviews yet'; return; }
+  var sum = reviews.reduce(function(a,r){ return a + r.stars; }, 0);
+  var avg = sum / reviews.length;
+  var rounded = Math.round(avg * 2) / 2; // round to nearest 0.5
+  var html = '';
+  for(var i=1;i<=5;i++){
+    if(i <= Math.floor(rounded)) html += '<svg width="20" height="20" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" fill="var(--orange)" stroke="var(--orange)" stroke-width="1"/></svg>';
+    else html += '<svg width="20" height="20" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" fill="none" stroke="var(--orange)" stroke-width="1.5"/></svg>';
+  }
+  document.getElementById('avgStarsRow').innerHTML = html;
+  document.getElementById('avgLabel').textContent = avg.toFixed(1) + ' / 5 · ' + reviews.length + ' review' + (reviews.length!==1?'s':'');
+}
+
+/* ─── POSTS ─────────────────────────────────────── */
+function starSVG(filled){
+  return '<svg width="18" height="18" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" fill="'+(filled?'var(--blue)':'none')+'" stroke="var(--blue)" stroke-width="'+(filled?'0':'2')+'"/></svg>';
+}
+
+function heartSVG(filled){
+  return '<svg class="stream-heart-icon'+(filled?' filled':'')+'" width="20" height="20" viewBox="0 0 24 24" fill="'+(filled?'var(--blue)':'none')+'" stroke="var(--blue)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+}
+
+function renderPosts(){
+  var grid = document.getElementById('postsGrid');
+  if(!DATA.posts.length){ grid.innerHTML='<p style="color:var(--orange);font-weight:600;text-align:center;padding:2rem 0">No posts yet.</p>'; return; }
+  grid.innerHTML = DATA.posts.map(function(p){
+    return '<div class="stream-post-card" id="pc-'+p.id+'">'+
+      '<div class="stream-post-header">'+
+        '<div class="stream-post-avatar" style="background:var(--orange);color:var(--blue)">☁</div>'+
+        '<div class="stream-post-username">CloudMan2000</div>'+
+      '</div>'+
+      '<div class="stream-post-body">'+p.text+'</div>'+
+      '<div class="stream-post-footer">'+
+        '<button class="stream-like-btn'+(p.liked?' liked':'')+'" onclick="toggleLike(\''+p.id+'\')" aria-label="Like">'+
+          heartSVG(p.liked)+
+          '<span class="stream-like-count" id="lc-'+p.id+'">'+p.likes+'</span>'+
+        '</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+window.toggleLike = function(id){
+  var post = DATA.posts.find(function(p){ return p.id===id; });
+  if(!post) return;
+  post.liked = !post.liked;
+  post.likes += post.liked ? 1 : -1;
+  saveData(DATA);
+  // Update button in place without full re-render
+  var btn = document.querySelector('#pc-'+id+' .stream-like-btn');
+  var countEl = document.getElementById('lc-'+id);
+  if(btn){
+    if(post.liked) btn.classList.add('liked'); else btn.classList.remove('liked');
+    btn.innerHTML = heartSVG(post.liked) + '<span class="stream-like-count" id="lc-'+id+'">'+post.likes+'</span>';
+  }
+};
+
+/* ─── STAR PICKER ────────────────────────────────── */
+var selectedStars = 0;
+
+document.getElementById('starPicker').addEventListener('mouseover', function(e){
+  var t = e.target.closest('.star-pick');
+  if(!t) return;
+  var v = parseInt(t.dataset.v);
+  document.querySelectorAll('.star-pick').forEach(function(s){ s.classList.toggle('active', parseInt(s.dataset.v) <= v); });
+});
+document.getElementById('starPicker').addEventListener('mouseleave', function(){
+  document.querySelectorAll('.star-pick').forEach(function(s){ s.classList.toggle('active', parseInt(s.dataset.v) <= selectedStars); });
+});
+document.getElementById('starPicker').addEventListener('click', function(e){
+  var t = e.target.closest('.star-pick');
+  if(!t) return;
+  selectedStars = parseInt(t.dataset.v);
+  document.querySelectorAll('.star-pick').forEach(function(s){ s.classList.toggle('active', parseInt(s.dataset.v) <= selectedStars); });
+});
+
+window.updateReviewCount = function(){
+  var txt = document.getElementById('reviewText').value;
+  var words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  document.getElementById('reviewWordCount').textContent = words + ' / 150';
+};
+
+/* ─── REVIEWS ────────────────────────────────────── */
+function starDisplayHTML(n){
+  var h='';
+  for(var i=1;i<=5;i++){
+    h+='<svg width="16" height="16" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" fill="'+(i<=n?'var(--orange)':'none')+'" stroke="var(--orange)" stroke-width="'+(i<=n?'0':'1.5')+'"/></svg>';
+  }
+  return h;
+}
+
+function renderReviews(){
+  var list = document.getElementById('reviewsList');
+  if(!DATA.reviews.length){ list.innerHTML='<p style="text-align:center;color:var(--orange);font-weight:600;padding:2rem 0">No reviews yet. Be the first!</p>'; return; }
+  list.innerHTML = DATA.reviews.map(function(r){
+    var avatarStyle = r.isLona ? 'background:var(--blue);color:white;font-size:.75rem;font-weight:900' : 'background:var(--orange);color:var(--blue);font-size:.9rem;font-weight:900';
+    return '<div class="review-card'+(r.isNew?' new-review':'')+'">'+
+      '<div class="review-header">'+
+        '<div class="review-avatar'+(r.isLona?' lona-avatar':'')+'" style="'+avatarStyle+'">'+r.initials+'</div>'+
+        '<div class="review-meta">'+
+          '<div class="review-author">'+r.author+'</div>'+
+          '<div class="review-stars">'+starDisplayHTML(r.stars)+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="review-body">'+r.text+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+window.submitReview = function(){
+  var txt = document.getElementById('reviewText').value.trim();
+  if(!selectedStars){ alert('Please select a star rating first!'); return; }
+  if(!txt){ alert('Please write a review before posting.'); return; }
+  var words = txt.split(/\s+/).length;
+  if(words > 150){ alert('Review is too long. Please keep it under 150 words.'); return; }
+
+  // Get user name
+  var userName = 'You';
+  var initials = 'Y';
+  try{
+    var p = JSON.parse(localStorage.getItem('lonaProfile')||'{}');
+    if(p.name){ userName=p.name; initials=p.name.charAt(0).toUpperCase(); }
+  }catch(e){}
+
+  var review = {
+    id: 'r'+Date.now(),
+    author: userName,
+    initials: initials,
+    isLona: false,
+    isNew: true,
+    stars: selectedStars,
+    text: txt
+  };
+
+  DATA.reviews.unshift(review);
+  saveData(DATA);
+
+  // Reset form
+  document.getElementById('reviewText').value='';
+  selectedStars=0;
+  document.querySelectorAll('.star-pick').forEach(function(s){s.classList.remove('active');});
+  updateReviewCount();
+
+  renderReviews();
+  renderAvgStars();
+
+  // Scroll to reviews
+  document.getElementById('reviewsList').scrollIntoView({behavior:'smooth', block:'nearest'});
+};
+
+/* ─── LIGHTBOX ────────────────────────────────────── */
+window.openLightbox = function(src){
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('imgLightbox').classList.add('open');
+};
+window.closeLightbox = function(){
+  document.getElementById('imgLightbox').classList.remove('open');
+};
+
+/* ─── COMMISSION MODAL ──────────────────────────────── */
+window.openCommission = function(){ document.getElementById('commissionOverlay').classList.add('open'); };
+window.closeCommission = function(){ document.getElementById('commissionOverlay').classList.remove('open'); };
+document.getElementById('commissionOverlay').addEventListener('click', function(e){ if(e.target===this) closeCommission(); });
+
+/* ─── INIT ───────────────────────────────────────── */
+renderAvgStars();
+renderPosts();
+renderReviews();
+</script>
+
+</body>
+</html>

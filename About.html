@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lona – About</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="About.css">
+  <script src="lona-storage.js"></script>
+  <script src="lona-footer.js"></script>
+  <style>
+    .nav-avatar-wrap { position: relative; }
+    .nav-avatar-dropdown {
+      display: none; position: absolute; right: 0; top: calc(100% + 8px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: hidden; min-width: 150px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.18); z-index: 500;
+    }
+    .nav-avatar-dropdown.open { display: block; }
+    .nav-avatar-dropdown a,
+    .nav-avatar-dropdown button {
+      display: block; width: 100%; text-decoration: none;
+      background: none; border: none; text-align: left;
+      padding: 11px 18px; font-family: var(--font);
+      font-size: .9rem; font-weight: 800; color: var(--blue);
+      cursor: pointer; transition: background .13s;
+    }
+    .nav-avatar-dropdown a:hover { background: var(--cream); }
+    .nav-avatar-dropdown button { color: #c0392b; }
+    .nav-avatar-dropdown button:hover { background: #fff0f0; }
+    .search-wrap { position: relative; }
+    .search-category-btn {
+      background: var(--cream); border: none; border-right: 2px solid var(--blue);
+      padding: 0 10px; height: 100%; cursor: pointer;
+      font-family: var(--font); font-size: .75rem; font-weight: 900;
+      color: var(--blue); white-space: nowrap; display: flex; align-items: center; gap: 3px;
+    }
+    .search-category-btn:hover { background: #ffe0bb; }
+    .search-cat-dropdown {
+      display: none; position: absolute; left: 0; top: calc(100% + 4px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: visible; min-width: 190px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.15); z-index: 600;
+    }
+    .search-cat-dropdown.open { display: block; }
+    .scat-item {
+      position: relative; padding: 10px 16px;
+      font-family: var(--font); font-size: .88rem; font-weight: 800;
+      color: var(--blue); cursor: pointer; transition: background .12s;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .scat-item:hover { background: var(--cream); }
+    .scat-sub {
+      display: none; position: absolute; left: calc(100% + 2px); top: -2px;
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: hidden; min-width: 170px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.15); z-index: 601;
+    }
+    .scat-item:hover .scat-sub { display: block; }
+    .scat-sub-item {
+      padding: 9px 16px; font-family: var(--font);
+      font-size: .85rem; font-weight: 700; color: var(--blue);
+      cursor: pointer; transition: background .12s;
+    }
+    .scat-sub-item:hover { background: var(--cream); }
+    .search-results-bar {
+      display: none; position: absolute; left: 0; top: calc(100% + 6px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; min-width: 300px;
+      box-shadow: 0 6px 24px rgba(37,60,151,.16); z-index: 590;
+      padding: 14px 18px; font-family: var(--font);
+    }
+    .search-results-bar.open { display: block; }
+    .search-result-msg { font-size: .92rem; font-weight: 700; color: var(--blue); line-height: 1.7; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="About.html">
+    <img src="LONA full sign.PNG" alt="LONA" title="LONA">
+  </a>
+
+  <div class="nav-links">
+    <a href="Stream.html">STREAM</a>
+    <a href="Gallery.html">GALLERY</a>
+    <a href="About.html" class="active">ABOUT</a>
+  </div>
+
+  <div class="nav-right">
+    <div class="search-wrap" id="searchWrap">
+      <div class="nav-search">
+        <button class="search-category-btn" id="catBtn" onclick="toggleCatDropdown(event)" type="button">
+          <span id="catLabel">ALL</span> &#9660;
+        </button>
+        <input type="text" id="searchInput" placeholder="Search..." oninput="handleSearch()" onkeydown="if(event.key==='Enter')handleSearch()">
+        <button onclick="handleSearch()">
+          <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+            <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+            <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="search-cat-dropdown" id="catDropdown">
+        <div class="scat-item" onclick="selectCat('ARTIST NAME',event)">ARTIST NAME</div>
+        <div class="scat-item" onclick="selectCat('ART NAME',event)">ART NAME</div>
+        <div class="scat-item">SERVICES &#9658;
+          <div class="scat-sub">
+            <div class="scat-sub-item" onclick="selectCat('Illustration',event)">Illustration</div>
+            <div class="scat-sub-item" onclick="selectCat('Portrait',event)">Portrait</div>
+            <div class="scat-sub-item" onclick="selectCat('Photography',event)">Photography</div>
+            <div class="scat-sub-item" onclick="selectCat('Music',event)">Music</div>
+            <div class="scat-sub-item" onclick="selectCat('Writing',event)">Writing</div>
+            <div class="scat-sub-item" onclick="selectCat('Design',event)">Design</div>
+            <div class="scat-sub-item" onclick="selectCat('Crafts',event)">Crafts</div>
+          </div>
+        </div>
+      </div>
+      <div class="search-results-bar" id="searchResults"></div>
+    </div>
+    <a class="nav-msg" href="message.html">&#x2709;</a>
+    <div class="nav-avatar-wrap" id="navAvatarWrap">
+      <div class="nav-avatar" id="navAvatar" onclick="toggleAvatarDrop(event)" style="cursor:pointer">&#x2022;&#xFEAC;&#x2022;</div>
+      <div class="nav-avatar-dropdown" id="avatarDrop">
+        <a href="profile.html">Profile</a>
+        <button onclick="logOut()">Log Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="page-wrap">
+
+  <!-- INTRO SECTION -->
+  <section class="intro-section">
+    <div class="intro-text">
+      <p>Lona is a location-based marketplace platform that connects Filipino artists with local customers across the Philippines and also acts as an online portfolio, and social media. The platform empowers artists to showcase their work, offer services, and build sustainable creative careers while enabling customers to discover and commission talented artists in their communities.</p>
+    </div>
+    <div class="intro-logo">
+      <img src="LONA full sign.PNG" alt="Lona Logo">
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- WHAT LONA MEANS + MISSION -->
+  <section class="two-col-section">
+    <div class="col">
+      <h2 class="col-title">What Lona Means</h2>
+      <ul class="styled-list">
+        <li>Canvas (where art comes to life)</li>
+        <li>Community (local, intimate, connected)</li>
+        <li>Simplicity (easy to remember and say)</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h2 class="col-title">Mission</h2>
+      <p class="col-body">To build thriving local artist communities across the Philippines by making art accessible, artists discoverable, and creative services trusted through technology that prioritizes connection over transaction.</p>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- FOR ARTISTS + FOR CUSTOMERS -->
+  <section class="two-col-section">
+    <div class="col">
+      <h2 class="col-title">For Artists</h2>
+      <p class="col-subtitle">Lona provides a digital portfolio and storefront where artists can:</p>
+      <ul class="styled-list">
+        <li>Showcase their work and creative services</li>
+        <li>Set their own prices and service offerings</li>
+        <li>Build credibility through verified reviews and badges</li>
+        <li>Connect with fellow artists and build professional networks</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h2 class="col-title">For Customers</h2>
+      <p class="col-subtitle">Lona offers a curated discovery platform where customers can:</p>
+      <ul class="styled-list">
+        <li>Find talented local artists by location and specialty</li>
+        <li>Browse portfolios and read verified reviews</li>
+        <li>Commission custom work or purchase ready-made services</li>
+        <li>Communicate directly with artists</li>
+        <li>Track orders and deliveries in real-time</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  try { var s=localStorage.getItem('lonaProfile'); if(s){var p=JSON.parse(s);var el=document.getElementById('navAvatar');if(p.avatar)el.innerHTML='<img src="'+p.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';else if(p.name)el.textContent=p.name.charAt(0).toUpperCase();} }catch(e){}
+  var _cat='ALL';
+  window.toggleCatDropdown=function(e){e.stopPropagation();document.getElementById('catDropdown').classList.toggle('open');document.getElementById('searchResults').classList.remove('open');};
+  window.selectCat=function(cat,e){if(e)e.stopPropagation();_cat=cat;document.getElementById('catLabel').textContent=cat.length>9?cat.slice(0,8)+'\u2026':cat;document.getElementById('catDropdown').classList.remove('open');window.handleSearch();};
+  window.handleSearch=function(){var q=document.getElementById('searchInput').value.trim(),res=document.getElementById('searchResults');if(!q){res.classList.remove('open');return;}var html='';if(_cat==='ARTIST NAME')html='<div class="search-result-msg">Are you trying to find this person?<br><span>&#x0F10;&#x15CE;</span> No artists here yet.</div>';else if(_cat==='ART NAME')html='<div class="search-result-msg">Maybe this is what you want?<br><span>&#x0F10;&#x15CE;</span> No art to show here yet.</div>';else html='<div class="search-result-msg">No artist found.<br><span>&#x0F10;&#x15CE;</span> No artists here yet.</div>';res.innerHTML=html;res.classList.add('open');};
+  window.toggleAvatarDrop=function(e){e.stopPropagation();document.getElementById('avatarDrop').classList.toggle('open');};
+  window.logOut=function(){localStorage.removeItem('lonaProfile');window.location.href='index.html';};
+  document.addEventListener('click',function(e){if(!e.target.closest('#navAvatarWrap')){var d=document.getElementById('avatarDrop');if(d)d.classList.remove('open');}if(!e.target.closest('#searchWrap')){var cd=document.getElementById('catDropdown'),sr=document.getElementById('searchResults');if(cd)cd.classList.remove('open');if(sr)sr.classList.remove('open');}});
+})();
+</script>
+
+</body>
+</html>

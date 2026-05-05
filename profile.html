@@ -1,0 +1,885 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lona â€“ Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="profile.css">
+  <!-- Stream card styles (scoped to profile) -->
+  <style>
+    /* â”€â”€ NAV AVATAR DROPDOWN â”€â”€ */
+    .nav-avatar-wrap { position: relative; }
+    .nav-avatar-dropdown {
+      display: none; position: absolute; right: 0; top: calc(100% + 8px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: hidden; min-width: 150px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.18); z-index: 500;
+    }
+    .nav-avatar-dropdown.open { display: block; }
+    .nav-avatar-dropdown a,
+    .nav-avatar-dropdown button {
+      display: block; width: 100%; text-decoration: none;
+      background: none; border: none; text-align: left;
+      padding: 11px 18px; font-family: var(--font);
+      font-size: .9rem; font-weight: 800; color: var(--blue);
+      cursor: pointer; transition: background .13s;
+    }
+    .nav-avatar-dropdown a:hover { background: var(--cream); }
+    .nav-avatar-dropdown button { color: #c0392b; }
+    .nav-avatar-dropdown button:hover { background: #fff0f0; }
+
+    /* â”€â”€ SEARCH CATEGORY â”€â”€ */
+    .search-wrap { position: relative; }
+    .search-category-btn {
+      background: var(--cream); border: none; border-right: 2px solid var(--blue);
+      padding: 0 10px; height: 100%; cursor: pointer;
+      font-family: var(--font); font-size: .75rem; font-weight: 900;
+      color: var(--blue); white-space: nowrap; display: flex; align-items: center; gap: 3px;
+    }
+    .search-category-btn:hover { background: #ffe0bb; }
+    .search-cat-dropdown {
+      display: none; position: absolute; left: 0; top: calc(100% + 4px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: visible; min-width: 190px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.15); z-index: 600;
+    }
+    .search-cat-dropdown.open { display: block; }
+    .scat-item {
+      position: relative; padding: 10px 16px;
+      font-family: var(--font); font-size: .88rem; font-weight: 800;
+      color: var(--blue); cursor: pointer; transition: background .12s;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .scat-item:hover { background: var(--cream); }
+    .scat-sub {
+      display: none; position: absolute; left: calc(100% + 2px); top: -2px;
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: hidden; min-width: 170px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.15); z-index: 601;
+    }
+    .scat-item:hover .scat-sub { display: block; }
+    .scat-sub-item {
+      padding: 9px 16px; font-family: var(--font);
+      font-size: .85rem; font-weight: 700; color: var(--blue);
+      cursor: pointer; transition: background .12s;
+    }
+    .scat-sub-item:hover { background: var(--cream); }
+    .search-results-bar {
+      display: none; position: absolute; left: 0; top: calc(100% + 6px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; min-width: 300px;
+      box-shadow: 0 6px 24px rgba(37,60,151,.16); z-index: 590;
+      padding: 14px 18px; font-family: var(--font);
+    }
+    .search-results-bar.open { display: block; }
+    .search-result-msg { font-size: .92rem; font-weight: 700; color: var(--blue); line-height: 1.7; }
+
+    /* â”€â”€ THREE-DOT BUTTON (Gallery.html style) â”€â”€ */
+    .gallery-menu-btn {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(255,255,255,.18); border: none;
+      color: var(--orange); font-size: .85rem; font-weight: 900;
+      letter-spacing: 2px; padding: 5px 10px; border-radius: 20px;
+      cursor: pointer; z-index: 10; transition: background .15s;
+    }
+    .gallery-menu-btn:hover { background: rgba(255,255,255,.35); }
+
+    /* â”€â”€ Stream-style post cards on Profile â”€â”€ */
+    .stream-posts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      max-width: 680px;
+      margin-top: 1.2rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .stream-post-card {
+      background: var(--cream);
+      border: 3px solid var(--blue);
+      border-radius: 20px;
+      padding: 1.1rem 1.3rem 1rem;
+      position: relative;
+    }
+    .stream-post-header {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: .9rem;
+    }
+    .stream-post-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--orange); border: 3px solid var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 900; color: var(--blue);
+      overflow: hidden; flex-shrink: 0;
+    }
+    .stream-post-username {
+      font-size: 1rem; font-weight: 800; color: var(--blue); flex: 1;
+    }
+    .stream-post-menu-wrap { position: relative; }
+    .stream-post-menu-btn {
+      background: rgba(37,60,151,.08); border: none; cursor: pointer;
+      font-size: .85rem; font-weight: 900; color: var(--blue);
+      letter-spacing: 2px; padding: 5px 10px; border-radius: 20px;
+      transition: background .15s;
+    }
+    .stream-post-menu-btn:hover { background: rgba(37,60,151,.18); }
+    .stream-post-dropdown {
+      display: none;
+      position: absolute; right: 0; top: calc(100% + 4px);
+      background: white;
+      border: 2.5px solid var(--orange);
+      border-radius: 12px; overflow: hidden;
+      min-width: 130px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.15);
+      z-index: 50;
+    }
+    .stream-post-dropdown.open { display: block; }
+    .stream-post-dropdown button {
+      width: 100%; background: none; border: none;
+      padding: 10px 16px; text-align: left; cursor: pointer;
+      font-family: var(--font); font-size: .9rem; font-weight: 700; color: var(--blue);
+      transition: background .13s;
+    }
+    .stream-post-dropdown button:hover { background: var(--cream); }
+    .stream-post-body {
+      font-size: .97rem; line-height: 1.7; color: var(--blue);
+      font-weight: 500; text-align: center;
+      padding: .4rem 1rem 1rem;
+    }
+    .stream-post-footer {
+      display: flex; justify-content: flex-end; align-items: center;
+    }
+    .stream-like-btn {
+      background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: .35rem;
+      font-family: var(--font); font-size: 1.1rem; font-weight: 800; color: var(--blue);
+      padding: 4px 8px; border-radius: 10px;
+      transition: transform .12s;
+    }
+    .stream-like-btn:hover { transform: scale(1.1); }
+    .stream-like-count { font-size: 1.15rem; font-weight: 900; color: var(--blue); }
+    .stream-heart-icon {
+      fill: none; stroke: var(--blue); stroke-width: 2;
+      transition: fill .18s, stroke .18s;
+    }
+    .stream-like-btn.liked .stream-heart-icon,
+    .stream-heart-icon.filled {
+      fill: var(--blue); stroke: var(--blue);
+    }
+
+    /* â”€â”€ Edit Modal (Stream style) â”€â”€ */
+    .sp-modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(37,60,151,.5);
+      z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .sp-modal-overlay.open { display: flex; }
+    .sp-modal {
+      background: var(--cream);
+      border: 3px solid var(--orange);
+      border-radius: 20px;
+      padding: 1.8rem 2rem;
+      width: 90%; max-width: 520px;
+      box-shadow: 0 12px 48px rgba(37,60,151,.2);
+    }
+    .sp-modal-title {
+      font-size: 1rem; font-weight: 900; color: var(--orange);
+      letter-spacing: 1px; margin-bottom: 1rem;
+    }
+    .sp-modal-textarea {
+      width: 100%; min-height: 160px;
+      border: 2.5px solid var(--orange); border-radius: 12px;
+      background: white; padding: 12px 16px;
+      font-family: var(--font); font-size: .97rem; color: var(--blue);
+      resize: none; outline: none; line-height: 1.65;
+    }
+    .sp-modal-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: .9rem;
+    }
+    .sp-modal-wordcount { font-size: .95rem; font-weight: 700; color: var(--blue); }
+    .sp-modal-actions { display: flex; gap: .8rem; }
+    .sp-modal-cancel-btn {
+      background: white; border: 2.5px solid var(--blue); color: var(--blue);
+      font-family: var(--font); font-size: .85rem; font-weight: 800;
+      padding: 7px 20px; border-radius: 20px; cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .sp-modal-cancel-btn:hover { background: var(--blue); color: white; }
+    .sp-modal-save-btn {
+      background: var(--orange); border: 2.5px solid var(--orange); color: white;
+      font-family: var(--font); font-size: .85rem; font-weight: 800;
+      padding: 7px 24px; border-radius: 20px; cursor: pointer;
+      transition: opacity .15s;
+    }
+    .sp-modal-save-btn:hover { opacity: .85; }
+  </style>
+  <script src="lona-storage.js"></script>
+  <script src="lona-footer.js"></script>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="About.html" alt="LONA" title="LONA">
+    <img src="LONA full sign.PNG" alt="LONA" title="LONA">
+  </a>
+  <div class="nav-links">
+    <a href="Stream.html">STREAM</a>
+    <a href="Gallery.html">GALLERY</a>
+    <a href="About.html">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <div class="search-wrap" id="searchWrap">
+      <div class="nav-search">
+        <button class="search-category-btn" id="catBtn" onclick="toggleCatDropdown(event)" type="button">
+          <span id="catLabel">ALL</span> &#9660;
+        </button>
+        <input type="text" id="searchInput" placeholder="Search..." oninput="handleSearch()" onkeydown="if(event.key==='Enter')handleSearch()">
+        <button onclick="handleSearch()">
+          <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+            <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+            <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="search-cat-dropdown" id="catDropdown">
+        <div class="scat-item" onclick="selectCat('ARTIST NAME', event)">ARTIST NAME</div>
+        <div class="scat-item" onclick="selectCat('ART NAME', event)">ART NAME</div>
+        <div class="scat-item">SERVICES &#9658;
+          <div class="scat-sub">
+            <div class="scat-sub-item" onclick="selectCat('Illustration', event)">Illustration</div>
+            <div class="scat-sub-item" onclick="selectCat('Portrait', event)">Portrait</div>
+            <div class="scat-sub-item" onclick="selectCat('Photography', event)">Photography</div>
+            <div class="scat-sub-item" onclick="selectCat('Music', event)">Music</div>
+            <div class="scat-sub-item" onclick="selectCat('Writing', event)">Writing</div>
+            <div class="scat-sub-item" onclick="selectCat('Design', event)">Design</div>
+            <div class="scat-sub-item" onclick="selectCat('Crafts', event)">Crafts</div>
+          </div>
+        </div>
+      </div>
+      <div class="search-results-bar" id="searchResults"></div>
+    </div>
+    <a class="nav-msg" href="message.html">&#x2709;</a>
+    <div class="nav-avatar-wrap" id="navAvatarWrap">
+      <div class="nav-avatar" id="navAvatar" onclick="toggleAvatarDrop(event)" style="cursor:pointer">•ﻌ•</div>
+      <div class="nav-avatar-dropdown" id="avatarDrop">
+        <a href="profile.html">Profile</a>
+        <button onclick="logOut()">Log Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<div class="banner" id="banner">
+  <img class="banner-img" id="bannerImg" src="" alt="banner">
+  <div class="banner-add-overlay" id="bannerOverlay" onclick="document.getElementById('bannerInput').click()">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
+  </div>
+  <input type="file" id="bannerInput" accept="image/*" onchange="handleBannerUpload(event)">
+</div>
+
+<!-- PAGE WRAP -->
+<div class="page-wrap">
+
+  <!-- AVATAR ROW -->
+  <div class="avatar-row">
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatar" onclick="maybePickAvatar()">
+        <img id="avatarImg" src="" alt="">
+        <span id="avatarEmoji">•ﻌ•</span>
+      </div>
+      <div class="avatar-add-overlay" id="avatarOverlay" onclick="document.getElementById('avatarInput').click()">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
+      </div>
+      <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarUpload(event)">
+    </div>
+    <button class="edit-btn" id="editBtn" onclick="toggleEditMode()">EDIT</button>
+  </div>
+
+  <!-- PROFILE TOP -->
+  <div class="profile-top">
+
+    <!-- BIO CARD -->
+    <div class="bio-card">
+      <div class="card-section-label">
+        BIO
+        <span class="pencil-icon" id="bioPencil" onclick="makeBioEditable()"></span>
+      </div>
+      <div class="bio-content" id="bioContent">
+        This is your bio. Tell the world who you are.
+      </div>
+      <hr class="divider">
+      <div class="card-section-label">LOCATION</div>
+      <span class="meta-val" id="metaLocation">Somewhere</span>
+      <hr class="divider">
+      <div class="card-section-label">AGE</div>
+      <span class="meta-val" id="metaMember">-</span>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="profile-right">
+      <div class="artist-name" id="artistName" contenteditable="false">YOUR NAME</div>
+      <div class="stars-row">
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+      </div>
+      <div class="links-services">
+        <div>
+          <div class="ls-header">LINKS</div>
+          <div class="ls-row"><span>☍</span><span class="ls-link" contenteditable="false">link</span></div>
+          <div class="ls-row"><span>☍</span><span class="ls-link" contenteditable="false">link</span></div>
+          <div class="ls-row"><span>☍</span><span class="ls-link" contenteditable="false">link</span></div>
+        </div>
+        <div>
+          <div class="ls-header">SERVICES</div>
+          <div class="ls-row"><span>⛭</span><span class="ls-svc" contenteditable="false">service</span></div>
+          <div class="ls-row"><span>⛭</span><span class="ls-svc" contenteditable="false">service</span></div>
+          <div class="ls-row"><span>⛭</span><span class="ls-svc" contenteditable="false">service</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /profile-top -->
+
+  <!-- GALLERY SECTION -->
+  <div class="section-header">
+    <div class="section-title">YOUR GALLERY</div>
+    <button class="add-gallery-btn" id="addGalleryBtn" style="display:none" onclick="document.getElementById('galleryInput').click()">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
+    </button>
+    <input type="file" id="galleryInput" accept="image/*" multiple onchange="handleGalleryUpload(event)">
+  </div>
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="gallery-item tall" onclick="galleryClick(this, event)">
+      <svg class="plus-icon" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
+      <img class="gal-img" src="" alt="">
+      <button type="button" class="gallery-menu-btn" style="display: none" onclick="toggleGalleryMenu(event, 0); event.stopPropagation();">• • •</button>
+      <div class="gallery-dropdown" id="galleryDrop-0">
+        <button type="button" onclick="editGalleryItem(0); event.stopPropagation();">Edit</button>
+        <button type="button" onclick="deleteGalleryItem(0); event.stopPropagation();">Delete</button>
+      </div>
+    </div>
+    <div class="gallery-item" onclick="galleryClick(this, event)">
+      <svg class="plus-icon" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
+      <img class="gal-img" src="" alt="">
+      <button type="button" class="gallery-menu-btn" style="display: none" onclick="toggleGalleryMenu(event, 1); event.stopPropagation();">• • •</button>
+      <div class="gallery-dropdown" id="galleryDrop-1">
+        <button type="button" onclick="editGalleryItem(1); event.stopPropagation();">Edit</button>
+        <button type="button" onclick="deleteGalleryItem(1); event.stopPropagation();">Delete</button>
+      </div>
+    </div>
+    <div class="gallery-item" onclick="galleryClick(this, event)">
+      <svg class="plus-icon" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
+      <img class="gal-img" src="" alt="">
+      <button type="button" class="gallery-menu-btn" style="display: none" onclick="toggleGalleryMenu(event, 2); event.stopPropagation();">• • •</button>
+      <div class="gallery-dropdown" id="galleryDrop-2">
+        <button type="button" onclick="editGalleryItem(2); event.stopPropagation();">Edit</button>
+        <button type="button" onclick="deleteGalleryItem(2); event.stopPropagation();">Delete</button>
+      </div>
+    </div>
+    <div class="gallery-item" onclick="galleryClick(this, event)">
+      <svg class="plus-icon" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
+      <img class="gal-img" src="" alt="">
+      <button type="button" class="gallery-menu-btn" style="display: none" onclick="toggleGalleryMenu(event, 3); event.stopPropagation();">• • •</button>
+      <div class="gallery-dropdown" id="galleryDrop-3">
+        <button type="button" onclick="editGalleryItem(3); event.stopPropagation();">Edit</button>
+        <button type="button" onclick="deleteGalleryItem(3); event.stopPropagation();">Delete</button>
+      </div>
+    </div>
+    <div class="gallery-item" onclick="galleryClick(this, event)">
+      <svg class="plus-icon" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
+      <img class="gal-img" src="" alt="">
+      <button type="button" class="gallery-menu-btn" style="display: none" onclick="toggleGalleryMenu(event, 4); event.stopPropagation();">• • •</button>
+      <div class="gallery-dropdown" id="galleryDrop-4">
+        <button type="button" onclick="editGalleryItem(4); event.stopPropagation();">Edit</button>
+        <button type="button" onclick="deleteGalleryItem(4); event.stopPropagation();">Delete</button>
+      </div>
+    </div>
+  </div>
+  <div class="see-more">See more at <a href="Gallery.html">Gallery</a></div>
+
+  <!-- POSTS SECTION (Stream-style) -->
+  <div class="posts-section">
+    <div class="section-header" style="margin-top:2.6rem;margin-bottom:.4rem">
+      <div class="section-title">YOUR POSTS</div>
+      <a href="Stream.html" class="go-stream-btn">GO TO STREAM</a>
+    </div>
+
+    <div id="profilePostsEmpty" class="posts-empty" style="display:none">
+      No posts yet, share a thought on the <a href="Stream.html" style="color:var(--blue);font-weight:800;text-decoration:underline">Stream</a>!
+    </div>
+
+    <div class="stream-posts-list" id="profilePostsList"></div>
+  </div>
+
+  <!-- REVIEWS SECTION -->
+  <div class="section-header" style="margin-top:2.6rem">
+    <div class="section-title">REVIEWS ON YOU</div>
+  </div>
+  <div class="reviews-empty">
+    Currently no reviews on your profile. Accept Commissions from customers in your <a href="message.html">messages</a> to get a review!
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- EDIT MODAL for Stream posts -->
+<div class="sp-modal-overlay" id="spModalOverlay" onclick="spCloseModal(event)">
+  <div class="sp-modal">
+    <div class="sp-modal-title">EDIT POST</div>
+    <textarea class="sp-modal-textarea" id="spModalTextarea" maxlength="700" oninput="spUpdateCount(this)">• • •</textarea>
+    <div class="sp-modal-footer">
+      <span class="sp-modal-wordcount" id="spModalWordCount">100 words</span>
+      <div class="sp-modal-actions">
+        <button class="sp-modal-cancel-btn" onclick="spCloseEditModal()">CANCEL</button>
+        <button class="sp-modal-save-btn" onclick="spSaveEdit()">SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Profile data
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+let isEditMode = false;
+let spEditingId = null;
+
+function loadProfileData() {
+  try {
+    const raw = localStorage.getItem('lonaProfile');
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.avatar) {
+      document.getElementById('avatarImg').src = d.avatar;
+      document.getElementById('avatarImg').style.display = 'block';
+      document.getElementById('avatarEmoji').style.display = 'none';
+    }
+    if (d.name) document.getElementById('artistName').textContent = d.name;
+    if (d.bio)  document.getElementById('bioContent').textContent = d.bio;
+    if (d.location) document.getElementById('metaLocation').textContent = d.location;
+    if (d.member) document.getElementById('metaMember').textContent = d.member;
+    if (d.banner) {
+      document.getElementById('bannerImg').src = d.banner;
+      document.getElementById('bannerImg').style.display = 'block';
+    }
+    if (d.links) {
+      const els = document.querySelectorAll('.ls-link');
+      d.links.forEach((v, i) => { if (els[i]) els[i].textContent = v; });
+    }
+    if (d.services) {
+      const els = document.querySelectorAll('.ls-svc');
+      d.services.forEach((v, i) => { if (els[i]) els[i].textContent = v; });
+    }
+  } catch(e) {}
+}
+
+function saveProfileData() {
+  const links = [...document.querySelectorAll('.ls-link')].map(e => e.textContent);
+  const services = [...document.querySelectorAll('.ls-svc')].map(e => e.textContent);
+  const d = {
+    name: document.getElementById('artistName').textContent,
+    bio: document.getElementById('bioContent').textContent,
+    location: document.getElementById('metaLocation').textContent,
+    member: document.getElementById('metaMember').textContent,
+    avatar: document.getElementById('avatarImg').src || null,
+    banner: document.getElementById('bannerImg').src || null,
+    links,
+    services
+  };
+  localStorage.setItem('lonaProfile', JSON.stringify(d));
+}
+
+function toggleEditMode() {
+  isEditMode = !isEditMode;
+  document.body.classList.toggle('edit-mode', isEditMode);
+  const btn = document.getElementById('editBtn');
+  btn.classList.toggle('active', isEditMode);
+  btn.textContent = isEditMode ? 'SAVE PROFILE' : 'EDIT PROFILE';
+
+  const editables = [
+    document.getElementById('artistName'),
+    document.getElementById('bioContent'),
+    document.getElementById('metaLocation'),
+    document.getElementById('metaMember'),
+    ...document.querySelectorAll('.ls-link'),
+    ...document.querySelectorAll('.ls-svc')
+  ];
+  editables.forEach(el => el.contentEditable = isEditMode ? 'true' : 'false');
+
+  document.querySelectorAll('.pencil-icon').forEach(p => p.style.display = isEditMode ? 'inline' : 'none');
+  document.getElementById('bannerOverlay').style.display = isEditMode ? 'flex' : 'none';
+  document.getElementById('avatarOverlay').style.display = isEditMode ? 'flex' : 'none';
+  document.getElementById('addGalleryBtn').style.display = isEditMode ? 'flex' : 'none';
+
+  if (!isEditMode) saveProfileData();
+}
+
+function makeBioEditable() {
+  const bio = document.getElementById('bioContent');
+  bio.contentEditable = 'true';
+  bio.focus();
+}
+
+function maybePickAvatar() {
+  if (isEditMode) document.getElementById('avatarInput').click();
+}
+
+function handleAvatarUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('avatarImg').src = ev.target.result;
+    document.getElementById('avatarImg').style.display = 'block';
+    document.getElementById('avatarEmoji').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleBannerUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('bannerImg').src = ev.target.result;
+    document.getElementById('bannerImg').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+// â”€â”€ Gallery â”€â”€
+let activeGalleryItem = null;
+let activeGalleryIndex = null;
+
+function saveGalleryToStorage() {
+  const items = document.querySelectorAll('.gallery-item');
+  const data = [];
+  items.forEach(item => {
+    const img = item.querySelector('.gal-img');
+    data.push((img && img.style.display === 'block' && img.src) ? img.src : null);
+  });
+  try {
+    const profile = JSON.parse(localStorage.getItem('lonaProfile') || '{}');
+    profile.galleryImages = data;
+    localStorage.setItem('lonaProfile', JSON.stringify(profile));
+  } catch(e) {}
+}
+
+function loadGalleryFromStorage() {
+  try {
+    const profile = JSON.parse(localStorage.getItem('lonaProfile') || '{}');
+    if (!profile.galleryImages) return;
+    const items = document.querySelectorAll('.gallery-item');
+    profile.galleryImages.forEach((src, i) => {
+      if (!src || !items[i]) return;
+      const img = items[i].querySelector('.gal-img');
+      const plus = items[i].querySelector('.plus-icon');
+      const menuBtn = items[i].querySelector('.gallery-menu-btn');
+      img.src = src;
+      img.style.display = 'block';
+      plus.style.display = 'none';
+      if (menuBtn) menuBtn.style.display = 'flex';
+    });
+  } catch(e) {}
+}
+
+function galleryClick(item, event) {
+  if (event && (event.target.closest('.gallery-menu-btn') || event.target.closest('.gallery-dropdown'))) return;
+  const img = item.querySelector('.gal-img');
+  if (img.style.display === 'block') {
+    document.getElementById('lightboxImg').src = img.src;
+    document.getElementById('lightbox').classList.add('open');
+    return;
+  }
+  activeGalleryItem = item;
+  activeGalleryIndex = Array.from(item.parentNode.children).indexOf(item);
+  document.getElementById('galleryInput').click();
+}
+
+function toggleGalleryMenu(e, index) {
+  e.stopPropagation();
+  document.querySelectorAll('.gallery-dropdown').forEach(d => {
+    if (d.id !== `galleryDrop-${index}`) d.classList.remove('open');
+  });
+  document.getElementById(`galleryDrop-${index}`).classList.toggle('open');
+}
+
+function editGalleryItem(index) {
+  const item = document.querySelectorAll('.gallery-item')[index];
+  const img = item.querySelector('.gal-img');
+  if (img.style.display === 'block') {
+    activeGalleryItem = item;
+    activeGalleryIndex = index;
+    document.getElementById('galleryInput').click();
+  }
+  document.getElementById(`galleryDrop-${index}`).classList.remove('open');
+}
+
+function deleteGalleryItem(index) {
+  const item = document.querySelectorAll('.gallery-item')[index];
+  const img = item.querySelector('.gal-img');
+  const plus = item.querySelector('.plus-icon');
+  const menuBtn = item.querySelector('.gallery-menu-btn');
+  img.src = '';
+  img.style.display = 'none';
+  plus.style.display = 'flex';
+  if (menuBtn) menuBtn.style.display = 'none';
+  document.getElementById(`galleryDrop-${index}`).classList.remove('open');
+  saveGalleryToStorage();
+}
+
+function handleGalleryUpload(e) {
+  const files = [...e.target.files];
+  let loaded = 0;
+  files.forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const target = activeGalleryItem || document.querySelectorAll('.gallery-item')[i];
+      if (!target) return;
+      const img = target.querySelector('.gal-img');
+      const plus = target.querySelector('.plus-icon');
+      const menuBtn = target.querySelector('.gallery-menu-btn');
+      img.src = ev.target.result;
+      img.style.display = 'block';
+      plus.style.display = 'none';
+      if (menuBtn) menuBtn.style.display = 'flex';
+      loaded++;
+      if (loaded === files.length) { saveGalleryToStorage(); activeGalleryItem = null; activeGalleryIndex = null; }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.gallery-menu-btn') && !e.target.closest('.gallery-dropdown')) {
+    document.querySelectorAll('.gallery-dropdown').forEach(d => d.classList.remove('open'));
+  }
+});
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Stream Posts on Profile
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+let profileUserAvatar = null;
+let profileUserName = 'You';
+
+try {
+  const raw = localStorage.getItem('lonaProfile');
+  if (raw) {
+    const p = JSON.parse(raw);
+    if (p.avatar) profileUserAvatar = p.avatar;
+    if (p.name)   profileUserName = p.name;
+  }
+} catch(e) {}
+
+function getAvatarHTML(size) {
+  if (profileUserAvatar) {
+    return `<img src="${profileUserAvatar}" style="width:${size}px;height:${size}px;object-fit:cover;border-radius:50%;display:block;" alt="avatar">`;
+  }
+  return `<span style="font-size:${size > 40 ? 1.1 : 0.85}rem;line-height:1">•ﻌ•</span>`;
+}
+
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function loadProfilePosts() {
+  const posts = LonaPostsDB.getAll();
+  const list = document.getElementById('profilePostsList');
+  const empty = document.getElementById('profilePostsEmpty');
+  list.innerHTML = '';
+
+  if (posts.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+  posts.forEach(post => {
+    list.appendChild(buildProfilePostCard(post));
+  });
+}
+
+function buildProfilePostCard(post) {
+  const card = document.createElement('div');
+  card.className = 'stream-post-card';
+  card.dataset.id = post.id;
+  card.dataset.text = post.text;
+  card.dataset.likes = post.likes;
+  card.innerHTML = buildProfilePostHTML(post.id, post.text, post.likes, post.liked);
+  if (post.liked) {
+    card.querySelector(`#plbtn-${post.id}`).classList.add('liked');
+    card.querySelector(`#plheart-${post.id}`).classList.add('filled');
+  }
+  return card;
+}
+
+function buildProfilePostHTML(id, text, likes, liked) {
+  return `
+    <div class="stream-post-header">
+      <div class="stream-post-avatar">${getAvatarHTML(44)}</div>
+      <div class="stream-post-username">${escapeHTML(profileUserName)}</div>
+      <div class="stream-post-menu-wrap">
+        <button class="stream-post-menu-btn" onclick="spToggleMenu('${id}')" title="Options">• • •</button>
+        <div class="stream-post-dropdown" id="pldrop-${id}">
+          <button onclick="spOpenEditModal('${id}')">Edit</button>
+          <button onclick="spDeletePost('${id}')">Delete</button>
+        </div>
+      </div>
+    </div>
+    <div class="stream-post-body">${escapeHTML(text)}</div>
+    <div class="stream-post-footer">
+      <button class="stream-like-btn${liked ? ' liked' : ''}" id="plbtn-${id}" onclick="spToggleLike('${id}')">
+        <span class="stream-like-count" id="plcount-${id}">${likes}</span>
+        <svg class="stream-heart-icon${liked ? ' filled' : ''}" id="plheart-${id}" viewBox="0 0 24 24" width="22" height="22">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                   2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                   C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+                   c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </button>
+    </div>
+  `;
+}
+
+function spToggleLike(id) {
+  const card = document.querySelector(`.stream-post-card[data-id="${id}"]`);
+  const btn = document.getElementById(`plbtn-${id}`);
+  const heart = document.getElementById(`plheart-${id}`);
+  const countEl = document.getElementById(`plcount-${id}`);
+  let likes = parseInt(card.dataset.likes);
+  const liked = btn.classList.contains('liked');
+  if (liked) {
+    likes--; btn.classList.remove('liked'); heart.classList.remove('filled');
+  } else {
+    likes++; btn.classList.add('liked'); heart.classList.add('filled');
+  }
+  card.dataset.likes = likes;
+  countEl.textContent = likes;
+  LonaPostsDB.update(id, { likes, liked: !liked });
+}
+
+function spToggleMenu(id) {
+  document.querySelectorAll('.stream-post-dropdown').forEach(d => {
+    if (d.id !== `pldrop-${id}`) d.classList.remove('open');
+  });
+  document.getElementById(`pldrop-${id}`).classList.toggle('open');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.stream-post-menu-wrap')) {
+    document.querySelectorAll('.stream-post-dropdown').forEach(d => d.classList.remove('open'));
+  }
+  if (!e.target.closest('.gallery-menu-btn') && !e.target.closest('.gallery-dropdown')) {
+    document.querySelectorAll('.gallery-dropdown').forEach(d => d.classList.remove('open'));
+  }
+  if (!e.target.closest('#navAvatarWrap')) {
+    const drop = document.getElementById('avatarDrop');
+    if (drop) drop.classList.remove('open');
+  }
+  if (!e.target.closest('#searchWrap')) {
+    const cd = document.getElementById('catDropdown'), sr = document.getElementById('searchResults');
+    if (cd) cd.classList.remove('open');
+    if (sr) sr.classList.remove('open');
+  }
+});
+
+function spDeletePost(id) {
+  const card = document.querySelector(`.stream-post-card[data-id="${id}"]`);
+  if (card) card.remove();
+  LonaPostsDB.remove(id);
+  if (document.getElementById('profilePostsList').children.length === 0) {
+    document.getElementById('profilePostsEmpty').style.display = 'block';
+  }
+}
+
+function spOpenEditModal(id) {
+  spEditingId = id;
+  const card = document.querySelector(`.stream-post-card[data-id="${id}"]`);
+  document.getElementById('spModalTextarea').value = card.dataset.text;
+  spUpdateCount(document.getElementById('spModalTextarea'));
+  document.getElementById('spModalOverlay').classList.add('open');
+  document.getElementById(`pldrop-${id}`).classList.remove('open');
+}
+
+function spCloseEditModal() {
+  document.getElementById('spModalOverlay').classList.remove('open');
+  spEditingId = null;
+}
+
+function spCloseModal(e) {
+  if (e.target === document.getElementById('spModalOverlay')) spCloseEditModal();
+}
+
+function spUpdateCount(el) {
+  const words = el.value.trim() === '' ? 0 : el.value.trim().split(/\s+/).length;
+  document.getElementById('spModalWordCount').textContent = Math.max(0, 100 - words) + ' words';
+}
+
+function spSaveEdit() {
+  const text = document.getElementById('spModalTextarea').value.trim();
+  if (!text || spEditingId === null) return;
+  const id = spEditingId;
+  const card = document.querySelector(`.stream-post-card[data-id="${id}"]`);
+  const likes = parseInt(card.dataset.likes);
+  const liked = document.getElementById(`plbtn-${id}`).classList.contains('liked');
+  card.dataset.text = text;
+  card.innerHTML = buildProfilePostHTML(id, text, likes, liked);
+  if (liked) {
+    card.querySelector(`#plbtn-${id}`).classList.add('liked');
+    card.querySelector(`#plheart-${id}`).classList.add('filled');
+  }
+  LonaPostsDB.update(id, { text });
+  spCloseEditModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { spCloseEditModal(); closeLightbox(); }
+});
+
+// â”€â”€ Search â”€â”€
+let profileSearchCat = 'ALL';
+function toggleCatDropdown(e) { e.stopPropagation(); document.getElementById('catDropdown').classList.toggle('open'); document.getElementById('searchResults').classList.remove('open'); }
+function selectCat(cat, e) {
+  if (e) e.stopPropagation(); profileSearchCat = cat;
+  document.getElementById('catLabel').textContent = cat.length > 9 ? cat.slice(0,8)+'...' : cat;
+  document.getElementById('catDropdown').classList.remove('open'); handleSearch();
+}
+function handleSearch() {
+  const q = document.getElementById('searchInput').value.trim(), res = document.getElementById('searchResults');
+  if (!q) { res.classList.remove('open'); return; }
+  let html = '';
+  if (profileSearchCat === 'ARTIST NAME') html = `<div class="search-result-msg">Are you trying to find this person?<br>No artists here yet.</div>`;
+  else if (profileSearchCat === 'ART NAME') html = `<div class="search-result-msg">Maybe this is what you want?<br>No art to show here yet.</div>`;
+  else html = `<div class="search-result-msg">No artist found for "<strong>${escapeHTML(q)}</strong>".<br>No artists here yet.</div>`;
+  res.innerHTML = html; res.classList.add('open');
+}
+
+// â”€â”€ Nav avatar dropdown â”€â”€
+function toggleAvatarDrop(e) { e.stopPropagation(); document.getElementById('avatarDrop').classList.toggle('open'); }
+function logOut() { localStorage.removeItem('lonaProfile'); window.location.href = 'index.html'; }
+
+// â”€â”€ Init â”€â”€
+loadProfileData();
+loadGalleryFromStorage();
+loadProfilePosts();
+</script>
+</body>
+</html>

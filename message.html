@@ -1,0 +1,679 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lona â€“ Messages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared-nav.css">
+  <link rel="stylesheet" href="Message.css">
+  <script src="lona-storage.js"></script>
+  <script src="lona-footer.js"></script>
+  <style>
+    /* â”€â”€ NAV AVATAR DROPDOWN â”€â”€ */
+    .nav-avatar-wrap { position: relative; }
+    .nav-avatar-dropdown {
+      display: none; position: absolute; right: 0; top: calc(100% + 8px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: hidden; min-width: 150px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.18); z-index: 500;
+    }
+    .nav-avatar-dropdown.open { display: block; }
+    .nav-avatar-dropdown a,
+    .nav-avatar-dropdown button {
+      display: block; width: 100%; text-decoration: none;
+      background: none; border: none; text-align: left;
+      padding: 11px 18px; font-family: var(--font);
+      font-size: .9rem; font-weight: 800; color: var(--blue);
+      cursor: pointer; transition: background .13s;
+    }
+    .nav-avatar-dropdown a:hover { background: var(--cream); }
+    .nav-avatar-dropdown button { color: #c0392b; }
+    .nav-avatar-dropdown button:hover { background: #fff0f0; }
+
+    /* â”€â”€ SEARCH CATEGORY â”€â”€ */
+    .search-wrap { position: relative; }
+    .search-category-btn {
+      background: var(--cream); border: none; border-right: 2px solid var(--blue);
+      padding: 0 10px; height: 100%; cursor: pointer;
+      font-family: var(--font); font-size: .75rem; font-weight: 900;
+      color: var(--blue); white-space: nowrap; display: flex; align-items: center; gap: 3px;
+    }
+    .search-category-btn:hover { background: #ffe0bb; }
+    .search-cat-dropdown {
+      display: none; position: absolute; left: 0; top: calc(100% + 4px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: visible; min-width: 190px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.15); z-index: 600;
+    }
+    .search-cat-dropdown.open { display: block; }
+    .scat-item {
+      position: relative; padding: 10px 16px;
+      font-family: var(--font); font-size: .88rem; font-weight: 800;
+      color: var(--blue); cursor: pointer; transition: background .12s;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .scat-item:hover { background: var(--cream); }
+    .scat-sub {
+      display: none; position: absolute; left: calc(100% + 2px); top: -2px;
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: hidden; min-width: 170px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.15); z-index: 601;
+    }
+    .scat-item:hover .scat-sub { display: block; }
+    .scat-sub-item {
+      padding: 9px 16px; font-family: var(--font);
+      font-size: .85rem; font-weight: 700; color: var(--blue);
+      cursor: pointer; transition: background .12s;
+    }
+    .scat-sub-item:hover { background: var(--cream); }
+    .search-results-bar {
+      display: none; position: absolute; left: 0; top: calc(100% + 6px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; min-width: 300px;
+      box-shadow: 0 6px 24px rgba(37,60,151,.16); z-index: 590;
+      padding: 14px 18px; font-family: var(--font);
+    }
+    .search-results-bar.open { display: block; }
+    .search-result-msg { font-size: .92rem; font-weight: 700; color: var(--blue); line-height: 1.7; }
+
+    /* â”€â”€ CHAT VIEW â”€â”€ */
+    .chat-view {
+      display: none; flex-direction: column; width: 100%; height: 100%;
+    }
+    .chat-view.active { display: flex; }
+
+    .chat-header {
+      display: flex; align-items: center; gap: .9rem;
+      margin-bottom: 1rem; padding-bottom: .9rem;
+      border-bottom: 2.5px solid var(--orange);
+    }
+    .chat-back-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--orange); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity .15s; flex-shrink: 0; padding-right: 2px;
+    }
+    .chat-back-btn:hover { opacity: .85; }
+    .chat-title { font-size: 1.3rem; font-weight: 900; color: var(--blue); flex: 1; }
+    .chat-status {
+      font-size: .82rem; font-weight: 800; color: var(--orange);
+      background: var(--cream); border: 2px solid var(--orange);
+      padding: 4px 14px; border-radius: 20px; letter-spacing: .5px;
+    }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+      gap: .8rem; padding: .4rem 0 1rem; min-height: 0;
+    }
+    .chat-bubble-wrap {
+      display: flex; gap: .6rem;
+    }
+    .chat-bubble-wrap.mine { flex-direction: row-reverse; }
+
+    .chat-bubble-avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: var(--orange); border: 2.5px solid var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; font-weight: 900; color: var(--blue); overflow: hidden;
+    }
+    .chat-bubble {
+      max-width: 68%; background: var(--cream); border: 2.5px solid var(--orange);
+      border-radius: 16px; padding: .65rem 1rem;
+      font-size: .93rem; line-height: 1.55; color: var(--blue); font-weight: 500;
+    }
+    .chat-bubble-wrap.mine .chat-bubble {
+      background: var(--blue); border-color: var(--orange); color: white;
+    }
+    .chat-bubble-img {
+      max-width: 180px; border-radius: 10px; margin-top: .5rem; display: block;
+    }
+
+    .chat-input-row {
+      display: flex; gap: .7rem; align-items: flex-end;
+      padding-top: .7rem; border-top: 2.5px solid var(--orange);
+    }
+    .chat-attach-btn {
+      background: none; border: 2.5px solid var(--orange);
+      border-radius: 50%; width: 40px; height: 40px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background .15s; color: var(--orange);
+      font-size: 1.1rem; font-weight: 900;
+    }
+    .chat-attach-btn:hover { background: var(--cream); }
+    .chat-textarea {
+      flex: 1; border: 2.5px solid var(--orange); border-radius: 14px;
+      background: var(--cream); padding: 10px 14px;
+      font-family: var(--font); font-size: .93rem; color: var(--blue);
+      resize: none; outline: none; line-height: 1.5; min-height: 44px; max-height: 120px;
+    }
+    .chat-send-btn {
+      background: var(--orange); border: none; border-radius: 14px;
+      color: white; font-family: var(--font); font-size: .88rem; font-weight: 900;
+      padding: 10px 20px; cursor: pointer; letter-spacing: .5px;
+      transition: opacity .15s; flex-shrink: 0; align-self: flex-end;
+    }
+    .chat-send-btn:hover { opacity: .88; }
+
+    /* â”€â”€ RIGHT PANEL full height â”€â”€ */
+    .right-panel { align-items: stretch; padding: 1.6rem 2rem; }
+    .thread-view, .chat-view { height: 100%; box-sizing: border-box; }
+    .thread-view.active { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; }
+
+    /* â”€â”€ CONVO SLOT CHECK (orange) â”€â”€ */
+    .check-icon-orange { background: var(--orange) !important; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="About.html">
+    <img src="LONA full sign.PNG" alt="LONA" title="LONA">
+  </a>
+  <div class="nav-links">
+    <a href="Stream.html">STREAM</a>
+    <a href="Gallery.html">GALLERY</a>
+    <a href="About.html">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <div class="search-wrap" id="searchWrap">
+      <div class="nav-search">
+        <button class="search-category-btn" id="catBtn" onclick="toggleCatDropdown(event)" type="button">
+          <span id="catLabel">ALL</span> &#9660;
+        </button>
+        <input type="text" id="searchInput" placeholder="Search..." oninput="handleSearch()" onkeydown="if(event.key==='Enter')handleSearch()">
+        <button onclick="handleSearch()">
+          <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+            <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+            <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="search-cat-dropdown" id="catDropdown">
+        <div class="scat-item" onclick="selectCat('ARTIST NAME', event)">ARTIST NAME</div>
+        <div class="scat-item" onclick="selectCat('ART NAME', event)">ART NAME</div>
+        <div class="scat-item">SERVICES &#9658;
+          <div class="scat-sub">
+            <div class="scat-sub-item" onclick="selectCat('Illustration', event)">Illustration</div>
+            <div class="scat-sub-item" onclick="selectCat('Portrait', event)">Portrait</div>
+            <div class="scat-sub-item" onclick="selectCat('Photography', event)">Photography</div>
+            <div class="scat-sub-item" onclick="selectCat('Music', event)">Music</div>
+            <div class="scat-sub-item" onclick="selectCat('Writing', event)">Writing</div>
+            <div class="scat-sub-item" onclick="selectCat('Design', event)">Design</div>
+            <div class="scat-sub-item" onclick="selectCat('Crafts', event)">Crafts</div>
+          </div>
+        </div>
+      </div>
+      <div class="search-results-bar" id="searchResults"></div>
+    </div>
+    <button class="nav-switch" id="switchBtn" onclick="switchRole()" title="Switch role">
+      <svg width="26" height="20" viewBox="0 0 26 20" fill="none">
+        <path d="M2 5h18M2 5l4-4M2 5l4 4" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M24 15H6M24 15l-4-4M24 15l-4 4" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="nav-avatar-wrap" id="navAvatarWrap">
+      <div class="nav-avatar" id="navAvatar" onclick="toggleAvatarDrop(event)" style="cursor:pointer">•ﻌ•</div>
+      <div class="nav-avatar-dropdown" id="avatarDrop">
+        <a href="profile.html">Profile</a>
+        <button onclick="logOut()">Log Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN LAYOUT -->
+<div class="msg-page">
+
+  <!-- â•â• LEFT PANEL â•â• -->
+  <aside class="left-panel">
+
+    <!-- ARTIST SIDE -->
+    <div id="artistPanel" class="role-panel active">
+      <div class="role-badge artist-badge"><span class="role-badge-dot"></span>ARTIST VIEW</div>
+      <div class="panel-title" onclick="onTitleClick()">COMMISSION SLOTS</div>
+      <div class="convo-list" id="artistList">
+        <div class="list-empty" id="artistListEmpty">No commissions pending right now! You may accept commissions in your commission slots at the right side!</div>
+      </div>
+    </div>
+
+    <!-- CUSTOMER SIDE -->
+    <div id="customerPanel" class="role-panel">
+      <div class="role-badge customer-badge"><span class="role-badge-dot"></span>CUSTOMER VIEW</div>
+      <div class="panel-title" onclick="onTitleClick()">COMMISSION</div>
+      <div class="convo-list" id="customerList">
+        <div class="list-empty" id="customerListEmpty">No commissions pending yet! Check on <a href="Gallery.html"> gallery </a> for artists to commission</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <div class="v-divider"></div>
+
+  <!-- â•â• RIGHT PANEL â•â• -->
+  <section class="right-panel">
+
+    <!-- Artist: empty -->
+    <div class="thread-view active" id="artistEmpty-right">
+      <p class="thread-empty-msg">No commissions pending right now! You may accept commissions in your commission slots at the right side!</p>
+    </div>
+
+    <!-- Customer: empty -->
+    <div class="thread-view" id="customerEmpty-right">
+      <p class="thread-empty-msg">
+        Would you like to commission somebody?
+        Go to <a href="Gallery.html">Gallery</a> and meet more artists there!
+      </p>
+    </div>
+
+    <!-- Artist: LONA trial incoming request -->
+    <div class="thread-view" id="artistTrialRequest">
+      <div class="thread-card" style="width:100%">
+        <div class="thread-header">
+          <div class="thread-avatar" style="background:var(--blue);color:var(--orange);font-size:.8rem;font-weight:900;text-align:center;display:flex;align-items:center;justify-content:center;">LONA</div>
+          <div class="thread-name">LONA Sample Customer</div>
+        </div>
+        <div class="thread-meta"><span class="meta-label">service selected</span><br><span class="meta-val">Portrait</span></div>
+        <div class="thread-body" style="margin-bottom:1rem">
+          Hello! I would like to commission you, your art is exactly what I'm looking for. Please accept if you'd like to work with me!
+        </div>
+        <div class="thread-footer right-align">
+          <button class="action-btn orange-btn" onclick="artistAcceptTrial()">ACCEPT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artist: trial chat -->
+    <div class="chat-view" id="artistTrialChat">
+      <div class="chat-header">
+        <button class="chat-back-btn" onclick="artistChatBack()" title="Back">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div class="chat-title">LONA Sample Customer</div>
+        <div class="chat-status">ACCEPTED</div>
+      </div>
+      <div class="chat-messages" id="artistChatMessages"></div>
+      <div class="chat-input-row">
+        <label class="chat-attach-btn" title="Attach file">
+          &#x1F4CE;
+          <input type="file" style="display:none" onchange="handleAttach(event,'artist')">
+        </label>
+        <textarea class="chat-textarea" id="artistChatInput" placeholder="Write a message..." rows="1"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendArtistMsg();}"></textarea>
+        <button class="chat-send-btn" onclick="sendArtistMsg()">SEND</button>
+      </div>
+    </div>
+
+    <!-- Customer: LONA trial slot chat (pending until artist accepts) -->
+    <div class="chat-view" id="customerTrialChat">
+      <div class="chat-header">
+        <button class="chat-back-btn" onclick="customerChatBack()" title="Back">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div class="chat-title">LONA Sample Artist</div>
+        <div class="chat-status" id="customerSlotStatus">PENDING</div>
+      </div>
+      <div class="chat-messages" id="customerChatMessages"></div>
+      <div class="chat-input-row">
+        <label class="chat-attach-btn" title="Attach file">
+          &#x1F4CE;
+          <input type="file" style="display:none" onchange="handleAttach(event,'customer')">
+        </label>
+        <textarea class="chat-textarea" id="customerChatInput" placeholder="Write a message..." rows="1"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendCustomerMsg();}"></textarea>
+        <button class="chat-send-btn" onclick="sendCustomerMsg()">SEND</button>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<!-- SYSTEM ONBOARDING CARD -->
+<div class="overlay-backdrop" id="systemOverlay">
+  <div class="system-card">
+    <div class="sys-logo-row">
+      <img src="LONA full sign.PNG" alt="Lona" class="sys-logo">
+      <span class="sys-tag">System</span>
+    </div>
+    <div class="sys-greeting" id="sysGreeting">Hi there!</div>
+    <p class="sys-body" id="sysBody"></p>
+    <button class="sys-btn" onclick="dismissOnboarding()">I UNDERSTAND</button>
+  </div>
+</div>
+
+<!-- INFO POP-UP -->
+<div class="overlay-backdrop" id="infoOverlay" onclick="closeInfoOverlay(event)">
+  <div class="system-card">
+    <div class="sys-logo-row">
+      <img src="LONA full sign.PNG" alt="Lona" class="sys-logo">
+      <span class="sys-tag">System</span>
+    </div>
+    <div class="sys-greeting" id="infoGreeting"></div>
+    <p class="sys-body" id="infoBody"></p>
+    <button class="sys-btn" onclick="closeInfoOverlay()">GOT IT</button>
+  </div>
+</div>
+
+<script>
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Shared state
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+let currentRole = 'artist';
+let onboardingDone = false;
+let trialAccepted = false; // artist accepted the trial commission
+let currentCategory = 'ALL';
+
+// Shared chat log between artist and customer trial views
+const trialMessages = []; // { sender:'lona-customer'|'artist'|'lona-artist'|'customer', text:'', img:null }
+
+const MSGS = {
+  artist: {
+    greeting: 'Hi there, Artist!',
+    body: 'Welcome to Lona Messaging! This is where you receive commission requests from customers. When a customer commissions you, it will appear in your COMMISSION list on the left. You can accept it and then chat directly with your customer. We\'ve added a trial commission from LONA so you can see how it works, try accepting it!'
+  },
+  customer: {
+    greeting: 'Hi there, Customer!',
+    body: 'Welcome to Lona Messaging! This is where you track your commission requests. When you request a commission, it will appear in your COMMISSION SLOTS on the left as PENDING until the artist accepts. We\'ve added a trial slot from LONA so you can see how it works, try sending a message!'
+  }
+};
+
+function getProfileName() {
+  try { const s = localStorage.getItem('lonaProfile'); if (s) { const p = JSON.parse(s); if (p.name) return p.name; } } catch(e){}
+  return null;
+}
+function getProfileAvatar() {
+  try { const s = localStorage.getItem('lonaProfile'); if (s) { const p = JSON.parse(s); if (p.avatar) return p.avatar; } } catch(e){}
+  return null;
+}
+
+function getMyAvatarHTML(size) {
+  const av = getProfileAvatar();
+  if (av) return `<img src="${av}" style="width:${size}px;height:${size}px;object-fit:cover;border-radius:50%;display:block;" alt="">`;
+  return '•ﻌ•';
+}
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Nav avatar dropdown
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function toggleAvatarDrop(e) { e.stopPropagation(); document.getElementById('avatarDrop').classList.toggle('open'); }
+function logOut() { localStorage.removeItem('lonaProfile'); window.location.href = 'index.html'; }
+document.addEventListener('click', e => {
+  if (!e.target.closest('#navAvatarWrap')) document.getElementById('avatarDrop').classList.remove('open');
+  if (!e.target.closest('#searchWrap')) {
+    document.getElementById('catDropdown').classList.remove('open');
+    document.getElementById('searchResults').classList.remove('open');
+  }
+});
+
+// apply nav avatar
+try {
+  const s = localStorage.getItem('lonaProfile');
+  if (s) {
+    const p = JSON.parse(s); const el = document.getElementById('navAvatar');
+    if (p.avatar) el.innerHTML = `<img src="${p.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    else if (p.name) el.textContent = p.name.charAt(0).toUpperCase();
+  }
+} catch(e){}
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Search
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function toggleCatDropdown(e) { e.stopPropagation(); document.getElementById('catDropdown').classList.toggle('open'); document.getElementById('searchResults').classList.remove('open'); }
+function selectCat(cat, e) {
+  if (e) e.stopPropagation(); currentCategory = cat;
+  document.getElementById('catLabel').textContent = cat.length > 9 ? cat.slice(0,8)+'...' : cat;
+  document.getElementById('catDropdown').classList.remove('open'); handleSearch();
+}
+function handleSearch() {
+  const q = document.getElementById('searchInput').value.trim(), res = document.getElementById('searchResults');
+  if (!q) { res.classList.remove('open'); return; }
+  const cat = currentCategory; let html = '';
+  if (cat === 'ARTIST NAME') html = `<div class="search-result-msg">Are you trying to find this person?<br>No artists here yet.</div>`;
+  else if (cat === 'ART NAME') html = `<div class="search-result-msg">Maybe this is what you want?<br>No art to show here yet.</div>`;
+  else html = `<div class="search-result-msg">No artist found for "<strong>${escapeHTML(q)}</strong>".<br>No artists here yet.</div>`;
+  res.innerHTML = html; res.classList.add('open');
+}
+function escapeHTML(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Onboarding
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+window.addEventListener('DOMContentLoaded', () => {
+  populateSystemCard('sysGreeting', 'sysBody', currentRole);
+  document.getElementById('systemOverlay').classList.add('open');
+  updatePanels();
+  setupTrialSlots();
+});
+
+function populateSystemCard(gId, bId, role) {
+  const name = getProfileName(), m = MSGS[role];
+  document.getElementById(gId).textContent = name ? `Hi ${name}!` : m.greeting;
+  document.getElementById(bId).textContent = m.body;
+}
+
+function dismissOnboarding() {
+  document.getElementById('systemOverlay').classList.remove('open');
+  onboardingDone = true;
+}
+
+function showInfoPopup() {
+  populateSystemCard('infoGreeting', 'infoBody', currentRole);
+  document.getElementById('infoOverlay').classList.add('open');
+}
+function closeInfoOverlay(e) {
+  if (!e || e.target === document.getElementById('infoOverlay')) document.getElementById('infoOverlay').classList.remove('open');
+}
+function onTitleClick() { if (onboardingDone) showInfoPopup(); }
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Role switch
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function switchRole() {
+  currentRole = currentRole === 'artist' ? 'customer' : 'artist';
+  updatePanels();
+  if (onboardingDone) showInfoPopup();
+}
+
+function updatePanels() {
+  const isArtist = currentRole === 'artist';
+  document.getElementById('artistPanel').classList.toggle('active', isArtist);
+  document.getElementById('customerPanel').classList.toggle('active', !isArtist);
+  if (isArtist) openView('artistEmpty-right');
+  else openView('customerEmpty-right');
+}
+
+function openView(id) {
+  document.querySelectorAll('.thread-view, .chat-view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.convo-item').forEach(i => i.classList.remove('active'));
+}
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Trial slots setup (added to left panel lists on load)
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function setupTrialSlots() {
+  // Artist left panel: LONA trial commission (clock pending)
+  const artistList = document.getElementById('artistList');
+  const artistEmpty = document.getElementById('artistListEmpty');
+
+  const aItem = document.createElement('div');
+  aItem.className = 'convo-item'; aItem.id = 'artistTrialItem';
+  aItem.innerHTML = `
+    <div class="convo-avatar" style="background:var(--blue);color:var(--orange);font-size:.7rem;font-weight:900;text-align:center;display:flex;align-items:center;justify-content:center;">LONA</div>
+    <div class="convo-name">LONA Sample Customer</div>
+    <div class="convo-icon clock-icon" id="artistTrialBadge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+    </div>`;
+  aItem.onclick = () => { openView('artistTrialRequest'); setActive(aItem); };
+  artistList.prepend(aItem);
+  artistEmpty.style.display = 'none';
+
+  // Customer left panel: LONA trial commission slot (pending clock)
+  const customerList = document.getElementById('customerList');
+  const customerEmpty = document.getElementById('customerListEmpty');
+
+  const cItem = document.createElement('div');
+  cItem.className = 'convo-item'; cItem.id = 'customerTrialItem';
+  cItem.innerHTML = `
+    <div class="convo-avatar" style="background:var(--blue);color:var(--orange);font-size:.7rem;font-weight:900;text-align:center;display:flex;align-items:center;justify-content:center;">LONA</div>
+    <div class="convo-name">LONA Sample Artist</div>
+    <div class="convo-icon clock-icon" id="customerTrialBadge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+    </div>`;
+  cItem.onclick = () => { openView('customerTrialChat'); setActive(cItem); renderMessages(); };
+  customerList.prepend(cItem);
+  customerEmpty.style.display = 'none';
+
+  // Seed trial chat with a LONA starter message (customer side)
+  if (trialMessages.length === 0) {
+    trialMessages.push({ sender: 'lona-artist', text: 'Hi! I\'m a LONA sample artist. You can send me a message to try out how commissions work. Once I accept, we can chat freely!' });
+    trialMessages.push({ sender: 'lona-customer', text: 'And I\'m a LONA sample customer! Try switching roles with the ⇆ button in the top right to see both sides of a commission.' });
+  }
+}
+
+function setActive(item) {
+  document.querySelectorAll('.convo-item').forEach(i => i.classList.remove('active'));
+  item.classList.add('active');
+}
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Artist accepts trial
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function artistAcceptTrial() {
+  trialAccepted = true;
+  // Change artist badge to orange check
+  const badge = document.getElementById('artistTrialBadge');
+  badge.className = 'convo-icon check-icon';
+  badge.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  badge.style.background = 'var(--orange)';
+
+  // Also update customer badge
+  const cbadge = document.getElementById('customerTrialBadge');
+  cbadge.className = 'convo-icon check-icon';
+  cbadge.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  cbadge.style.background = 'var(--orange)';
+
+  // Update customer status pill
+  const statusEl = document.getElementById('customerSlotStatus');
+  if (statusEl) { statusEl.textContent = 'ACCEPTED'; statusEl.style.borderColor = 'var(--blue)'; statusEl.style.color = 'var(--blue)'; }
+
+  // Add system message
+  trialMessages.push({ sender: 'system', text: 'Commission accepted! You can now chat freely.' });
+
+  // Artist click handler now opens chat
+  const aItem = document.getElementById('artistTrialItem');
+  aItem.onclick = () => { openView('artistTrialChat'); setActive(aItem); renderMessages('artist'); };
+
+  openView('artistTrialChat');
+  setActive(aItem);
+  renderMessages('artist');
+}
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Chat messaging
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function renderMessages(side) {
+  const containerId = side === 'artist' ? 'artistChatMessages' : 'customerChatMessages';
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  const myAvatar = getProfileAvatar();
+
+  trialMessages.forEach(msg => {
+    if (msg.sender === 'system') {
+      const sys = document.createElement('div');
+      sys.style.cssText = 'text-align:center;font-size:.8rem;font-weight:700;color:var(--orange);padding:4px 0;';
+      sys.textContent = msg.text;
+      container.appendChild(sys);
+      return;
+    }
+    const isMine = (side === 'artist' && msg.sender === 'artist') || (side === 'customer' && msg.sender === 'customer');
+    const wrap = document.createElement('div');
+    wrap.className = 'chat-bubble-wrap' + (isMine ? ' mine' : '');
+
+    let avatarInner = '•ﻌ•';
+    if (msg.sender === 'lona-customer' || msg.sender === 'lona-artist') {
+      avatarInner = '<span style="font-size:.55rem;font-weight:900;color:var(--orange)">LONA</span>';
+    } else if (isMine && myAvatar) {
+      avatarInner = `<img src="${myAvatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    }
+
+    wrap.innerHTML = `
+      <div class="chat-bubble-avatar" style="${(msg.sender==='lona-customer'||msg.sender==='lona-artist')?'background:var(--blue);':'background:var(--orange);'}">${avatarInner}</div>
+      <div class="chat-bubble">
+        ${msg.text ? escapeHTML(msg.text) : ''}
+        ${msg.img ? `<img class="chat-bubble-img" src="${msg.img}" alt="attachment">` : ''}
+      </div>`;
+    container.appendChild(wrap);
+  });
+
+  container.scrollTop = container.scrollHeight;
+}
+
+function sendArtistMsg() {
+  const input = document.getElementById('artistChatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  trialMessages.push({ sender: 'artist', text });
+  input.value = ''; input.style.height = 'auto';
+  renderMessages('artist');
+  // Auto-reply after short delay
+  setTimeout(() => {
+    trialMessages.push({ sender: 'lona-customer', text: 'Thanks for the message! In a real commission, your customer would reply here.' });
+    renderMessages('artist');
+  }, 1200);
+}
+
+function sendCustomerMsg() {
+  const input = document.getElementById('customerChatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  trialMessages.push({ sender: 'customer', text });
+  input.value = ''; input.style.height = 'auto';
+  renderMessages('customer');
+  // Auto-reply
+  setTimeout(() => {
+    trialMessages.push({ sender: 'lona-artist', text: 'Got your message! In a real commission, the artist would reply here. Try accepting the commission on the Artist side too (use â‡„ to switch).' });
+    renderMessages('customer');
+  }, 1200);
+}
+
+function handleAttach(event, side) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const sender = side === 'artist' ? 'artist' : 'customer';
+    trialMessages.push({ sender, text: '', img: ev.target.result });
+    renderMessages(side);
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+
+function artistChatBack() {
+  openView('artistEmpty-right');
+  document.querySelectorAll('.convo-item').forEach(i => i.classList.remove('active'));
+}
+
+function customerChatBack() {
+  openView('customerEmpty-right');
+  document.querySelectorAll('.convo-item').forEach(i => i.classList.remove('active'));
+}
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Keyboard
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('infoOverlay').classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
+

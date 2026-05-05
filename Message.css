@@ -1,0 +1,238 @@
+@import url('shared-nav.css');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);color:var(--blue);min-height:100vh;display:flex;flex-direction:column}
+
+.msg-page{display:flex;flex:1;min-height:0;height:calc(100vh - 76px)}
+
+/* ── LEFT PANEL ── */
+.left-panel{width:270px;flex-shrink:0;padding:1.6rem 1.2rem;overflow-y:auto}
+.role-panel{display:none}
+.role-panel.active{display:block}
+
+/* ── ROLE INDICATOR BADGE ── */
+.role-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--blue);color:white;
+  font-size:.68rem;font-weight:900;letter-spacing:1.2px;
+  padding:4px 12px;border-radius:20px;
+  margin-bottom:1rem;
+}
+.role-badge.artist-badge{background:var(--blue)}
+.role-badge.customer-badge{background:var(--orange)}
+.role-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0}
+
+.panel-title{font-size:1.05rem;font-weight:900;color:var(--blue);letter-spacing:.5px;margin-bottom:1.1rem;cursor:pointer;user-select:none;transition:color .15s}
+.panel-title:hover{color:var(--orange)}
+
+.convo-list{display:flex;flex-direction:column;gap:.6rem}
+.list-empty{font-size:.92rem;color:var(--orange);font-weight:600;line-height:1.55;padding-top:.3rem}
+
+/* ── CONVO ITEM ── */
+.convo-item{display:flex;align-items:center;gap:.75rem;background:var(--cream);border:1.5px solid var(--blue);border-radius:38px;padding:.5rem .65rem .5rem .5rem;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.convo-item:hover,.convo-item.active{border-color:var(--orange);box-shadow:0 3px 12px rgba(232,98,26,.2)}
+.convo-avatar{width:42px;height:42px;border-radius:50%;background:var(--orange);border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:900;color:var(--blue);overflow:hidden;flex-shrink:0}
+.convo-name{flex:1;font-size:.92rem;font-weight:800;color:var(--blue)}
+.convo-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.clock-icon{background:var(--blue)}
+.check-icon{background:var(--orange)}
+
+/* ── VERTICAL DIVIDER ── */
+.v-divider{width:2px;background:var(--orange);flex-shrink:0;margin:1.4rem 0}
+
+/* ── RIGHT PANEL ── */
+.right-panel{flex:1;padding:2rem 2.2rem;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center}
+
+.thread-view{display:none;width:100%;max-width:700px}
+.thread-view.active{display:block}
+.thread-empty-msg{margin-top:5rem;text-align:center;font-size:1rem;color:var(--orange);font-weight:600;line-height:1.75}
+.thread-empty-msg a{color:var(--blue);font-weight:900;text-decoration:underline}
+
+/* ── THREAD CARD — no outer border ── */
+.thread-card{
+  background:var(--cream);
+  border-radius:20px;
+  padding:1.5rem 1.65rem 1.2rem;
+  /* border removed per feedback */
+}
+.thread-header{display:flex;align-items:center;gap:.85rem;margin-bottom:1rem}
+.thread-avatar{width:50px;height:50px;border-radius:50%;background:var(--orange);border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:900;color:var(--blue);overflow:hidden;flex-shrink:0}
+.thread-name{font-size:1.3rem;font-weight:900;color:var(--blue);flex:1}
+.thread-stars{font-size:1.15rem;color:var(--blue);letter-spacing:.9px}
+
+.thread-meta{margin-bottom:1rem}
+.meta-label{font-size:.88rem;font-weight:900;color:var(--blue)}
+.meta-val{font-size:.95rem;color:var(--blue);font-weight:400}
+
+.thread-body{font-size:.95rem;color:var(--blue);line-height:2;font-weight:400;padding-bottom:.35rem;margin-bottom:.9rem;background-image:repeating-linear-gradient(to bottom,transparent,transparent calc(2em - 1px),var(--orange) calc(2em - 1px),var(--orange) 2em);background-size:100% 2em}
+.reply-wrap{margin-bottom:.9rem}
+.reply-textarea{width:100%;min-height:75px;border:none;border-bottom:1.5px solid var(--orange);background:transparent;font-family:var(--font);font-size:.92rem;color:var(--blue);resize:none;outline:none;line-height:2;padding-top:.1em;background-image:repeating-linear-gradient(to bottom,transparent,transparent calc(2em - 1px),var(--orange) calc(2em - 1px),var(--orange) 2em);background-size:100% 2em}
+.reply-textarea::placeholder{color:rgba(26,39,68,.38)}
+
+.thread-footer{display:flex;align-items:center;margin-top:.45rem}
+.thread-footer.right-align{justify-content:flex-end}
+.thread-footer.space-between{justify-content:space-between}
+.right-cluster{display:flex;align-items:center;gap:.65rem}
+
+.action-btn{font-family:var(--font);font-size:.9rem;font-weight:900;padding:9px 22px;border-radius:12px;cursor:pointer;letter-spacing:.5px;transition:background .18s,color .18s,transform .12s}
+.orange-btn{background:var(--white);border:2px solid var(--orange);color:var(--orange)}
+.orange-btn:hover{background:var(--orange);color:white;transform:translateY(-1px)}
+
+.back-btn{width:40px;height:40px;border-radius:50%;background:var(--orange);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding-right:2px;transition:opacity .15s}
+.back-btn:hover{opacity:.85}
+
+.clock-wrap{width:34px;height:34px;border:2px solid var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.pending-pill{background:var(--white);border:2px solid var(--orange);color:var(--orange);font-family:var(--font);font-size:.85rem;font-weight:900;padding:6px 16px;border-radius:10px;letter-spacing:.4px}
+
+/* ── SYSTEM CARD OVERLAYS ── */
+.overlay-backdrop{display:none;position:fixed;inset:0;background:rgba(26,39,68,.62);z-index:900;align-items:center;justify-content:center;padding:2rem}
+.overlay-backdrop.open{display:flex}
+.system-card{background:var(--cream);border:2px solid var(--orange);border-radius:22px;padding:2rem 2.2rem 1.6rem;width:100%;max-width:460px;box-shadow:0 14px 52px rgba(26,39,68,.2)}
+.sys-logo-row{display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem}
+.sys-logo{height:34px;mix-blend-mode:multiply;object-fit:contain}
+.sys-tag{background:var(--blue);color:white;font-size:.68rem;font-weight:900;letter-spacing:1px;padding:3px 9px;border-radius:18px}
+.sys-greeting{font-size:1.3rem;font-weight:900;color:var(--blue);margin-bottom:.6rem}
+.sys-body{font-size:.95rem;color:var(--blue);line-height:1.72;font-weight:500;margin-bottom:1.5rem}
+.sys-btn{background:var(--orange);border:none;color:white;font-family:var(--font);font-size:.88rem;font-weight:900;padding:10px 28px;border-radius:18px;cursor:pointer;letter-spacing:.5px;transition:opacity .15s}
+.sys-btn:hover{opacity:.85}
+
+/* ── CHAT VIEW ── */
+.chat-view{display:none;flex-direction:column;width:100%;height:100%}
+.chat-view.active{display:flex}
+.chat-header{display:flex;align-items:center;gap:.85rem;margin-bottom:.9rem;padding-bottom:.85rem;border-bottom:2px solid var(--orange)}
+.chat-back-btn{width:34px;height:34px;border-radius:50%;background:var(--orange);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .15s;flex-shrink:0;padding-right:2px}
+.chat-back-btn:hover{opacity:.85}
+.chat-title{font-size:1.2rem;font-weight:900;color:var(--blue);flex:1}
+.chat-status{font-size:.78rem;font-weight:800;color:var(--orange);background:var(--cream);border:1.5px solid var(--orange);padding:3px 12px;border-radius:18px;letter-spacing:.4px}
+.chat-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:.75rem;padding:.35rem 0 .9rem;min-height:0}
+.chat-bubble-wrap{display:flex;gap:.55rem}
+.chat-bubble-wrap.mine{flex-direction:row-reverse}
+.chat-bubble-avatar{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:var(--orange);border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;color:var(--blue);overflow:hidden}
+.chat-bubble{max-width:66%;background:var(--cream);border-radius:14px;padding:.6rem .9rem;font-size:.9rem;line-height:1.5;color:var(--blue);font-weight:500}
+/* no border on messages as requested */
+.chat-bubble-wrap.mine .chat-bubble{background:var(--blue);color:white}
+.chat-bubble-img{max-width:170px;border-radius:9px;margin-top:.45rem;display:block}
+.chat-input-row{display:flex;gap:.65rem;align-items:flex-end;padding-top:.65rem;border-top:2px solid var(--orange)}
+.chat-attach-btn{background:none;border:1.5px solid var(--orange);border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;color:var(--orange);font-size:1rem;font-weight:900}
+.chat-attach-btn:hover{background:var(--cream)}
+.chat-textarea{flex:1;border:1.5px solid var(--orange);border-radius:12px;background:var(--cream);padding:9px 13px;font-family:var(--font);font-size:.9rem;color:var(--blue);resize:none;outline:none;line-height:1.45;min-height:42px;max-height:115px}
+.chat-send-btn{background:var(--orange);border:none;border-radius:12px;color:white;font-family:var(--font);font-size:.85rem;font-weight:900;padding:9px 18px;cursor:pointer;letter-spacing:.4px;transition:opacity .15s;flex-shrink:0;align-self:flex-end}
+.chat-send-btn:hover{opacity:.88}
+.right-panel{align-items:stretch;padding:1.5rem 1.9rem}
+.thread-view,.chat-view{height:100%;box-sizing:border-box}
+.thread-view.active{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start}
+
+.nav-switch{background:none;border:1.5px solid var(--blue);border-radius:10px;padding:6px 9px;cursor:pointer;display:flex;align-items:center;transition:background .15s}
+.nav-switch:hover{background:var(--cream)}
+
+/* ══════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════════════ */
+
+/* TABLET: 1024px and below */
+@media(max-width:1024px){
+  .msg-page{height:calc(100vh - 70px)}
+  .left-panel{width:220px;padding:1.4rem 1rem}
+  .role-badge{font-size:.65rem;padding:3px 10px;margin-bottom:.9rem}
+  .panel-title{font-size:.95rem;margin-bottom:.9rem}
+  .convo-item{padding:.4rem .5rem}
+  .convo-avatar{width:38px;height:38px;font-size:.75rem}
+  .convo-name{font-size:.85rem}
+  .convo-icon{width:28px;height:28px}
+  .right-panel{padding:1.6rem 1.8rem}
+  .thread-card{padding:1.3rem 1.4rem 1rem}
+  .thread-header{gap:.7rem;margin-bottom:.8rem}
+  .thread-avatar{width:44px;height:44px;font-size:.85rem}
+  .thread-name{font-size:1.1rem}
+  .thread-stars{font-size:1rem}
+  .thread-body{line-height:1.9}
+  .action-btn{font-size:.82rem;padding:8px 18px}
+  .back-btn{width:36px;height:36px}
+  .system-card{padding:1.6rem 1.8rem;max-width:420px}
+  .sys-logo{height:30px}
+  .sys-greeting{font-size:1.1rem;margin-bottom:.5rem}
+  .sys-body{font-size:.88rem;margin-bottom:1.2rem}
+}
+
+/* TABLET: 768px and below */
+@media(max-width:768px){
+  .msg-page{flex-direction:column;height:auto;min-height:calc(100vh - 70px)}
+  .left-panel{width:100%;padding:1.2rem 1rem;border-bottom:2px solid var(--orange)}
+  .role-badge{font-size:.62rem;padding:2px 8px;margin-bottom:.7rem}
+  .panel-title{font-size:.9rem;margin-bottom:.8rem;cursor:pointer}
+  .convo-list{gap:.5rem}
+  .convo-item{padding:.35rem .4rem;border-radius:32px;border-width:1.2px}
+  .convo-avatar{width:34px;height:34px;font-size:.7rem;border-width:1.5px}
+  .convo-name{font-size:.8rem}
+  .convo-icon{width:24px;height:24px;font-size:.6rem}
+  .list-empty{font-size:.8rem;padding-top:.2rem}
+  .v-divider{width:100%;height:2px;margin:0;background:var(--orange)}
+  .right-panel{padding:1.2rem 1rem;align-items:stretch;min-height:350px}
+  .thread-view,.chat-view{width:100%;max-width:100%}
+  .thread-card{padding:1rem 1.2rem .8rem;border-radius:16px}
+  .thread-header{gap:.6rem;margin-bottom:.7rem}
+  .thread-avatar{width:40px;height:40px;font-size:.78rem;border-width:1.5px}
+  .thread-name{font-size:1rem}
+  .thread-stars{font-size:.9rem}
+  .thread-meta{margin-bottom:.8rem}
+  .meta-label{font-size:.8rem}
+  .meta-val{font-size:.88rem}
+  .thread-body{font-size:.88rem;line-height:1.8;padding-bottom:.2rem;margin-bottom:.7rem;background-size:100% 1.8em}
+  .reply-wrap{margin-bottom:.7rem}
+  .reply-textarea{min-height:65px;font-size:.85rem;line-height:1.8;background-size:100% 1.8em}
+  .action-btn{font-size:.76rem;padding:7px 14px}
+  .back-btn{width:32px;height:32px}
+  .thread-footer{margin-top:.3rem}
+  .pending-pill{font-size:.78rem;padding:5px 12px}
+  .overlay-backdrop{padding:1rem}
+  .system-card{padding:1.4rem 1.5rem;max-width:90vw;border-radius:18px}
+  .sys-logo-row{gap:.6rem;margin-bottom:.9rem}
+  .sys-logo{height:28px}
+  .sys-tag{font-size:.6rem;padding:2px 7px}
+  .sys-greeting{font-size:1rem;margin-bottom:.4rem}
+  .sys-body{font-size:.82rem;line-height:1.6;margin-bottom:1rem}
+  .sys-btn{font-size:.8rem;padding:8px 22px;border-radius:16px}
+  .thread-empty-msg{margin-top:2rem;font-size:.92rem}
+}
+
+/* MOBILE: 480px and below */
+@media(max-width:480px){
+  .msg-page{height:auto;min-height:calc(100vh - 64px)}
+  .left-panel{width:100%;padding:.8rem .6rem;border-bottom:2px solid var(--orange)}
+  .role-badge{font-size:.58rem;padding:2px 6px;margin-bottom:.5rem}
+  .panel-title{font-size:.78rem;margin-bottom:.6rem}
+  .convo-list{gap:.4rem}
+  .convo-item{padding:.3rem .35rem;border-width:1px;border-radius:28px}
+  .convo-avatar{width:30px;height:30px;font-size:.62rem;border-width:1px}
+  .convo-name{font-size:.72rem}
+  .convo-icon{width:22px;height:22px;font-size:.5rem}
+  .list-empty{font-size:.72rem}
+  .v-divider{height:1.5px}
+  .right-panel{padding:.8rem;min-height:300px}
+  .thread-view.active{display:flex;flex-direction:column}
+  .thread-card{padding:.85rem 1rem .7rem;border-radius:12px}
+  .thread-header{gap:.5rem;margin-bottom:.6rem;flex-wrap:wrap}
+  .thread-avatar{width:36px;height:36px;font-size:.7rem}
+  .thread-name{font-size:.88rem;flex-basis:100%}
+  .thread-stars{font-size:.8rem}
+  .thread-meta{margin-bottom:.6rem}
+  .meta-label{font-size:.72rem}
+  .meta-val{font-size:.8rem}
+  .thread-body{font-size:.8rem;line-height:1.7;padding-bottom:.15rem;margin-bottom:.6rem;background-size:100% 1.7em}
+  .reply-wrap{margin-bottom:.5rem}
+  .reply-textarea{min-height:55px;font-size:.78rem;line-height:1.7;background-size:100% 1.7em}
+  .action-btn{font-size:.7rem;padding:6px 12px;border-radius:10px}
+  .back-btn{width:28px;height:28px;font-size:.8rem}
+  .thread-footer{margin-top:.2rem}
+  .right-cluster{gap:.5rem}
+  .pending-pill{font-size:.7rem;padding:4px 10px;border-radius:8px}
+  .clock-wrap{width:30px;height:30px;border-width:1.5px}
+  .overlay-backdrop{padding:.6rem}
+  .system-card{padding:1.2rem 1.3rem;max-width:95vw;border-radius:16px;border-width:1.5px}
+  .sys-logo-row{gap:.5rem;margin-bottom:.8rem}
+  .sys-logo{height:24px}
+  .sys-tag{font-size:.55rem;padding:1.5px 5px}
+  .sys-greeting{font-size:.88rem;margin-bottom:.3rem}
+  .sys-body{font-size:.75rem;line-height:1.5;margin-bottom:.8rem}
+  .sys-btn{font-size:.72rem;padding:6px 16px}
+  .thread-empty-msg{margin-top:1.5rem;font-size:.82rem;line-height:1.5}
+}

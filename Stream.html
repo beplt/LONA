@@ -1,0 +1,355 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lona â€“ Stream</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Stream.css">
+  <script src="lona-storage.js"></script>
+  <script src="lona-footer.js"></script>
+  <style>
+    /* â”€â”€ NAV AVATAR DROPDOWN â”€â”€ */
+    .nav-avatar-wrap { position: relative; }
+    .nav-avatar-dropdown {
+      display: none; position: absolute; right: 0; top: calc(100% + 8px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: hidden; min-width: 150px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.18); z-index: 500;
+    }
+    .nav-avatar-dropdown.open { display: block; }
+    .nav-avatar-dropdown a,
+    .nav-avatar-dropdown button {
+      display: block; width: 100%; text-decoration: none;
+      background: none; border: none; text-align: left;
+      padding: 11px 18px; font-family: var(--font);
+      font-size: .9rem; font-weight: 800; color: var(--blue);
+      cursor: pointer; transition: background .13s;
+    }
+    .nav-avatar-dropdown a:hover { background: var(--cream); }
+    .nav-avatar-dropdown button { color: #c0392b; }
+    .nav-avatar-dropdown button:hover { background: #fff0f0; }
+
+    /* â”€â”€ SEARCH CATEGORY â”€â”€ */
+    .search-wrap { position: relative; }
+    .search-category-btn {
+      background: var(--cream); border: none; border-right: 2px solid var(--blue);
+      padding: 0 10px; height: 100%; cursor: pointer;
+      font-family: var(--font); font-size: .75rem; font-weight: 900;
+      color: var(--blue); white-space: nowrap; display: flex; align-items: center; gap: 3px;
+    }
+    .search-category-btn:hover { background: #ffe0bb; }
+    .search-cat-dropdown {
+      display: none; position: absolute; left: 0; top: calc(100% + 4px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: visible; min-width: 190px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.15); z-index: 600;
+    }
+    .search-cat-dropdown.open { display: block; }
+    .scat-item {
+      position: relative; padding: 10px 16px;
+      font-family: var(--font); font-size: .88rem; font-weight: 800;
+      color: var(--blue); cursor: pointer; transition: background .12s;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .scat-item:hover { background: var(--cream); }
+    .scat-sub {
+      display: none; position: absolute; left: calc(100% + 2px); top: -2px;
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; overflow: hidden; min-width: 170px;
+      box-shadow: 0 6px 20px rgba(37,60,151,.15); z-index: 601;
+    }
+    .scat-item:hover .scat-sub { display: block; }
+    .scat-sub-item {
+      padding: 9px 16px; font-family: var(--font);
+      font-size: .85rem; font-weight: 700; color: var(--blue);
+      cursor: pointer; transition: background .12s;
+    }
+    .scat-sub-item:hover { background: var(--cream); }
+    .search-results-bar {
+      display: none; position: absolute; left: 0; top: calc(100% + 6px);
+      background: white; border: 2.5px solid var(--orange);
+      border-radius: 14px; min-width: 300px;
+      box-shadow: 0 6px 24px rgba(37,60,151,.16); z-index: 590;
+      padding: 14px 18px; font-family: var(--font);
+    }
+    .search-results-bar.open { display: block; }
+    .search-result-msg { font-size: .92rem; font-weight: 700; color: var(--blue); line-height: 1.7; }
+
+    /* â”€â”€ POSTS WIDER & CENTERED â”€â”€ */
+    .posts-list { max-width: 740px !important; margin-left: auto !important; margin-right: auto !important; }
+
+    /* â”€â”€ THREE-DOT BUTTON STYLE (matching Gallery) â”€â”€ */
+    .post-menu-btn {
+      background: rgba(255,255,255,.18) !important;
+      border: none !important; color: var(--orange) !important;
+      font-size: .85rem !important; font-weight: 900 !important;
+      letter-spacing: 2px !important; padding: 5px 10px !important;
+      border-radius: 20px !important; cursor: pointer !important;
+      transition: background .15s !important;
+    }
+    .post-menu-btn:hover { background: rgba(255,255,255,.35) !important; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="About.html" alt="LONA" title="LONA">
+    <img src="LONA full sign.PNG" alt="LONA" title="LONA">
+  </a>
+  <div class="nav-links">
+    <a href="Stream.html" class="active">STREAM</a>
+    <a href="Gallery.html">GALLERY</a>
+    <a href="About.html">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <div class="search-wrap" id="searchWrap">
+      <div class="nav-search">
+        <button class="search-category-btn" id="catBtn" onclick="toggleCatDropdown(event)" type="button">
+          <span id="catLabel">ALL</span> &#9660;
+        </button>
+        <input type="text" id="searchInput" placeholder="Search..." oninput="handleSearch()" onkeydown="if(event.key==='Enter')handleSearch()">
+        <button onclick="handleSearch()">
+          <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+            <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+            <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="search-cat-dropdown" id="catDropdown">
+        <div class="scat-item" onclick="selectCat('ARTIST NAME', event)">ARTIST NAME</div>
+        <div class="scat-item" onclick="selectCat('ART NAME', event)">ART NAME</div>
+        <div class="scat-item">SERVICES &#9658;
+          <div class="scat-sub">
+            <div class="scat-sub-item" onclick="selectCat('Illustration', event)">Illustration</div>
+            <div class="scat-sub-item" onclick="selectCat('Portrait', event)">Portrait</div>
+            <div class="scat-sub-item" onclick="selectCat('Photography', event)">Photography</div>
+            <div class="scat-sub-item" onclick="selectCat('Music', event)">Music</div>
+            <div class="scat-sub-item" onclick="selectCat('Writing', event)">Writing</div>
+            <div class="scat-sub-item" onclick="selectCat('Design', event)">Design</div>
+            <div class="scat-sub-item" onclick="selectCat('Crafts', event)">Crafts</div>
+          </div>
+        </div>
+      </div>
+      <div class="search-results-bar" id="searchResults"></div>
+    </div>
+    <a class="nav-msg" href="message.html">&#x2709;</a>
+    <div class="nav-avatar-wrap" id="navAvatarWrap">
+      <div class="nav-avatar" id="navAvatar" onclick="toggleAvatarDrop(event)" style="cursor:pointer">•ﻌ•</div>
+      <div class="nav-avatar-dropdown" id="avatarDrop">
+        <a href="profile.html">Profile</a>
+        <button onclick="logOut()">Log Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE WRAP -->
+<div class="page-wrap">
+  <h1 class="stream-title">STREAM</h1>
+  <div class="compose-row">
+    <div class="compose-box" id="composeBox">
+      <div class="compose-label">ANYTHING ON YOUR MIND?</div>
+      <textarea class="compose-textarea" id="postInput" placeholder="" oninput="updateWordCount(this)" maxlength="700"></textarea>
+      <div class="compose-footer">
+        <span class="word-count" id="wordCount">100 words</span>
+      </div>
+    </div>
+    <button class="post-btn" onclick="submitPost()">POST</button>
+  </div>
+  <hr class="section-divider">
+  <div class="world-label">THE WORLD'S THOUGHTS</div>
+  <div id="postsEmpty" class="posts-empty" style="display:none">No thoughts from the world, want<br>to share a thought?</div>
+  <div class="posts-list" id="postsList"></div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="editModal">
+    <div class="modal-title">EDIT POST</div>
+    <textarea class="modal-textarea" id="modalTextarea" maxlength="700" oninput="updateModalCount(this)"></textarea>
+    <div class="modal-footer">
+      <span class="modal-wordcount" id="modalWordCount">100 words</span>
+      <div class="modal-actions">
+        <button class="modal-cancel-btn" onclick="closeEditModal()">CANCEL</button>
+        <button class="modal-save-btn" onclick="saveEdit()">SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let userAvatarSrc = null, userName = 'You', editingPostId = null, currentCategory = 'ALL';
+
+try {
+  const saved = localStorage.getItem('lonaProfile');
+  if (saved) { const p = JSON.parse(saved); if (p.avatar) userAvatarSrc = p.avatar; if (p.name) userName = p.name; }
+} catch(e){}
+
+// Apply nav avatar
+try {
+  const saved = localStorage.getItem('lonaProfile');
+  if (saved) {
+    const p = JSON.parse(saved);
+    const el = document.getElementById('navAvatar');
+    if (p.avatar) el.innerHTML = `<img src="${p.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    else if (p.name) el.textContent = p.name.charAt(0).toUpperCase();
+  }
+} catch(e){}
+
+function getAvatarHTML(size) {
+  if (userAvatarSrc) return `<img src="${userAvatarSrc}" style="width:${size}px;height:${size}px;object-fit:cover;border-radius:50%;display:block;" alt="avatar">`;
+  return `<span style="font-size:${size > 40 ? 1.1 : 0.85}rem;line-height:1">•ﻌ•</span>`;
+}
+
+function toggleAvatarDrop(e) { e.stopPropagation(); document.getElementById('avatarDrop').classList.toggle('open'); }
+function logOut() { localStorage.removeItem('lonaProfile'); window.location.href = 'index.html'; }
+
+function toggleCatDropdown(e) {
+  e.stopPropagation();
+  document.getElementById('catDropdown').classList.toggle('open');
+  document.getElementById('searchResults').classList.remove('open');
+}
+
+function selectCat(cat, e) {
+  if (e) e.stopPropagation();
+  currentCategory = cat;
+  const label = cat.length > 9 ? cat.slice(0,8)+'...' : cat;
+  document.getElementById('catLabel').textContent = label;
+  document.getElementById('catDropdown').classList.remove('open');
+  handleSearch();
+}
+
+function handleSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  const res = document.getElementById('searchResults');
+  if (!q) { res.classList.remove('open'); return; }
+  const cat = currentCategory;
+  let html = '';
+  if (cat === 'ARTIST NAME') {
+    html = `<div class="search-result-msg">Are you trying to find this person?<br>No artists here yet.</div>`;
+  } else if (cat === 'ART NAME') {
+    html = `<div class="search-result-msg">Maybe this is what you want?<br>No art to show here yet.</div>`;
+  } else {
+    html = `<div class="search-result-msg">No artist found for "<strong>${escapeHTML(q)}</strong>".<br>No artists here yet.</div>`;
+  }
+  res.innerHTML = html;
+  res.classList.add('open');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#navAvatarWrap')) document.getElementById('avatarDrop').classList.remove('open');
+  if (!e.target.closest('#searchWrap')) {
+    document.getElementById('catDropdown').classList.remove('open');
+    document.getElementById('searchResults').classList.remove('open');
+  }
+  if (!e.target.closest('.post-menu-wrap')) document.querySelectorAll('.post-dropdown').forEach(d => d.classList.remove('open'));
+});
+
+function updateWordCount(el) {
+  const words = el.value.trim() === '' ? 0 : el.value.trim().split(/\s+/).length;
+  document.getElementById('wordCount').textContent = Math.max(0, 100 - words) + ' words';
+  if (words > 100) { el.value = el.value.trim().split(/\s+/).slice(0, 100).join(' '); document.getElementById('wordCount').textContent = '0 words'; }
+}
+function updateModalCount(el) {
+  document.getElementById('modalWordCount').textContent = Math.max(0, 100 - (el.value.trim() === '' ? 0 : el.value.trim().split(/\s+/).length)) + ' words';
+}
+
+function loadPosts() {
+  const posts = LonaPostsDB.getAll(), list = document.getElementById('postsList'), empty = document.getElementById('postsEmpty');
+  list.innerHTML = '';
+  if (posts.length === 0) { empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  posts.forEach(post => list.appendChild(createCardElement(post)));
+}
+
+function submitPost() {
+  const input = document.getElementById('postInput'), text = input.value.trim();
+  if (!text) return;
+  const post = { id: LonaPostsDB.nextId(), text, likes: 0, liked: false, timestamp: Date.now() };
+  LonaPostsDB.save(post);
+  document.getElementById('postsEmpty').style.display = 'none';
+  document.getElementById('postsList').prepend(createCardElement(post));
+  input.value = ''; document.getElementById('wordCount').textContent = '100 words';
+}
+
+function createCardElement(post) {
+  const card = document.createElement('div');
+  card.className = 'post-card'; card.dataset.id = post.id; card.dataset.text = post.text; card.dataset.likes = post.likes;
+  card.innerHTML = buildCardHTML(post.id, post.text, post.likes, post.liked);
+  return card;
+}
+
+function buildCardHTML(id, text, likes, liked) {
+  return `<div class="post-header">
+    <div class="post-avatar">${getAvatarHTML(44)}</div>
+    <div class="post-username">${escapeHTML(userName)}</div>
+    <div class="post-menu-wrap">
+      <button class="post-menu-btn" onclick="toggleMenu('${id}')" title="Options">• • •</button>
+      <div class="post-dropdown" id="dropdown-${id}">
+        <button onclick="openEditModal('${id}')">Edit</button>
+        <button onclick="deletePost('${id}')">Delete</button>
+      </div>
+    </div>
+  </div>
+  <div class="post-body" id="body-${id}">${escapeHTML(text)}</div>
+  <div class="post-footer">
+    <button class="like-btn${liked?' liked':''}" id="like-btn-${id}" onclick="toggleLike('${id}')">
+      <span class="like-count" id="like-count-${id}">${likes}</span>
+      <svg class="heart-icon${liked?' filled':''}" id="heart-${id}" viewBox="0 0 24 24" width="22" height="22">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </button>
+  </div>`;
+}
+
+function escapeHTML(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function toggleLike(id) {
+  const card = document.querySelector(`.post-card[data-id="${id}"]`);
+  const btn = document.getElementById(`like-btn-${id}`), heart = document.getElementById(`heart-${id}`), countEl = document.getElementById(`like-count-${id}`);
+  let likes = parseInt(card.dataset.likes); const liked = btn.classList.contains('liked');
+  if (liked) { likes--; btn.classList.remove('liked'); heart.classList.remove('filled'); }
+  else { likes++; btn.classList.add('liked'); heart.classList.add('filled'); }
+  card.dataset.likes = likes; countEl.textContent = likes;
+  LonaPostsDB.update(id, { likes, liked: !liked });
+}
+
+function toggleMenu(id) {
+  document.querySelectorAll('.post-dropdown').forEach(d => { if (d.id !== `dropdown-${id}`) d.classList.remove('open'); });
+  document.getElementById(`dropdown-${id}`).classList.toggle('open');
+}
+
+function deletePost(id) {
+  const card = document.querySelector(`.post-card[data-id="${id}"]`); if (card) card.remove();
+  LonaPostsDB.remove(id);
+  if (document.getElementById('postsList').children.length === 0) document.getElementById('postsEmpty').style.display = 'block';
+}
+
+function openEditModal(id) {
+  editingPostId = id;
+  const card = document.querySelector(`.post-card[data-id="${id}"]`);
+  document.getElementById('modalTextarea').value = card.dataset.text;
+  updateModalCount(document.getElementById('modalTextarea'));
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById(`dropdown-${id}`).classList.remove('open');
+}
+function closeEditModal() { document.getElementById('modalOverlay').classList.remove('open'); editingPostId = null; }
+function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeEditModal(); }
+function saveEdit() {
+  const text = document.getElementById('modalTextarea').value.trim();
+  if (!text || editingPostId === null) return;
+  const id = editingPostId, card = document.querySelector(`.post-card[data-id="${id}"]`);
+  const likes = parseInt(card.dataset.likes), liked = document.getElementById(`like-btn-${id}`).classList.contains('liked');
+  card.dataset.text = text; card.innerHTML = buildCardHTML(id, text, likes, liked);
+  if (liked) { card.querySelector(`#like-btn-${id}`).classList.add('liked'); card.querySelector(`#heart-${id}`).classList.add('filled'); }
+  LonaPostsDB.update(id, { text }); closeEditModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditModal(); });
+
+loadPosts();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lona Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <div class="container">
+        <!-- LEFT SIDE: Logo and Description -->
+        <div class="left-section">
+            <div class="logo-wrapper">
+                <h1 class="logo-text">Lona</h1>
+                <img src="LONA.png" alt="icon" class="logo-icon">
+            </div>
+            <p class="description">Lona empowers <span class="highlight">artists to showcase their work, offer services,</span> and build sustainable creative careers while enabling customers to discover and commission talented artists in their communities.</p>
+        </div>
+
+        <!-- RIGHT SIDE: Form -->
+        <div class="right-section">
+            <form class="form-card" id="regForm">
+                <div class="field">
+                    <label for="name">NAME:</label>
+                    <input type="text" id="name" name="name" placeholder="" autocomplete="off" required>
+                </div>
+                
+                <div class="field">
+                    <label for="email">EMAIL:</label>
+                    <input type="email" id="email" name="email" placeholder="" autocomplete="off" required>
+                </div>
+                
+                <div class="field">
+                    <label for="password">PASSWORD:</label>
+                    <input type="password" id="password" name="password" placeholder="" required>
+                </div>
+                
+                <div class="field">
+                    <label for="confirmation">CONFIRMATION:</label>
+                    <input type="password" id="confirmation" name="confirmation" placeholder="" required>
+                </div>
+
+                <button type="submit" class="submit-btn">CONFIRM</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sticky Footer -->
+    <footer class="index-footer">
+        <span class="footer-brand">LONA</span>
+        <span class="footer-sep">|</span>
+        <span style="display:flex;align-items:center;gap:.4rem">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:20252554@s.ubaguio.edu">20252554@s.ubaguio.edu</a>
+        </span>
+        <span class="footer-sep">|</span>
+        <span>Contact &amp; Support</span>
+    </footer>
+
+    <script>
+        const form       = document.getElementById('regForm');
+        const passwordEl = document.getElementById('password');
+        const confirmEl  = document.getElementById('confirmation');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (passwordEl.value !== confirmEl.value) {
+                alert('Passwords do not match. Please try again.');
+                confirmEl.focus();
+                return;
+            }
+
+            const name  = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            const existing = JSON.parse(localStorage.getItem('lonaProfile') || '{}');
+            localStorage.setItem('lonaProfile', JSON.stringify({
+                ...existing,
+                name : name,
+                email: email
+            }));
+
+            window.location.href = 'profile.html';
+        });
+    </script>
+</body>
+</html>

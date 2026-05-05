@@ -1,0 +1,211 @@
+/* ── Registration page (index.html) ── */
+@font-face {
+  font-family: 'Cy Grotesk Key';
+  src: url('kobuzan-cy-grotesk-grand-dark.otf') format('opentype');
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --blue:#1a2744;
+  --mid:#3d5a80;
+  --orange:#e8621a;
+  --amber:#f4a535;
+  --cream:#fff3e6;
+  --white:#ffffff;
+  --font:'Montserrat',sans-serif
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  min-height:100vh;width:100vw;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;
+  background:#1a2744;
+}
+
+body::before{
+  content:'';
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 60% 70% at 80% 20%, rgba(232,98,26,.55) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 10% 80%, rgba(61,90,128,.7) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 50% 50%, rgba(244,165,53,.18) 0%, transparent 70%),
+    #1a2744;
+}
+body::after{
+  content:'';
+  position:absolute;inset:0;z-index:1;
+  opacity:.12;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpolygon points='40,4 52,30 78,30 58,48 66,74 40,58 14,74 22,48 2,30 28,30' fill='none' stroke='%23f4a535' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size:80px 80px;
+}
+
+.bg-shape{display:none}
+
+.container{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;max-width:1300px;padding:2rem 4rem;gap:4rem;
+  position:relative;z-index:10;
+}
+
+/* ── LEFT ── */
+.left-section{
+  flex:1;display:flex;flex-direction:column;gap:1.2rem;max-width:580px
+}
+.logo-wrapper{display:flex;align-items:baseline;gap:.8rem}
+.logo-text{
+  font-family:'Cy Grotesk Key',sans-serif;
+  /* Changed to orange to match brand */
+  color:var(--orange);
+  font-size:8rem;font-weight:900;letter-spacing:5px;line-height:.9;
+  text-shadow:0 4px 24px rgba(232,98,26,.4);
+}
+.logo-icon{
+  height:42px;
+  mix-blend-mode:darken;
+  filter:saturate(1.9) brightness(1.02) hue-rotate(-3deg);
+  transform:translateY(8px) translateX(-10px);
+}
+.description{
+  color:#d4e4ff;font-family:var(--font);font-size:1rem;line-height:1.75;font-weight:500;
+}
+.description .highlight{color:var(--amber);font-weight:700}
+
+.left-section::after{
+  content:'— ✦ —';
+  color:rgba(244,165,53,.45);font-size:.8rem;letter-spacing:4px;
+  margin-top:.3rem;
+}
+
+/* ── RIGHT ── */
+.right-section{flex:1;display:flex;align-items:center;justify-content:flex-start;max-width:560px}
+
+/* ── FORM CARD ── */
+.form-card{
+  background:rgba(255,255,255,.97);
+  width:100%;max-width:520px;
+  padding:2.8rem 3.2rem 3.2rem;
+  border-radius:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3),0 0 0 1.5px rgba(232,98,26,.3);
+  position:relative;overflow:hidden;
+}
+.form-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--orange),var(--amber),var(--mid));
+}
+
+.field{display:flex;flex-direction:column;margin-bottom:1.4rem}
+.field label{
+  color:var(--orange);font-family:var(--font);
+  /* Bigger label */
+  font-size:.82rem;font-weight:800;
+  letter-spacing:.1em;margin-bottom:.65rem;padding-left:6px;
+}
+.field input{
+  background:#f4f6f9;border:1.5px solid #dde3ee;border-radius:22px;
+  /* Bigger input padding and font */
+  padding:16px 20px;
+  font-family:var(--font);font-size:1rem;font-weight:500;
+  color:var(--blue);outline:none;transition:all .25s ease;
+}
+.field input:focus{background:white;border-color:var(--orange);box-shadow:0 3px 12px rgba(232,98,26,.15)}
+.field input::placeholder{color:#c0c8d8}
+
+.submit-btn{
+  width:100%;background:linear-gradient(135deg,var(--orange),var(--amber));
+  color:white;border:none;
+  /* Bigger button */
+  padding:17px;
+  margin-top:.8rem;border-radius:22px;
+  font-family:var(--font);font-size:.95rem;font-weight:900;letter-spacing:.1em;
+  cursor:pointer;transition:all .3s ease;box-shadow:0 4px 16px rgba(232,98,26,.35);
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,98,26,.45)}
+.submit-btn:active{transform:translateY(0)}
+
+/* ── FOOTER on index ── */
+.index-footer{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:rgba(26,39,68,.85);
+  border-top:2px solid rgba(232,98,26,.5);
+  height:48px;
+  display:flex;align-items:center;justify-content:center;
+  gap:1.4rem;
+  z-index:200;
+  font-family:var(--font);
+  font-size:.8rem;
+  font-weight:700;
+  color:rgba(255,255,255,.8);
+  padding:0 2rem;
+  backdrop-filter:blur(8px);
+}
+.index-footer .footer-brand{font-weight:900;color:var(--orange);letter-spacing:1px}
+.index-footer .footer-sep{color:rgba(232,98,26,.5)}
+.index-footer a{color:#d4e4ff;text-decoration:none;font-weight:800;transition:color .15s}
+.index-footer a:hover{color:var(--amber)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .container{max-width:100%;padding:2rem 2.5rem;gap:2.5rem}
+  .logo-text{font-size:5.5rem}
+}
+
+@media(max-width:1024px){
+  .container{flex-direction:column;padding:2rem;gap:2rem}
+  .left-section{max-width:100%;text-align:center}
+  .left-section::after{text-align:center;display:block}
+  .right-section{max-width:100%;justify-content:center}
+  .logo-text{font-size:4.5rem}
+  .logo-icon{height:48px}
+  .description{font-size:.96rem}
+  .form-card{padding:2.2rem 2rem}
+  .field{margin-bottom:1.3rem}
+  .field input{padding:14px 18px;font-size:.95rem}
+  .submit-btn{padding:15px;font-size:.9rem}
+  .index-footer{font-size:.78rem;gap:.6rem;padding:0 1.5rem}
+}
+
+@media(max-width:768px){
+  .container{padding:1.5rem;gap:1.5rem;flex-direction:column}
+  .left-section{max-width:100%}
+  .left-section::after{margin-top:1.5rem;font-size:.85rem}
+  .logo-wrapper{justify-content:center;gap:.6rem}
+  .logo-text{font-size:3.5rem}
+  .logo-icon{height:40px}
+  .description{font-size:.88rem;line-height:1.65;text-align:center}
+  .right-section{max-width:100%;width:100%}
+  .form-card{padding:1.8rem 1.6rem;border-radius:18px}
+  .field{margin-bottom:1.1rem}
+  .field label{font-size:.82rem;margin-bottom:.5rem}
+  .field input{padding:12px 16px;font-size:.88rem}
+  .field input::placeholder{font-size:.85rem}
+  .submit-btn{padding:13px 24px;font-size:.85rem}
+  .index-footer{font-size:.7rem;gap:.5rem;padding:0 1.2rem}
+}
+
+@media(max-width:480px){
+  .container{padding:.8rem;gap:.8rem;flex-direction:column}
+  .left-section{max-width:100%}
+  .left-section::after{margin-top:1rem;font-size:.75rem;padding:0 .5rem;line-height:1.5}
+  .logo-wrapper{gap:.4rem}
+  .logo-text{font-size:2.2rem;letter-spacing:-.5px}
+  .logo-icon{height:28px;width:28px}
+  .description{font-size:.78rem;line-height:1.55}
+  .description .highlight{font-weight:800}
+  .right-section{max-width:100%;width:100%}
+  .form-card{padding:1.4rem 1.2rem;border-radius:14px;box-shadow:0 4px 16px rgba(232,98,26,.12)}
+  .form-card::before{display:none}
+  .field{margin-bottom:.85rem}
+  .field label{font-size:.75rem;margin-bottom:.4rem;letter-spacing:.4px}
+  .field input{padding:10px 12px;font-size:.82rem;border-radius:8px;border-width:1.5px}
+  .field input:focus{border-color:var(--orange);box-shadow:0 2px 8px rgba(232,98,26,.15)}
+  .field input::placeholder{font-size:.78rem;opacity:.6}
+  .submit-btn{padding:12px 20px;font-size:.78rem;border-radius:12px;letter-spacing:.5px;font-weight:900}
+  .submit-btn:hover{box-shadow:0 4px 16px rgba(232,98,26,.35);transform:translateY(-1px)}
+  .index-footer{font-size:.62rem;gap:.3rem;padding:0 .8rem;height:auto;flex-direction:column;align-items:center;text-align:center}
+  .index-footer .footer-sep{display:none}
+  .index-footer span{display:block}
+  .index-footer svg{width:10px;height:10px}
+}
