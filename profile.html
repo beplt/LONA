@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lona â€“ Profile</title>
+  <title>Lona - Profile</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="profile.css">
   <!-- Stream card styles (scoped to profile) -->
@@ -87,19 +87,22 @@
 
     /* â”€â”€ Stream-style post cards on Profile â”€â”€ */
     .stream-posts-list {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.1rem;
-      max-width: 680px;
-      margin-top: 1.2rem;
-      margin-left: auto;
-      margin-right: auto;
+      width: 100%;
+      max-width: 100%;
+      margin-top: 1rem;
     }
     .stream-post-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 220px;
       background: var(--cream);
-      border: 3px solid var(--blue);
+      border: 2px solid var(--blue);
       border-radius: 20px;
-      padding: 1.1rem 1.3rem 1rem;
+      padding: 1.1rem 1.4rem 1rem;
       position: relative;
     }
     .stream-post-header {
@@ -110,7 +113,7 @@
     }
     .stream-post-avatar {
       width: 44px; height: 44px; border-radius: 50%;
-      background: var(--orange); border: 3px solid var(--blue);
+      background: var(--orange); border: 2px solid var(--blue);
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem; font-weight: 900; color: var(--blue);
       overflow: hidden; flex-shrink: 0;
@@ -120,36 +123,38 @@
     }
     .stream-post-menu-wrap { position: relative; }
     .stream-post-menu-btn {
-      background: rgba(37,60,151,.08); border: none; cursor: pointer;
-      font-size: .85rem; font-weight: 900; color: var(--blue);
-      letter-spacing: 2px; padding: 5px 10px; border-radius: 20px;
+      background: rgba(61,90,128,.08); border: none; cursor: pointer;
+      font-size: .82rem; font-weight: 900; color: var(--blue);
+      letter-spacing: 2px; padding: 4px 9px; border-radius: 18px;
       transition: background .15s;
     }
-    .stream-post-menu-btn:hover { background: rgba(37,60,151,.18); }
+    .stream-post-menu-btn:hover { background: rgba(61,90,128,.16); }
     .stream-post-dropdown {
       display: none;
       position: absolute; right: 0; top: calc(100% + 4px);
       background: white;
-      border: 2.5px solid var(--orange);
-      border-radius: 12px; overflow: hidden;
-      min-width: 130px;
-      box-shadow: 0 6px 20px rgba(37,60,151,.15);
+      border: 1.5px solid var(--orange);
+      border-radius: 10px; overflow: hidden;
+      min-width: 120px;
+      box-shadow: 0 5px 18px rgba(26,39,68,.13);
       z-index: 50;
     }
     .stream-post-dropdown.open { display: block; }
     .stream-post-dropdown button {
       width: 100%; background: none; border: none;
-      padding: 10px 16px; text-align: left; cursor: pointer;
-      font-family: var(--font); font-size: .9rem; font-weight: 700; color: var(--blue);
+      padding: 9px 14px; text-align: left; cursor: pointer;
+      font-family: var(--font); font-size: .88rem; font-weight: 700; color: var(--blue);
       transition: background .13s;
     }
     .stream-post-dropdown button:hover { background: var(--cream); }
     .stream-post-body {
+      flex: 1;
       font-size: .97rem; line-height: 1.7; color: var(--blue);
-      font-weight: 500; text-align: center;
-      padding: .4rem 1rem 1rem;
+      font-weight: 500; text-align: left;
+      padding: .4rem 1.1rem 1rem;
     }
     .stream-post-footer {
+      margin-top: auto;
       display: flex; justify-content: flex-end; align-items: center;
     }
     .stream-like-btn {
@@ -226,7 +231,7 @@
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="About.html" alt="LONA" title="LONA">
-    <img src="LONA full sign.PNG" alt="LONA" title="LONA">
+    <img src="LONA_full_sign.PNG" alt="LONA" title="LONA">
   </a>
   <div class="nav-links">
     <a href="Stream.html">STREAM</a>

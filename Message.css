@@ -1,7 +1,12 @@
+/* ══════════════════════════════════
+   Message.css  —  Messages page
+═════════════════════════════════ */
 @import url('shared-nav.css');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
 body{font-family:var(--font);color:var(--blue);min-height:100vh;display:flex;flex-direction:column}
 
+/* ── PAGE LAYOUT ── */
 .msg-page{display:flex;flex:1;min-height:0;height:calc(100vh - 76px)}
 
 /* ── LEFT PANEL ── */
@@ -88,7 +93,7 @@ body{font-family:var(--font);color:var(--blue);min-height:100vh;display:flex;fle
 .overlay-backdrop.open{display:flex}
 .system-card{background:var(--cream);border:2px solid var(--orange);border-radius:22px;padding:2rem 2.2rem 1.6rem;width:100%;max-width:460px;box-shadow:0 14px 52px rgba(26,39,68,.2)}
 .sys-logo-row{display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem}
-.sys-logo{height:34px;mix-blend-mode:multiply;object-fit:contain}
+.sys-logo{height:34px;mix-blend-mode:multiply;background:transparent;filter:none;object-fit:contain}
 .sys-tag{background:var(--blue);color:white;font-size:.68rem;font-weight:900;letter-spacing:1px;padding:3px 9px;border-radius:18px}
 .sys-greeting{font-size:1.3rem;font-weight:900;color:var(--blue);margin-bottom:.6rem}
 .sys-body{font-size:.95rem;color:var(--blue);line-height:1.72;font-weight:500;margin-bottom:1.5rem}

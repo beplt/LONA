@@ -1,9 +1,6 @@
-/* ═══════════════════════════════════════════════════
-   shared-nav.css  —  Nav + shared utilities for all
-   inner pages. Import AFTER page-specific CSS.
-   New palette: navy #1a2744 / orange #e8621a / cream #fff3e6
-═══════════════════════════════════════════════════ */
+/* ── shared-nav.css — shared page utilities ── */
 
+/* ── ROOT VARIABLES ── */
 :root{
   --blue:#1a2744;
   --mid:#3d5a80;
@@ -14,7 +11,7 @@
   --font:'Montserrat',sans-serif;
 }
 
-/* ── Filipino background pattern (all inner pages) ── */
+/* ── BODY BACKGROUND / PATTERN ── */
 body{
   background-color:var(--white);
   background-image:
@@ -37,17 +34,18 @@ nav{
 .nav-logo{display:flex;align-items:center;text-decoration:none}
 .nav-logo img{
   height:50px;object-fit:contain;
-  mix-blend-mode:darken;
-  filter:saturate(1.9) brightness(1.02) hue-rotate(-3deg);
+  mix-blend-mode:multiply;
+  background:transparent;
+  filter:none;
 }
 
 .nav-links{display:flex;gap:12px;margin-right:auto;margin-left:2rem}
 .nav-links a{
-  text-decoration:none;color:var(--orange);font-weight:900;
-  border:1.5px solid var(--orange);padding:11px 18px;border-radius:22px;
+  text-decoration:none;color:var(--blue);font-weight:900;
+  border:1.5px solid var(--blue);padding:11px 18px;border-radius:22px;
   transition:all .18s ease;letter-spacing:.7px;background:white;
   font-size:.88rem;
-  box-shadow:0 3px 8px rgba(232,98,26,.18);
+  box-shadow:0 3px 8px rgba(26,39,68,.15);
 }
 .nav-links a:hover,.nav-links a.active{
   background:var(--orange);color:white;
@@ -64,7 +62,7 @@ nav{
   font-size:.87rem;color:var(--blue);outline:none;width:155px;
 }
 .nav-search button{
-  background:var(--blue);border:none;color:white;padding:0 12px;
+  background:var(--orange);border:none;color:white;padding:0 12px;
   height:100%;cursor:pointer;display:flex;align-items:center;
 }
 .nav-search button svg{fill:white}

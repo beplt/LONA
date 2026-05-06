@@ -1,9 +1,15 @@
+/* ══════════════════════════════════
+   Stream.css  —  Stream page
+═════════════════════════════════ */
 @import url('shared-nav.css');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 body{font-family:var(--font);color:var(--blue);min-height:100vh}
 
+/* ── PAGE WRAP ── */
 .page-wrap{max-width:1280px;margin:0 auto;padding:2.4rem 2.8rem 3.6rem}
+
+/* ── PAGE TITLE ── */
 .stream-title{font-size:2.7rem;font-weight:900;color:var(--orange);letter-spacing:.8px;margin-bottom:1.4rem}
 
 .compose-row{display:flex;align-items:flex-start;gap:1.3rem;margin-bottom:1.8rem}

@@ -1,14 +1,23 @@
+/* ══════════════════════════════════
+   About.css  —  About page
+═════════════════════════════════ */
 @import url('shared-nav.css');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
 body{font-family:var(--font);color:var(--blue);min-height:100vh}
+
+/* ── PAGE WRAP ── */
 .page-wrap{max-width:1280px;margin:0 auto;padding:2.8rem 2.8rem 3.6rem}
+
+/* ── INTRO SECTION ── */
 .intro-section{display:flex;align-items:center;gap:2.8rem;margin-bottom:2.6rem}
 .intro-text{flex:1;font-size:.97rem;line-height:1.75;color:var(--blue);font-weight:500;text-align:justify}
 .intro-logo{flex-shrink:0;width:320px;display:flex;align-items:center;justify-content:center}
 .intro-logo img{
   width:100%;max-width:320px;object-fit:contain;
-  mix-blend-mode:darken;
-  filter:saturate(1.9) brightness(1.02) hue-rotate(-3deg);
+  mix-blend-mode:multiply;
+  background:transparent;
+  filter:none;
 }
 .section-divider{border:none;border-top:2px solid var(--orange);margin:0 0 2.8rem}
 .two-col-section{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem 3.2rem;margin-bottom:2.8rem}
@@ -65,8 +74,4 @@ body{font-family:var(--font);color:var(--blue);min-height:100vh}
   .styled-list{gap:.25rem}
   .styled-list li{font-size:.82rem;padding-left:.9rem;line-height:1.5}
   .styled-list li::before{font-size:.9rem}
-}
-@media(max-width:768px){
-  .intro-section{flex-direction:column}
-  .two-col-section{grid-template-columns:1fr;gap:1.4rem;margin-bottom:1.8rem}
 }

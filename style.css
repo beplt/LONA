@@ -1,4 +1,6 @@
-/* ── Registration page (index.html) ── */
+/* ══════════════════════════════════
+   style.css  —  Registration / index page
+═════════════════════════════════ */
 @font-face {
   font-family: 'Cy Grotesk Key';
   src: url('kobuzan-cy-grotesk-grand-dark.otf') format('opentype');
@@ -51,26 +53,26 @@ body::after{
 
 /* ── LEFT ── */
 .left-section{
-  flex:1;display:flex;flex-direction:column;gap:1.2rem;max-width:580px
+  flex:1;display:flex;flex-direction:column;gap:1.2rem;max-width:580px;
 }
+/* ── LOGO / BRAND MARK ── */
 .logo-wrapper{display:flex;align-items:baseline;gap:.8rem}
 .logo-text{
   font-family:'Cy Grotesk Key',sans-serif;
-  /* Changed to orange to match brand */
   color:var(--orange);
   font-size:8rem;font-weight:900;letter-spacing:5px;line-height:.9;
   text-shadow:0 4px 24px rgba(232,98,26,.4);
 }
 .logo-icon{
-  height:42px;
-  mix-blend-mode:darken;
-  filter:saturate(1.9) brightness(1.02) hue-rotate(-3deg);
+  height:42px;width:auto;
+  mix-blend-mode:normal;
+  filter: invert(44%) sepia(100%) saturate(3200%) hue-rotate(4deg) brightness(95%) contrast(98%);
   transform:translateY(8px) translateX(-10px);
 }
 .description{
   color:#d4e4ff;font-family:var(--font);font-size:1rem;line-height:1.75;font-weight:500;
 }
-.description .highlight{color:var(--amber);font-weight:700}
+.description .highlight{color:inherit;font-weight:500}
 
 .left-section::after{
   content:'— ✦ —';
