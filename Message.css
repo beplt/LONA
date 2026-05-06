@@ -241,3 +241,31 @@ body{font-family:var(--font);color:var(--blue);min-height:100vh;display:flex;fle
   .sys-btn{font-size:.72rem;padding:6px 16px}
   .thread-empty-msg{margin-top:1.5rem;font-size:.82rem;line-height:1.5}
 }
+
+/* ══════════════════════════════════════
+   MESSAGE PAGE — NAV & FOOTER OVERRIDES
+══════════════════════════════════════ */
+
+/* Compact footer — single row, no wrapping */
+@media(max-width:480px){
+  .lona-footer{
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    justify-content:center!important;
+    align-items:center!important;
+    gap:.5rem!important;
+    height:44px!important;
+    min-height:44px!important;
+    padding:0 1rem!important;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .lona-footer .footer-brand{font-size:.7rem!important;letter-spacing:.6px}
+  .lona-footer .footer-sep{display:inline!important;font-size:.65rem}
+  .lona-footer .footer-contact{gap:.25rem}
+  .lona-footer .footer-contact svg{width:11px;height:11px}
+  .lona-footer .footer-contact a{font-size:.62rem!important}
+  .lona-footer>span:last-child{font-size:.62rem!important}
+  body{padding-bottom:52px!important}
+}

@@ -230,26 +230,58 @@ body{font-family:var(--font);color:var(--blue);min-height:100vh}
 
 /* ─ MOBILE: 480px and below ─ */
 @media(max-width:480px){
-  .page-wrap{padding:1.2rem 1.2rem 3.6rem}
-  .gallery-title{font-size:1.5rem;margin-bottom:.8rem}
-  .add-btn{width:44px;height:44px;font-size:1.2rem}
+  .page-wrap{padding:1rem 1rem 4rem}
+
+  /* Header row: title left, add button right */
+  .gallery-header-row{flex-direction:row;align-items:center;justify-content:space-between;margin-bottom:1rem}
+  .gallery-title{font-size:1.4rem;margin-bottom:0}
+  .add-btn{width:44px;height:44px;flex-shrink:0}
+
   .gallery-sample-note{font-size:.75rem;padding:4px 10px;margin-bottom:1rem}
-  
-  /* Grid becomes single column on very small screens */
-  .artist-grid{grid-template-columns:1fr;gap:.8rem}
-  
-  .card-banner{height:140px}
-  .card-menu-btn{padding:3px 6px;font-size:.7rem}
-  .card-footer{padding:.7rem .8rem}
-  .card-avatar{width:40px;height:40px;font-size:.75rem}
-  .card-name{font-size:.9rem}
-  .card-expand-btn{padding:6px 0;font-size:.78rem}
-  
+
+  /* Single column full-width cards */
+  .artist-grid{grid-template-columns:1fr;gap:.9rem}
+
+  .card-banner{height:160px}
+  .card-menu-btn{padding:3px 7px;font-size:.72rem}
+  .card-footer{padding:.75rem .9rem}
+  .card-avatar{width:42px;height:42px;font-size:.78rem}
+  .card-name{font-size:.92rem}
+  .card-expand-btn{padding:7px 0;font-size:.8rem}
+
   /* Modal adjustments */
   .modal-overlay{padding:.8rem}
-  .modal-container{max-width:90vw}
+  .modal-container{max-width:94vw}
   .add-form-card{padding:1rem;max-height:85vh}
-  .add-form-images{grid-template-columns:1fr;gap:.8rem}
+  .add-form-images{grid-template-columns:repeat(2,1fr);gap:.8rem}
+  .slot-name{width:85%;font-size:.8rem}
+  .slot-plus{width:40px;height:40px}
+  .add-form-bottom{flex-direction:column;gap:.6rem;padding:.7rem}
+  .add-desc{height:45px;font-size:.85rem;padding:0}
+  .form-post-btn{width:100%;padding:10px;font-size:.82rem}
+  .modal-close-btn{width:32px;height:32px;font-size:.9rem}
+
+  /* Lightbox */
+  .lightbox-overlay{padding:1rem}
+  .lightbox-container{max-width:95vw}
+  .lightbox-card{padding:1rem;border-radius:16px}
+  .lightbox-images{grid-template-columns:1fr;gap:.7rem;margin-bottom:1rem}
+  .lb-img-box{aspect-ratio:1}
+  .lb-piece-name{font-size:.85rem}
+  .lightbox-footer{flex-direction:column;gap:.6rem;padding:.7rem}
+  .lightbox-name{font-size:.95rem;text-align:center}
+  .lightbox-desc{font-size:.8rem;text-align:center}
+  .lightbox-arrow{width:36px;height:36px}
+  .lightbox-close-btn{width:28px;height:28px;font-size:.8rem}
+
+  /* Warning modal */
+  .warn-box{width:95%;padding:1.2rem 1.4rem;max-width:90vw}
+  .warn-title{font-size:1rem;margin-bottom:.4rem}
+  .warn-body{font-size:.85rem;margin-bottom:1rem}
+  .warn-cancel,.warn-confirm{padding:7px 14px;font-size:.78rem}
+
+  .empty-state{padding:3rem 1rem;font-size:.95rem}
+}
   .slot-name{width:85%;font-size:.8rem}
   .slot-plus{width:40px;height:40px}
   .add-form-bottom{flex-direction:column;gap:.6rem;padding:.7rem}

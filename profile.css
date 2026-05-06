@@ -148,7 +148,7 @@ input[type=file]{display:none}
   .meta-val{font-size:.9rem}
   .profile-right{flex:1}
   .stars-row{justify-content:flex-start;margin:4px 0 12px}
-  .links-services{grid-template-columns:1fr;gap:0}
+  .links-services{grid-template-columns:1fr 1fr;gap:0 1.5rem}
   .ls-header{font-size:.78rem;padding-bottom:4px}
   .ls-row{padding:4px 0;font-size:.88rem}
   .ls-row>span:first-child{font-size:1.3rem}
@@ -177,49 +177,59 @@ input[type=file]{display:none}
 
 /* MOBILE: 480px and below */
 @media(max-width:480px){
-  .page-wrap{padding:0 1.2rem 3.6rem}
+  .page-wrap{padding:0 1rem 4rem}
   .banner{height:130px}
-  .avatar-row{margin-top:-32px}
-  .avatar{width:76px;height:76px;font-size:1.3rem;border-width:2.5px}
-  .edit-btn{padding:5px 12px;font-size:.72rem;border-radius:18px}
-  .go-stream-btn{padding:6px 12px;font-size:.72rem;border-radius:12px}
-  .profile-top{gap:.8rem;margin-top:.6rem}
-  .artist-name{font-size:1.2rem;margin-bottom:.6rem}
-  .bio-card{padding:.9rem 1rem;width:100%;border-radius:14px}
+
+  /* Avatar row: avatar left, edit button right, no overlap */
+  .avatar-row{flex-direction:row;align-items:flex-end;justify-content:space-between;margin-top:-36px;gap:0}
+  .avatar{width:72px;height:72px;font-size:1.2rem;border-width:2.5px}
+  .edit-btn{margin-top:0;margin-left:0;align-self:flex-end;padding:6px 14px;font-size:.72rem;border-radius:18px}
+
+  /* Profile top: single column, full width */
+  .profile-top{flex-direction:column;gap:1rem;margin-top:.8rem}
+
+  /* Artist name: full width, left aligned */
+  .artist-name{font-size:1.3rem;text-align:left;width:100%;margin-bottom:.5rem}
+  .stars-row{justify-content:flex-start;margin:3px 0 10px;gap:.15rem}
+  .stars-row svg{width:19px;height:19px}
+
+  /* Bio card: full width */
+  .bio-card{width:100%;padding:.9rem 1rem;border-radius:14px}
   .card-section-label{font-size:.72rem;gap:3px;margin-bottom:4px}
-  .pencil-icon{font-size:.85rem}
-  .bio-content{font-size:.8rem;min-height:50px}
-  .meta-val{font-size:.82rem;padding:1px 0}
-  .profile-right{min-width:auto}
-  .stars-row{gap:.2rem;margin:3px 0 10px}
-  .stars-row svg{width:18px;height:18px}
-  .links-services{display:grid;grid-template-columns:1fr;gap:0;margin-top:0}
-  .ls-header{font-size:.7rem;padding-bottom:3px;gap:3px}
-  .ls-row{padding:3px 0;font-size:.78rem}
+  .bio-content{font-size:.82rem;min-height:50px}
+  .meta-val{font-size:.84rem}
+
+  /* Profile right: full width */
+  .profile-right{width:100%;min-width:unset}
+
+  /* Links & Services: always 2 columns */
+  .links-services{display:grid;grid-template-columns:1fr 1fr;gap:0 1rem;margin-top:2px}
+  .ls-header{font-size:.72rem;padding-bottom:4px;letter-spacing:.5px}
+  .ls-row{padding:4px 0;font-size:.8rem}
   .ls-row>span:first-child{font-size:1.1rem}
-  .gallery-grid{grid-template-columns:1fr;gap:10px;margin-top:1.2rem}
-  .gallery-item{border-radius:8px;aspect-ratio:1}
+
+  /* Gallery */
+  .gallery-grid{grid-template-columns:repeat(2,1fr);gap:10px;margin-top:1rem}
+  .gallery-item{border-radius:8px}
+  .gallery-item.tall{grid-row:span 1;aspect-ratio:1}
   .gallery-item .plus-icon{width:32px;height:32px}
-  .gallery-menu-btn{top:6px;right:6px;padding:3px 6px;font-size:.7rem;border-radius:14px;min-width:30px;height:26px}
+  .gallery-menu-btn{top:6px;right:6px;padding:3px 6px;font-size:.7rem;border-radius:14px}
   .gallery-dropdown{top:30px;right:6px;min-width:105px;border-radius:8px}
   .gallery-dropdown button{padding:7px 10px;font-size:.72rem}
   .see-more{margin-top:6px}
-  .see-more a{font-size:.8rem}
-  .posts-section{margin-top:1rem}
-  .post-label{font-size:.7rem;margin-bottom:2px;letter-spacing:.5px}
-  .post-wordcount{font-size:.72rem}
-  .post-textarea{padding:8px 10px;font-size:.82rem;height:65px;border-radius:8px;line-height:1.4}
-  .post-btn{padding:5px 12px;font-size:.7rem;border-radius:16px;margin-top:6px}
-  .posts-empty{padding:1.2rem .8rem;font-size:.8rem}
-  .posts-list{margin-top:.8rem}
-  .post-card{font-size:.82rem;padding:.75rem .85rem;margin-bottom:.7rem;border-radius:10px;border-width:1.2px}
-  .stream-post-card{padding:.85rem 1rem .8rem;border-radius:12px;border-width:1.5px}
-  .stream-post-header{gap:.6rem;margin-bottom:.7rem}
-  .stream-post-avatar{width:36px;height:36px;font-size:.8rem;border-width:1.5px}
-  .stream-post-username{font-size:.82rem;font-weight:700}
-  .stream-post-body{font-size:.8rem;padding:.25rem .6rem .6rem;line-height:1.5}
+  .see-more a{font-size:.82rem}
+
+  /* Posts section */
+  .posts-section{margin-top:1.2rem}
+  .go-stream-btn{padding:6px 14px;font-size:.74rem;border-radius:12px}
+  .posts-empty{padding:1.2rem .5rem;font-size:.82rem}
+  .stream-post-card{padding:.85rem .95rem .8rem;border-radius:12px;border-width:1.5px}
+  .stream-post-header{gap:.5rem;margin-bottom:.6rem}
+  .stream-post-avatar{width:34px;height:34px;font-size:.78rem;border-width:1.5px}
+  .stream-post-username{font-size:.82rem}
+  .stream-post-body{font-size:.82rem;padding:.2rem .5rem .6rem;line-height:1.5}
   .stream-like-btn{font-size:.85rem;padding:2px 4px;gap:.2rem}
-  .stream-like-count{font-size:.9rem}
-  .reviews-empty{font-size:.8rem}
-  .lightbox{max-width:95vw}
+  .stream-like-count{font-size:.88rem}
+
+  .reviews-empty{font-size:.82rem;line-height:1.5}
 }

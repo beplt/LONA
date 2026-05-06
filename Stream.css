@@ -113,29 +113,34 @@ body{font-family:var(--font);color:var(--blue);min-height:100vh}
 
 /* MOBILE: 480px and below */
 @media(max-width:480px){
-  .page-wrap{padding:1.2rem 1.2rem 3.6rem}
-  .stream-title{font-size:1.5rem;margin-bottom:.8rem}
-  .compose-row{gap:.6rem;margin-bottom:1rem}
-  .compose-box{padding:.8rem 1rem;border-radius:14px;gap:.4rem}
+  .page-wrap{padding:1rem 1rem 4rem}
+  .stream-title{font-size:1.4rem;margin-bottom:.8rem}
+
+  /* Compose row: stack vertically, full width */
+  .compose-row{flex-direction:column;gap:.6rem;margin-bottom:1rem;align-items:stretch}
+  .compose-box{width:100%;padding:.9rem 1rem;border-radius:14px;gap:.4rem}
   .compose-label{font-size:.75rem;letter-spacing:.6px}
-  .compose-textarea{min-height:120px;font-size:.85rem;line-height:1.6;background-size:100% 1.6em;padding:.8rem}
+  .compose-textarea{width:100%;min-height:120px;font-size:.88rem;line-height:1.6;background-size:100% 1.6em;padding:.5rem 0}
   .compose-footer{padding-top:.2rem}
-  .word-count{font-size:.8rem}
-  .post-btn{width:100%;padding:8px 14px;font-size:.75rem;border-radius:12px}
+  .word-count{font-size:.82rem}
+
+  /* POST button: full width, same row as compose */
+  .post-btn{width:100%;padding:10px;font-size:.82rem;border-radius:12px;margin-top:0;align-self:stretch}
+
   .section-divider{margin:0 0 1rem}
-  .world-label{font-size:.75rem;margin-bottom:.9rem;letter-spacing:.5px}
-  .posts-empty{padding:1.6rem .8rem;font-size:.85rem;line-height:1.5}
-  .posts-list{gap:.7rem}
-  .post-card{padding:.75rem .85rem;border-radius:14px}
+  .world-label{font-size:.78rem;margin-bottom:.9rem;letter-spacing:.5px}
+  .posts-empty{padding:1.6rem .8rem;font-size:.88rem;line-height:1.5}
+  .posts-list{gap:.7rem;max-width:100%!important}
+  .post-card{padding:.8rem .9rem;border-radius:14px}
   .post-header{gap:.5rem;margin-bottom:.6rem}
-  .post-avatar{width:34px;height:34px;font-size:.75rem;border-width:1.5px}
-  .post-username{font-size:.85rem;font-weight:700}
-  .post-body{font-size:.82rem;padding:.2rem .6rem .6rem;line-height:1.5}
+  .post-avatar{width:36px;height:36px;font-size:.78rem;border-width:1.5px}
+  .post-username{font-size:.88rem;font-weight:700}
+  .post-body{font-size:.85rem;padding:.2rem .4rem .6rem;line-height:1.5}
   .post-footer{padding-right:.3rem}
-  .like-btn{font-size:.85rem;padding:1px 3px;gap:.15rem}
-  .like-count{font-size:.85rem;font-weight:800}
+  .like-btn{font-size:.88rem;padding:2px 4px;gap:.15rem}
+  .like-count{font-size:.88rem;font-weight:800}
   .heart-icon{stroke-width:2.2}
-  .post-menu-btn{padding:2px 5px;font-size:.7rem;border-radius:14px}
+  .post-menu-btn{padding:2px 6px;font-size:.72rem;border-radius:14px}
   .post-dropdown{min-width:100px;border-radius:8px}
   .post-dropdown button{padding:7px 10px;font-size:.75rem}
   .modal-overlay{padding:.5rem}
@@ -143,6 +148,10 @@ body{font-family:var(--font);color:var(--blue);min-height:100vh}
   .modal-title{font-size:.85rem;margin-bottom:.7rem}
   .modal-textarea{min-height:100px;padding:8px 10px;font-size:.82rem;border-radius:8px}
   .modal-footer{flex-direction:column;align-items:stretch;gap:.5rem;margin-top:.7rem}
+  .modal-wordcount{font-size:.78rem;text-align:center;margin-bottom:.5rem;order:3}
+  .modal-actions{width:100%;gap:.5rem}
+  .modal-cancel-btn,.modal-save-btn{padding:7px 12px;font-size:.75rem;flex:1}
+}
   .modal-wordcount{font-size:.78rem;text-align:center;margin-bottom:.5rem;order:3}
   .modal-actions{width:100%;gap:.5rem}
   .modal-cancel-btn,.modal-save-btn{padding:7px 12px;font-size:.75rem;flex:1}

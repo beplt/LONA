@@ -78,6 +78,18 @@
 
 <!-- NAV -->
 <nav>
+  <!-- Hamburger + dropdown (mobile only, LEFT side) -->
+  <div class="nav-hamburger-wrap" id="navHamburgerWrap">
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-mobile-menu" id="mobileMenu">
+      <a href="Stream.html">STREAM</a>
+      <a href="Gallery.html">GALLERY</a>
+      <a href="About.html" class="active">ABOUT</a>
+    </div>
+  </div>
+
   <a class="nav-logo" href="About.html">
     <img src="LONA_full_sign.PNG" alt="LONA" title="LONA">
   </a>
@@ -89,6 +101,14 @@
   </div>
 
   <div class="nav-right">
+    <a class="nav-msg" href="message.html">&#x2709;</a>
+    <!-- Mobile search icon (replaces full bar on mobile) -->
+    <button class="nav-search-icon-btn" id="mobileSearchBtn" onclick="toggleMobileSearch()" aria-label="Search">
+      <svg width="17" height="17" viewBox="0.5 0.3 47.7 47.7">
+        <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+        <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+      </svg>
+    </button>
     <div class="search-wrap" id="searchWrap">
       <div class="nav-search">
         <button class="search-category-btn" id="catBtn" onclick="toggleCatDropdown(event)" type="button">
@@ -119,7 +139,6 @@
       </div>
       <div class="search-results-bar" id="searchResults"></div>
     </div>
-    <a class="nav-msg" href="message.html">&#x2709;</a>
     <div class="nav-avatar-wrap" id="navAvatarWrap">
       <div class="nav-avatar" id="navAvatar" onclick="toggleAvatarDrop(event)" style="cursor:pointer">&#x2022;&#xFEAC;&#x2022;</div>
       <div class="nav-avatar-dropdown" id="avatarDrop">
@@ -130,7 +149,20 @@
   </div>
 </nav>
 
-<!-- MAIN CONTENT -->
+<!-- MOBILE SEARCH OVERLAY -->
+<div class="nav-search-overlay" id="mobileSearchOverlay" onclick="closeMobileSearchOnBg(event)">
+  <div class="nav-search-overlay-box">
+    <div class="nav-search-overlay-row">
+      <input type="text" id="mobileSearchInput" placeholder="Search artists, art, services..." autofocus>
+      <button onclick="handleMobileSearch()">
+        <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+          <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+          <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
 <main class="page-wrap">
 
   <!-- INTRO SECTION -->
@@ -199,7 +231,13 @@
   window.handleSearch=function(){var q=document.getElementById('searchInput').value.trim(),res=document.getElementById('searchResults');if(!q){res.classList.remove('open');return;}var html='';if(_cat==='ARTIST NAME')html='<div class="search-result-msg">Are you trying to find this person?<br><span>&#x0F10;&#x15CE;</span> No artists here yet.</div>';else if(_cat==='ART NAME')html='<div class="search-result-msg">Maybe this is what you want?<br><span>&#x0F10;&#x15CE;</span> No art to show here yet.</div>';else html='<div class="search-result-msg">No artist found.<br><span>&#x0F10;&#x15CE;</span> No artists here yet.</div>';res.innerHTML=html;res.classList.add('open');};
   window.toggleAvatarDrop=function(e){e.stopPropagation();document.getElementById('avatarDrop').classList.toggle('open');};
   window.logOut=function(){localStorage.removeItem('lonaProfile');window.location.href='index.html';};
-  document.addEventListener('click',function(e){if(!e.target.closest('#navAvatarWrap')){var d=document.getElementById('avatarDrop');if(d)d.classList.remove('open');}if(!e.target.closest('#searchWrap')){var cd=document.getElementById('catDropdown'),sr=document.getElementById('searchResults');if(cd)cd.classList.remove('open');if(sr)sr.classList.remove('open');}});
+  // Mobile hamburger
+  window.toggleMobileMenu=function(){var m=document.getElementById('mobileMenu'),h=document.getElementById('navHamburger');m.classList.toggle('open');h.classList.toggle('open');};
+  // Mobile search overlay
+  window.toggleMobileSearch=function(){var o=document.getElementById('mobileSearchOverlay');o.classList.toggle('open');if(o.classList.contains('open'))setTimeout(function(){document.getElementById('mobileSearchInput').focus();},80);};
+  window.closeMobileSearchOnBg=function(e){if(e.target===document.getElementById('mobileSearchOverlay'))document.getElementById('mobileSearchOverlay').classList.remove('open');};
+  window.handleMobileSearch=function(){var q=document.getElementById('mobileSearchInput').value.trim();if(q)alert('Searching for: '+q);};
+  document.addEventListener('click',function(e){if(!e.target.closest('#navAvatarWrap')){var d=document.getElementById('avatarDrop');if(d)d.classList.remove('open');}if(!e.target.closest('#searchWrap')){var cd=document.getElementById('catDropdown'),sr=document.getElementById('searchResults');if(cd)cd.classList.remove('open');if(sr)sr.classList.remove('open');}if(!e.target.closest('#navHamburger')&&!e.target.closest('#mobileMenu')){var mm=document.getElementById('mobileMenu'),hb=document.getElementById('navHamburger');if(mm)mm.classList.remove('open');if(hb)hb.classList.remove('open');}});
 })();
 </script>
 

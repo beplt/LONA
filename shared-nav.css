@@ -30,7 +30,93 @@ nav{
   padding:0 2.2rem;height:76px;
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:200;
+  overflow:visible;
 }
+
+/* ── HAMBURGER BUTTON (hidden on desktop) ── */
+.nav-hamburger{
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;
+  width:38px;height:38px;background:none;border:none;cursor:pointer;padding:4px;
+  flex-shrink:0;
+}
+.nav-hamburger span{
+  display:block;width:22px;height:2.5px;background:var(--blue);
+  border-radius:2px;transition:all .22s ease;
+}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+
+/* ── HAMBURGER WRAP (positions dropdown relative to button) ── */
+.nav-hamburger-wrap{
+  display:none; /* hidden on desktop; shown only on mobile */
+  position:relative;
+  flex-shrink:0;
+}
+@media(min-width:481px){
+  .nav-hamburger-wrap{display:none!important}
+}
+
+/* ── MOBILE NAV DROPDOWN (anchored to hamburger, left side) ── */
+.nav-mobile-menu{
+  display:none;
+  position:absolute;
+  top:calc(100% + 8px);
+  left:0;
+  background:white;
+  border:2px solid var(--orange);
+  border-radius:14px;
+  overflow:hidden;
+  min-width:160px;
+  box-shadow:0 6px 24px rgba(26,39,68,.18);
+  z-index:999;
+  flex-direction:column;
+  gap:0;
+}
+.nav-mobile-menu.open{display:flex}
+.nav-mobile-menu a{
+  display:block;padding:11px 18px;font-family:var(--font);
+  font-size:.88rem;font-weight:800;color:var(--blue);text-decoration:none;
+  letter-spacing:.5px;border-bottom:1px solid rgba(232,98,26,.15);
+  transition:background .13s,color .13s;
+}
+.nav-mobile-menu a:last-child{border-bottom:none}
+.nav-mobile-menu a:hover{background:var(--cream);color:var(--orange)}
+.nav-mobile-menu a.active{background:var(--orange);color:white}
+
+/* ── MOBILE SEARCH ICON BUTTON (hidden on desktop) ── */
+.nav-search-icon-btn{
+  display:none;width:36px;height:36px;background:var(--orange);border:none;
+  border-radius:50%;cursor:pointer;align-items:center;justify-content:center;
+  flex-shrink:0;transition:opacity .15s;
+}
+.nav-search-icon-btn:hover{opacity:.85}
+.nav-search-icon-btn svg{fill:white;display:block}
+
+/* ── MOBILE SEARCH OVERLAY ── */
+.nav-search-overlay{
+  display:none;position:fixed;inset:0;background:rgba(26,39,68,.5);z-index:300;
+  align-items:flex-start;justify-content:center;padding-top:80px;
+}
+.nav-search-overlay.open{display:flex}
+.nav-search-overlay-box{
+  background:white;border:2px solid var(--orange);border-radius:18px;
+  padding:1.1rem 1.2rem;width:90%;max-width:400px;
+  box-shadow:0 8px 32px rgba(26,39,68,.2);
+}
+.nav-search-overlay-row{
+  display:flex;align-items:center;border:1.5px solid var(--blue);
+  border-radius:22px;overflow:hidden;height:42px;background:white;
+}
+.nav-search-overlay-row input{
+  flex:1;border:none;background:white;padding:0 14px;font-family:var(--font);
+  font-size:.9rem;color:var(--blue);outline:none;
+}
+.nav-search-overlay-row button{
+  background:var(--orange);border:none;color:white;padding:0 14px;
+  height:100%;cursor:pointer;display:flex;align-items:center;
+}
+.nav-search-overlay-row button svg{fill:white}
 .nav-logo{display:flex;align-items:center;text-decoration:none}
 .nav-logo img{
   height:50px;object-fit:contain;
@@ -231,32 +317,66 @@ nav{
 
 /* MOBILE: 480px and below */
 @media(max-width:480px){
-  nav{padding:0 .8rem;height:64px}
+  nav{
+    padding:0 .8rem;height:64px;position:sticky;top:0;
+    display:grid;
+    grid-template-columns:48px 1fr auto;
+    align-items:center;
+    gap:0;
+  }
+
+  /* Hamburger WRAP on the LEFT (col 1) */
+  .nav-hamburger-wrap{display:flex;grid-column:1;align-items:center}
+
+  /* Logo centered (col 2) */
+  .nav-logo{
+    grid-column:2;
+    display:flex;justify-content:center;align-items:center;
+  }
   .nav-logo img{height:36px}
+
+  /* Right icons (col 3) */
+  .nav-right{grid-column:3;gap:6px}
+
+  /* Hide desktop nav links */
   .nav-links{display:none}
-  .nav-right{gap:6px}
-  .nav-search{height:32px}
-  .nav-search input{width:70px;font-size:.75rem;padding:0 8px}
-  .nav-search button{padding:0 6px}
-  .nav-search button svg{width:14px;height:14px}
-  .nav-msg{font-size:1.2rem}
+
+  /* Hide full search bar, show icon button */
+  .search-wrap{display:none}
+  .nav-search-icon-btn{display:flex}
+
+  .nav-msg{font-size:1.25rem}
   .nav-avatar{width:32px;height:32px;font-size:.8rem;margin-left:1px}
   .nav-avatar-wrap{position:relative}
-  .search-cat-dropdown{min-width:140px;border-radius:8px}
-  .scat-item{padding:7px 10px;font-size:.75rem}
-  .scat-sub{min-width:120px}
-  .scat-sub-item{padding:6px 10px;font-size:.72rem}
-  .search-results-bar{min-width:200px;max-width:90vw;padding:8px 12px;border-radius:8px}
-  .search-result-msg{font-size:.78rem;line-height:1.5}
-  .nav-avatar-dropdown{min-width:120px;border-radius:8px}
+  .nav-avatar-dropdown{min-width:120px;border-radius:8px;right:0}
   .nav-avatar-dropdown a,
   .nav-avatar-dropdown button{padding:8px 10px;font-size:.75rem}
   .lightbox{background:rgba(26,39,68,.95)}
   .lightbox img{max-width:92vw;max-height:80vh;border-radius:10px}
-  .lona-footer{font-size:.6rem;gap:.4rem;padding:0 .6rem;height:40px}
-  .lona-footer .footer-brand{letter-spacing:.6px;font-size:.7rem}
-  .lona-footer .footer-sep{font-size:.55rem}
-  .lona-footer .footer-contact svg{width:10px;height:10px}
+
+  /* Footer: compact single row on mobile */
+  .lona-footer{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    justify-content:center;
+    align-items:center;
+    gap:.45rem;
+    height:44px;
+    min-height:44px;
+    padding:0 1rem;
+    font-size:.65rem;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .lona-footer .footer-brand{font-size:.68rem;letter-spacing:.6px}
+  .lona-footer .footer-sep{font-size:.6rem}
+  .lona-footer .footer-contact{gap:.25rem}
+  .lona-footer .footer-contact svg{width:11px;height:11px}
+  .lona-footer .footer-contact a{font-size:.62rem}
+  .lona-footer>span:last-child{font-size:.62rem}
+  body{padding-bottom:52px!important}
+
   .section-title{font-size:.95rem}
   .section-header{flex-direction:column;align-items:flex-start;gap:.8rem}
 }

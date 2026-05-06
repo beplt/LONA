@@ -18,6 +18,8 @@
         'height:48px;',
         'z-index:200;',
         'flex-shrink:0;',
+        'white-space:nowrap;',
+        'overflow:hidden;',
       '}',
       '.lona-footer .footer-brand{',
         'color:var(--orange,#e8621a);font-weight:900;letter-spacing:1px;',
@@ -26,7 +28,19 @@
       '.lona-footer .footer-contact{display:flex;align-items:center;gap:.35rem}',
       '.lona-footer a{color:var(--blue,#1a2744);text-decoration:none;font-weight:800;transition:color .15s}',
       '.lona-footer a:hover{color:var(--orange,#e8621a)}',
-      'body{padding-bottom:56px!important}'
+      'body{padding-bottom:56px!important}',
+      '@media(max-width:480px){',
+        '.lona-footer{',
+          'gap:.45rem;padding:0 .8rem;font-size:.62rem;height:44px;',
+        '}',
+        '.lona-footer .footer-brand{font-size:.65rem;letter-spacing:.6px}',
+        '.lona-footer .footer-sep{font-size:.6rem}',
+        '.lona-footer .footer-contact{gap:.2rem}',
+        '.lona-footer .footer-contact svg{width:10px;height:10px}',
+        '.lona-footer .footer-contact a{font-size:.6rem}',
+        '.lona-footer span:last-child{font-size:.6rem}',
+        'body{padding-bottom:52px!important}',
+      '}'
     ].join('');
     document.head.appendChild(style);
   }

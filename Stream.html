@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lona â€“ Stream</title>
+  <title>Lona - Stream</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="Stream.css">
   <script src="lona-storage.js"></script>
@@ -95,6 +95,18 @@
 
 <!-- NAV -->
 <nav>
+  <!-- Hamburger + dropdown (mobile only, LEFT side) -->
+  <div class="nav-hamburger-wrap" id="navHamburgerWrap">
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-mobile-menu" id="mobileMenu">
+      <a href="Stream.html" class="active">STREAM</a>
+      <a href="Gallery.html">GALLERY</a>
+      <a href="About.html">ABOUT</a>
+    </div>
+  </div>
+
   <a class="nav-logo" href="About.html" alt="LONA" title="LONA">
     <img src="LONA_full_sign.PNG" alt="LONA" title="LONA">
   </a>
@@ -104,6 +116,14 @@
     <a href="About.html">ABOUT</a>
   </div>
   <div class="nav-right">
+    <a class="nav-msg" href="message.html">&#x2709;</a>
+    <!-- Mobile search icon (replaces full bar on mobile) -->
+    <button class="nav-search-icon-btn" id="mobileSearchBtn" onclick="toggleMobileSearch()" aria-label="Search">
+      <svg width="17" height="17" viewBox="0.5 0.3 47.7 47.7">
+        <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+        <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+      </svg>
+    </button>
     <div class="search-wrap" id="searchWrap">
       <div class="nav-search">
         <button class="search-category-btn" id="catBtn" onclick="toggleCatDropdown(event)" type="button">
@@ -134,7 +154,6 @@
       </div>
       <div class="search-results-bar" id="searchResults"></div>
     </div>
-    <a class="nav-msg" href="message.html">&#x2709;</a>
     <div class="nav-avatar-wrap" id="navAvatarWrap">
       <div class="nav-avatar" id="navAvatar" onclick="toggleAvatarDrop(event)" style="cursor:pointer">•ﻌ•</div>
       <div class="nav-avatar-dropdown" id="avatarDrop">
@@ -144,6 +163,21 @@
     </div>
   </div>
 </nav>
+
+<!-- MOBILE SEARCH OVERLAY -->
+<div class="nav-search-overlay" id="mobileSearchOverlay" onclick="closeMobileSearchOnBg(event)">
+  <div class="nav-search-overlay-box">
+    <div class="nav-search-overlay-row">
+      <input type="text" id="mobileSearchInput" placeholder="Search artists, art, services..." autofocus>
+      <button onclick="handleMobileSearch()">
+        <svg width="16" height="16" viewBox="0.5 0.3 47.7 47.7">
+          <path d="M20.2,38.39A18.2,18.2,0,1,1,33.07,7.33h0A18.19,18.19,0,0,1,20.2,38.39ZM20.2,6a14.2,14.2,0,1,0,10,4.15A14.16,14.16,0,0,0,20.2,6Z"/>
+          <path d="M46,48a2,2,0,0,1-1.41-.59L30.24,33.07a2,2,0,1,1,2.83-2.83L47.41,44.59A2,2,0,0,1,46,48Z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- PAGE WRAP -->
 <div class="page-wrap">
@@ -245,7 +279,23 @@ document.addEventListener('click', e => {
     document.getElementById('searchResults').classList.remove('open');
   }
   if (!e.target.closest('.post-menu-wrap')) document.querySelectorAll('.post-dropdown').forEach(d => d.classList.remove('open'));
+  if (!e.target.closest('#navHamburger') && !e.target.closest('#mobileMenu')) {
+    const mm = document.getElementById('mobileMenu'), hb = document.getElementById('navHamburger');
+    if (mm) mm.classList.remove('open'); if (hb) hb.classList.remove('open');
+  }
 });
+
+function toggleMobileMenu() {
+  const m = document.getElementById('mobileMenu'), h = document.getElementById('navHamburger');
+  m.classList.toggle('open'); h.classList.toggle('open');
+}
+function toggleMobileSearch() {
+  const o = document.getElementById('mobileSearchOverlay');
+  o.classList.toggle('open');
+  if (o.classList.contains('open')) setTimeout(() => document.getElementById('mobileSearchInput').focus(), 80);
+}
+function closeMobileSearchOnBg(e) { if (e.target === document.getElementById('mobileSearchOverlay')) document.getElementById('mobileSearchOverlay').classList.remove('open'); }
+function handleMobileSearch() { const q = document.getElementById('mobileSearchInput').value.trim(); if (q) alert('Searching for: ' + q); }
 
 function updateWordCount(el) {
   const words = el.value.trim() === '' ? 0 : el.value.trim().split(/\s+/).length;
