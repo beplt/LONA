@@ -35,7 +35,7 @@ nav{
 
 /* ── HAMBURGER BUTTON (hidden on desktop) ── */
 .nav-hamburger{
-  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;
+  display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;
   width:38px;height:38px;background:none;border:none;cursor:pointer;padding:4px;
   flex-shrink:0;
 }
@@ -327,6 +327,7 @@ nav{
 
   /* Hamburger WRAP on the LEFT (col 1) */
   .nav-hamburger-wrap{display:flex;grid-column:1;align-items:center}
+  .nav-hamburger{display:flex;grid-column:1}
 
   /* Logo centered (col 2) */
   .nav-logo{
